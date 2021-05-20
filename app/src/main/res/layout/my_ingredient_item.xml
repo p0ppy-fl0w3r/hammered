@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="clickListener"
+            type="com.example.hammered.ingredients.IngredientClickListener" />
+
+        <variable
+            name="ingredient"
+            type="com.example.hammered.entities.Ingredient" />
+    </data>
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/my_item_margin"
+        android:clickable="true"
+        android:elevation="4dp"
+        app:cardCornerRadius="8dp"
+        app:rippleColor="@color/secondaryLightColor"
+        android:onClick="@{() -> clickListener.onClick(ingredient)}">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="4dp"
+            android:orientation="horizontal">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/item_image"
+                android:layout_width="@dimen/circular_image_width"
+                android:layout_height="@dimen/circular_image_height"
+                android:padding="1.8dp"
+                app:shapeAppearanceOverlay="@style/roundedImage"
+                app:imageSource="@{ingredient.ingredient_image}"
+                app:strokeColor="@color/secondaryDarkColor"
+                app:strokeWidth="2dp"
+                tools:srcCompat="@drawable/summer_food" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="12dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/item_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{ingredient.ingredient_name}"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                    tools:text="Hamburger" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/item_drinks"
+                    android:text="@{ingredient.ingredient_description}"
+                    android:layout_marginTop="2dp"
+                    tools:text="Make pizza out of it"/>
+            </LinearLayout>
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+</layout>

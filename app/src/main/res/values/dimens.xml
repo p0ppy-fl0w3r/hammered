@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="my_item_margin">4dp</dimen>
+    <dimen name="circular_image_width">55dp</dimen>
+    <dimen name="circular_image_height">55dp</dimen>
+</resources>

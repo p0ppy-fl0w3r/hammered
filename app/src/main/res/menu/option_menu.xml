@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <group android:id="@+id/optionSettingsGroup">
+        <item
+            android:id="@+id/createCocktailFragment"
+            android:title="@string/create_cocktail" />
+        <item
+            android:id="@+id/createIngredientFragment"
+            android:title="@string/create_ingredient" />
+    </group>
+    <group android:id="@+id/createItemGroup">
+        <item
+            android:id="@+id/settingsFragment"
+            android:title="@string/settings" />
+        <item
+            android:id="@+id/aboutFragment"
+            android:title="@string/about" />
+    </group>
+</menu>

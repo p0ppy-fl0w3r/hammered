@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation"
+    app:startDestination="@id/ingredientFragment">
+    <fragment
+        android:id="@+id/ingredientFragment"
+        android:name="com.example.hammered.ingredients.IngredientFragment"
+        android:label="ingredient_fragment"
+        tools:layout="@layout/ingredient_fragment" />
+    <fragment
+        android:id="@+id/cocktailFragment"
+        android:name="com.example.hammered.cocktail.CocktailFragment"
+        android:label="CocktailFragment"
+        tools:layout="@layout/cocktail_fragment" />
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.example.hammered.settings.SettingsFragment"
+        android:label="settings_fragment"
+        tools:layout="@layout/settings_fragment" />
+</navigation>
