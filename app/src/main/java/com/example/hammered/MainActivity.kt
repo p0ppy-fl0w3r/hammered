@@ -20,6 +20,8 @@ import com.example.hammered.databinding.ActivityMainBinding
 import kotlinx.android.synthetic.main.activity_main.*
 
 
+// FIXME pressing back on settings navigates to ingredient when setting was navigated from cocktail
+
 class MainActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityMainBinding
@@ -68,7 +70,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onBackPressed() {
         super.onBackPressed()
-
 
     }
 }

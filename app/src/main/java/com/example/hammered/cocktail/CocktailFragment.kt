@@ -7,7 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import com.example.hammered.MainActivity
+import androidx.navigation.fragment.findNavController
 import com.example.hammered.R
 import com.example.hammered.databinding.CocktailFragmentBinding
 import com.example.hammered.entities.Cocktail
@@ -20,14 +20,21 @@ class CocktailFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         binding = DataBindingUtil.inflate(inflater, R.layout.cocktail_fragment, container, false)
 
         val cok1 = Cocktail(1, "Tonic", "Strong", "1. make it", false, "vodka.webp")
         val cok2 = Cocktail(2, "Bionic", "Light", "1. make it", true, "gin.png")
 
-        val adapter = CocktailAdapter(CocktailClickListener { })
+        val adapter = CocktailAdapter(CocktailClickListener {
+            val clickedData = it.asData()
+            findNavController().navigate(
+                CocktailFragmentDirections.actionCocktailFragmentToCocktailDetailFragment(
+                    clickedData
+                )
+            )
+        })
         adapter.submitList(listOf(cok1, cok2))
 
         binding.cocktailRecycler.adapter = adapter

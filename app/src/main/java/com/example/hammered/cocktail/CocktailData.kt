@@ -1,0 +1,12 @@
+package com.example.hammered.cocktail
+
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
+
+@Parcelize
+data class CocktailData(var cocktail_id:Long,
+                        var cocktail_name: String,
+                        var cocktail_description: String,
+                        var steps: String,
+                        var isFavorite: Boolean,
+                        var cocktail_image: String):Parcelable

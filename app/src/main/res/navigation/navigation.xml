@@ -13,10 +13,22 @@
         android:id="@+id/cocktailFragment"
         android:name="com.example.hammered.cocktail.CocktailFragment"
         android:label="CocktailFragment"
-        tools:layout="@layout/cocktail_fragment" />
+        tools:layout="@layout/cocktail_fragment" >
+        <action
+            android:id="@+id/action_cocktailFragment_to_cocktailDetailFragment"
+            app:destination="@id/cocktailDetailFragment" />
+    </fragment>
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.example.hammered.settings.SettingsFragment"
         android:label="settings_fragment"
         tools:layout="@layout/settings_fragment" />
+    <fragment
+        android:id="@+id/cocktailDetailFragment"
+        android:name="com.example.hammered.cocktail.CocktailDetailFragment"
+        android:label="fragment_cocktail_detail"
+        tools:layout="@layout/fragment_cocktail_detail" >
+        <argument android:name="cocktail"
+            app:argType="com.example.hammered.cocktail.CocktailData"/>
+    </fragment>
 </navigation>
