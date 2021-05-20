@@ -1,12 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:orientation="vertical"
         tools:context=".cocktail.CocktailFragment">
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/cocktail_chip_group"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:selectionRequired="true"
+            app:singleSelection="true"
+            android:layout_margin="8dp">
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipAllDrinks"
+                style="@style/chipStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+
+                android:text="@string/all_drinks" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipMyDrinks"
+                style="@style/chipStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/my_drinks" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipFavoriteDrinks"
+                style="@style/chipStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/favorite_drinks" />
+        </com.google.android.material.chip.ChipGroup>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/cocktail_recycler"

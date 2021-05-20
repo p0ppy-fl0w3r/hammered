@@ -19,6 +19,12 @@ interface CocktailDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertIngredientCocktailRef(ingredientCocktailRef: IngredientCocktailRef)
 
+    @Query("SELECT * FROM Cocktail")
+    suspend fun getAllCocktails(): List<Cocktail>
+
+    @Query("SELECT * FROM Cocktail WHERE isFavorite=1")
+    suspend fun getFavouriteCocktails(): List<Cocktail>
+
     @Query("SELECT COUNT(*) FROM IngredientCocktailRef")
     suspend fun getIngredientCocktailRefCount(): Int
 

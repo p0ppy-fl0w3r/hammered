@@ -27,4 +27,9 @@
         <item name="cornerSize">50%</item>
     </style>
 
+    <style name="chipStyle" parent="Widget.MaterialComponents.Chip.Choice">
+        <item name="android:textColor">@color/primaryTextColor</item>
+        <item name="chipBackgroundColor">@color/chip_state_color</item>
+    </style>
+
 </resources>
