@@ -33,6 +33,14 @@ interface CocktailDao {
     suspend fun getIngredientFromCocktail(cocktail_id: Long): List<CocktailWithIngredient>
 
     @Transaction
+    @Query("SELECT * FROM cocktail")
+    suspend fun getAllIngredientFromCocktail(): List<CocktailWithIngredient>
+
+    @Transaction
+    @Query("SELECT * FROM cocktail where isFavorite=1")
+    suspend fun getFavouriteIngredientFromCocktail(): List<CocktailWithIngredient>
+
+    @Transaction
     @Query("SELECT * FROM ingredient WHERE ingredient_name = :ingredient_name")
     suspend fun getCocktailsFromIngredient(ingredient_name: String): List<IngredientWithCocktail>
 

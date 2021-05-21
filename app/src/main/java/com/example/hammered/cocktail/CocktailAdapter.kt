@@ -7,19 +7,23 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hammered.databinding.CocktailItemBinding
-import com.example.hammered.entities.Cocktail
+import com.example.hammered.entities.relations.CocktailWithIngredient
 
 
 // Create a sealed class for different layouts
 
-class CocktailAdapter(private val clickListener: CocktailClickListener): ListAdapter< Cocktail,MyCocktailViewHolder>(ItemsDiffUtils()) {
+class CocktailAdapter(private val clickListener: CocktailClickListener): ListAdapter< CocktailWithIngredient,MyCocktailViewHolder>(ItemsDiffUtils()) {
 
-    class ItemsDiffUtils():DiffUtil.ItemCallback<Cocktail>(){
-        override fun areItemsTheSame(oldItem: Cocktail, newItem: Cocktail): Boolean {
-            return newItem.cocktail_id == oldItem.cocktail_id
+    class ItemsDiffUtils():DiffUtil.ItemCallback<CocktailWithIngredient>(){
+        override fun areItemsTheSame(oldItem: CocktailWithIngredient, newItem: CocktailWithIngredient): Boolean {
+            return newItem.cocktail.cocktail_id == oldItem.cocktail.cocktail_id
         }
 
-        override fun areContentsTheSame(oldItem: Cocktail, newItem: Cocktail): Boolean {
+
+        override fun areContentsTheSame(
+            oldItem: CocktailWithIngredient,
+            newItem: CocktailWithIngredient
+        ): Boolean {
             return oldItem == newItem
         }
 
@@ -38,8 +42,8 @@ class CocktailAdapter(private val clickListener: CocktailClickListener): ListAda
 }
 
 class MyCocktailViewHolder(private val binding: CocktailItemBinding): RecyclerView.ViewHolder(binding.root){
-    fun bind(clickListener: CocktailClickListener, cocktail: Cocktail){
-        binding.cocktail = cocktail
+    fun bind(clickListener: CocktailClickListener, cocktailWithIngredient: CocktailWithIngredient){
+        binding.cocktailWithIngredient = cocktailWithIngredient
         binding.clickListener = clickListener
 
         binding.executePendingBindings()
@@ -55,6 +59,6 @@ class MyCocktailViewHolder(private val binding: CocktailItemBinding): RecyclerVi
     }
 }
 
-class CocktailClickListener(val clickListener: (Cocktail) -> Unit){
-    fun onClick(cocktail: Cocktail) = clickListener(cocktail)
+class CocktailClickListener(val clickListener: (CocktailWithIngredient) -> Unit){
+    fun onClick(cocktailWithIngredient: CocktailWithIngredient) = clickListener(cocktailWithIngredient)
 }
