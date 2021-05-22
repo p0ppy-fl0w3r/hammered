@@ -21,7 +21,7 @@ class CocktailViewModel(application: Application) : AndroidViewModel(application
     val cocktailLiveData: LiveData<List<CocktailWithIngredient>?>
         get() = _cocktailLiveData
 
-    private val database = CocktailDatabase.getDatabase(application)
+    private val database = CocktailDatabase.getDatabase(application.applicationContext)
 
 
     // TODO make a file containing constants to reference the chip id/names
@@ -51,6 +51,7 @@ class CocktailViewModel(application: Application) : AndroidViewModel(application
 
         val allDrinks = database.cocktailDao.getAllIngredientFromCocktail()
         val makableDrinks: MutableList<CocktailWithIngredient> = mutableListOf()
+
         for (i in allDrinks) {
             var hasAll = true
             for (j in i.ingredients) {
@@ -63,6 +64,7 @@ class CocktailViewModel(application: Application) : AndroidViewModel(application
                 makableDrinks.add(i)
             }
         }
+
         return makableDrinks
     }
 
@@ -94,8 +96,6 @@ class CocktailViewModel(application: Application) : AndroidViewModel(application
             val ref5 = IngredientCocktailRef(2, "Water")
             val ref6 = IngredientCocktailRef(2, "Vodka")
             val ref7 = IngredientCocktailRef(2, "Lemon")
-
-
 
             for (i in arrayOf(
                 ref1,

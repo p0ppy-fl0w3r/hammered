@@ -1,5 +1,6 @@
 package com.example.hammered.dao
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.example.hammered.entities.Cocktail
 import com.example.hammered.entities.Ingredient
@@ -35,6 +36,10 @@ interface CocktailDao {
     @Transaction
     @Query("SELECT * FROM cocktail")
     suspend fun getAllIngredientFromCocktail(): List<CocktailWithIngredient>
+
+    @Transaction
+    @Query("SELECT * FROM cocktail")
+    fun getLiveIngredientFromCocktail(): LiveData<List<CocktailWithIngredient>>
 
     @Transaction
     @Query("SELECT * FROM cocktail where isFavorite=1")

@@ -7,9 +7,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.example.hammered.R
+import com.example.hammered.database.CocktailDatabase
 import com.example.hammered.databinding.CocktailFragmentBinding
+import com.example.hammered.entities.relations.CocktailWithIngredient
 import timber.log.Timber
 
 class CocktailFragment : Fragment() {
@@ -29,14 +32,16 @@ class CocktailFragment : Fragment() {
 
         // TEST
 
-        Timber.e("${binding.cocktailChipGroup.checkedChipId}")
-
-
-        filterDataFromChip(binding.cocktailChipGroup.checkedChipId)
-
         binding.cocktailChipGroup.setOnCheckedChangeListener { _, checkedId ->
+            Timber.e("Chip changed.")
             filterDataFromChip(checkedId)
         }
+        val database = CocktailDatabase.getDatabase(requireContext())
+
+        database.cocktailDao.getLiveIngredientFromCocktail().observe(viewLifecycleOwner) {
+            filterDataFromChip(binding.cocktailChipGroup.checkedChipId)
+        }
+
 
         val adapter = CocktailAdapter(CocktailClickListener {
             val clickedData = it.cocktail.asData()
@@ -65,7 +70,7 @@ class CocktailFragment : Fragment() {
             binding.chipMyDrinks.id -> msg = 3
         }
 
-        Timber.e("Filter from chip called")
+        Timber.e("Filter from chip called with selection $msg")
 
         viewModel.checkedData(msg)
     }

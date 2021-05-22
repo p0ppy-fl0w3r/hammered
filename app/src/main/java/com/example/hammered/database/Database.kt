@@ -1,6 +1,7 @@
 package com.example.hammered.database
 
 import android.app.Application
+import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
@@ -22,12 +23,12 @@ abstract class CocktailDatabase : RoomDatabase() {
 
         private var INSTANCE: CocktailDatabase? = null
 
-        fun getDatabase(application: Application): CocktailDatabase {
+        fun getDatabase(context:Context): CocktailDatabase {
             synchronized(this) {
                 var instance = INSTANCE
                 if (instance == null) {
                     instance = Room.databaseBuilder(
-                        application,
+                        context.applicationContext,
                         CocktailDatabase::class.java,
                         "cocktail_database"
                     ).fallbackToDestructiveMigration().build()
