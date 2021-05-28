@@ -13,4 +13,7 @@
     <string name="all_drinks">All Drinks</string>
     <string name="my_drinks">My Drinks</string>
     <string name="favorite_drinks">Favorite Drinks</string>
+    <string name="all_ingredients">All ingredients</string>
+    <string name="my_stock">My Stock</string>
+    <string name="shopping_cart">Shopping Cart</string>
 </resources>

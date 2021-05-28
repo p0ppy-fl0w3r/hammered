@@ -9,39 +9,59 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import com.example.hammered.R
+import com.example.hammered.database.CocktailDatabase
 import com.example.hammered.databinding.IngredientFragmentBinding
-import com.example.hammered.entities.Ingredient
 
 
 class IngredientFragment : Fragment() {
 
-    private lateinit var viewModel: IngredientViewModel
     private lateinit var binding: IngredientFragmentBinding
 
-    val ing1 = Ingredient("Lemon", "Nice", "lemon.png",false)
-    val ing2 = Ingredient("Salt", "Very nice", "salt.png",false)
+    private val viewModel by lazy {
+        ViewModelProvider(this).get(IngredientViewModel::class.java)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         binding = DataBindingUtil.inflate(inflater, R.layout.ingredient_fragment, container, false)
 
         val adapter = IngredientAdapter(IngredientClickListener {
-            Toast.makeText(requireContext(), it.ingredient_description, Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                requireContext(),
+                it.ingredient.ingredient_description,
+                Toast.LENGTH_SHORT
+            ).show()
         })
-        adapter.submitList(listOf(ing1,ing2))
+
+        val database = CocktailDatabase.getDatabase(requireContext())
+        database.cocktailDao.getLiveCocktailsFromIngredients().observe(viewLifecycleOwner) {
+            filterDataFromChip(binding.ingredientChipGroup.checkedChipId)
+        }
+
+        binding.ingredientChipGroup.setOnCheckedChangeListener { _, checkedId ->
+            filterDataFromChip(checkedId)
+        }
+
+        viewModel.ingredientData.observe(viewLifecycleOwner) {
+            adapter.submitList(it)
+        }
 
         binding.ingredientRecycler.adapter = adapter
-
         return binding.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(IngredientViewModel::class.java)
-        // TODO: Use the ViewModel
+    private fun filterDataFromChip(checkedId: Int) {
+        var msg = 0
+        when (checkedId) {
+            binding.chipAllIngredient.id -> msg = 1
+            binding.chipMyStock.id -> msg = 2
+            binding.chipShoppingCart.id -> msg = 3
+        }
+
+        viewModel.checkedData(msg)
     }
 
 }

@@ -24,7 +24,6 @@ class CocktailViewModel(application: Application) : AndroidViewModel(application
     private val database = CocktailDatabase.getDatabase(application.applicationContext)
 
 
-    // TODO make a file containing constants to reference the chip id/names
     // TODO find an alternative for insert
     fun checkedData(id: Int) {
         viewModelScope.launch {
@@ -72,11 +71,11 @@ class CocktailViewModel(application: Application) : AndroidViewModel(application
     //TEST
     suspend fun insert() {
         if (database.cocktailDao.getIngredientCocktailRefCount() == 0) {
-            val ing1 = Ingredient("Lemon", "Nice", "lemon.png", true)
-            val ing2 = Ingredient("Salt", "Very nice", "salt.png", true)
-            val ing3 = Ingredient("Water", "Nice", "water.jpg", true)
-            val ing4 = Ingredient("Gin", "Nice", "gin.png", false)
-            val ing5 = Ingredient("Vodka", "Nice", "vodka.webp", false)
+            val ing1 = Ingredient("Lemon", "Nice", "lemon.png", true, false)
+            val ing2 = Ingredient("Salt", "Very nice", "salt.png", true, false)
+            val ing3 = Ingredient("Water", "Nice", "water.jpg", true, false)
+            val ing4 = Ingredient("Gin", "Nice", "gin.png", false, true)
+            val ing5 = Ingredient("Vodka", "Nice", "vodka.webp", false, true)
 
             val cok1 = Cocktail(1, "Tonic", "Strong", "1. make it", false, "vodka.webp")
             val cok2 = Cocktail(2, "Bionic", "Light", "1. make it", true, "gin.png")

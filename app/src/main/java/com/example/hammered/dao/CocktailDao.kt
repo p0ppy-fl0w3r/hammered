@@ -49,4 +49,20 @@ interface CocktailDao {
     @Query("SELECT * FROM ingredient WHERE ingredient_name = :ingredient_name")
     suspend fun getCocktailsFromIngredient(ingredient_name: String): List<IngredientWithCocktail>
 
+    @Transaction
+    @Query("SELECT * FROM ingredient")
+    suspend fun getAllCocktailsFromIngredient(): List<IngredientWithCocktail>
+
+    @Transaction
+    @Query("SELECT * FROM ingredient WHERE inStock=1")
+    suspend fun getInStockCocktailsFromIngredient(): List<IngredientWithCocktail>
+
+    @Transaction
+    @Query("SELECT * FROM ingredient WHERE inCart=1")
+    suspend fun getInCartCocktailsFromIngredient(): List<IngredientWithCocktail>
+
+    @Transaction
+    @Query("SELECT * FROM ingredient")
+    fun getLiveCocktailsFromIngredients(): LiveData<List<IngredientWithCocktail>>
+
 }

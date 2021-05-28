@@ -1,6 +1,5 @@
 package com.example.hammered.database
 
-import android.app.Application
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
@@ -13,7 +12,7 @@ import com.example.hammered.entities.relations.IngredientCocktailRef
 @Database(
     entities = [Cocktail::class, Ingredient::class, IngredientCocktailRef::class],
     exportSchema = false,
-    version = 2
+    version = 3
 )
 abstract class CocktailDatabase : RoomDatabase() {
 

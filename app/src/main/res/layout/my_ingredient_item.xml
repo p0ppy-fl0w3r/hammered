@@ -9,8 +9,8 @@
             type="com.example.hammered.ingredients.IngredientClickListener" />
 
         <variable
-            name="ingredient"
-            type="com.example.hammered.entities.Ingredient" />
+            name="ingredientWithCocktail"
+            type="com.example.hammered.entities.relations.IngredientWithCocktail" />
     </data>
 
     <com.google.android.material.card.MaterialCardView
@@ -21,7 +21,7 @@
         android:elevation="4dp"
         app:cardCornerRadius="8dp"
         app:rippleColor="@color/secondaryLightColor"
-        android:onClick="@{() -> clickListener.onClick(ingredient)}">
+        android:onClick="@{() -> clickListener.onClick(ingredientWithCocktail)}">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -35,7 +35,7 @@
                 android:layout_height="@dimen/circular_image_height"
                 android:padding="1.8dp"
                 app:shapeAppearanceOverlay="@style/roundedImage"
-                app:imageSource="@{ingredient.ingredient_image}"
+                app:imageSource="@{ingredientWithCocktail.ingredient.ingredient_image}"
                 app:strokeColor="@color/secondaryDarkColor"
                 app:strokeWidth="2dp"
                 tools:srcCompat="@drawable/summer_food" />
@@ -50,14 +50,14 @@
                     android:id="@+id/item_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{ingredient.ingredient_name}"
+                    android:text="@{ingredientWithCocktail.ingredient.ingredient_name}"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                     tools:text="Hamburger" />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/item_drinks"
-                    android:text="@{ingredient.ingredient_description}"
+                    android:text="@{ingredientWithCocktail.ingredient.ingredient_description}"
                     android:layout_marginTop="2dp"
                     tools:text="Make pizza out of it"/>
             </LinearLayout>

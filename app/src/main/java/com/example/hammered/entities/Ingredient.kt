@@ -8,5 +8,6 @@ data class Ingredient(
     @PrimaryKey(autoGenerate = false) var ingredient_name: String,
     var ingredient_description: String,
     var ingredient_image: String,
-    var inStock: Boolean
+    var inStock: Boolean,
+    var inCart: Boolean
 )
