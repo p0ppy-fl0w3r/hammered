@@ -17,8 +17,9 @@ class CocktailFragment : Fragment() {
 
 
     private lateinit var binding: CocktailFragmentBinding
+    private var msg = 1
 
-    private val viewModel:CocktailViewModel by lazy{
+    private val viewModel: CocktailViewModel by lazy {
         ViewModelProvider(this).get(CocktailViewModel::class.java)
     }
 
@@ -49,9 +50,9 @@ class CocktailFragment : Fragment() {
                 )
             )
         })
-        // TODO submit list on background thread
+
         viewModel.cocktailLiveData.observe(viewLifecycleOwner) {
-            adapter.submitList(it)
+            adapter.applyFilterAndSubmitList(it, msg)
             Timber.e("The list size is ${it?.size}")
         }
 
@@ -61,7 +62,6 @@ class CocktailFragment : Fragment() {
     }
 
     private fun filterDataFromChip(checkedId: Int) {
-        var msg = 0
         when (checkedId) {
             binding.chipAllDrinks.id -> msg = 1
             binding.chipFavoriteDrinks.id -> msg = 2

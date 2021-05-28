@@ -21,6 +21,8 @@ class IngredientFragment : Fragment() {
         ViewModelProvider(this).get(IngredientViewModel::class.java)
     }
 
+    private var msg = 1
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -46,7 +48,7 @@ class IngredientFragment : Fragment() {
         }
 
         viewModel.ingredientData.observe(viewLifecycleOwner) {
-            adapter.submitList(it)
+            adapter.addFilterAndSubmitList(it, msg)
         }
 
         binding.ingredientRecycler.adapter = adapter
@@ -54,7 +56,6 @@ class IngredientFragment : Fragment() {
     }
 
     private fun filterDataFromChip(checkedId: Int) {
-        var msg = 0
         when (checkedId) {
             binding.chipAllIngredient.id -> msg = 1
             binding.chipMyStock.id -> msg = 2

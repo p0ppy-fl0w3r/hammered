@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="clickListener"
+            type="com.example.hammered.cocktail.CocktailClickListener" />
+
+        <variable
+            name="cocktailWithIngredient"
+            type="com.example.hammered.entities.relations.CocktailWithIngredient" />
+    </data>
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/my_item_margin"
+        android:clickable="true"
+        android:elevation="4dp"
+        android:onClick="@{() -> clickListener.onClick(cocktailWithIngredient)}"
+        app:cardCornerRadius="8dp"
+        app:rippleColor="@color/secondaryLightColor">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="4dp"
+            android:orientation="horizontal">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/favorite_cocktail_image"
+                android:layout_width="@dimen/circular_image_width"
+                android:layout_height="@dimen/circular_image_height"
+                android:padding="1.8dp"
+                app:imageSource="@{cocktailWithIngredient.cocktail.cocktail_image}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/favorite_cocktail_text_container"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:shapeAppearanceOverlay="@style/roundedImage"
+                app:strokeColor="@color/secondaryDarkColor"
+                app:strokeWidth="2dp"
+                tools:srcCompat="@drawable/summer_food" />
+
+            <LinearLayout
+                android:id="@+id/favorite_cocktail_text_container"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="8dp"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/favorite_checkBox"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/favorite_cocktail_image"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/favorite_cocktail_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{cocktailWithIngredient.cocktail.cocktail_name}"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                    tools:text="Hamburger" />
+
+                <TextView
+                    android:id="@+id/favorite_cocktail_items"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    app:ingredientList="@{cocktailWithIngredient.ingredients}"
+                    tools:text="Make pizza out of it" />
+            </LinearLayout>
+
+            <CheckBox
+                android:id="@+id/favorite_checkBox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:checked="@{cocktailWithIngredient.cocktail.favorite}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/favorite_cocktail_text_container"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+</layout>
