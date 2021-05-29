@@ -12,6 +12,14 @@
         <variable
             name="ingredientWithCocktail"
             type="com.example.hammered.entities.relations.IngredientWithCocktail" />
+
+        <variable
+            name="cartStatusChangeListener"
+            type="com.example.hammered.ingredients.ItemStatusChangeListener" />
+
+        <variable
+            name="constants"
+            type="com.example.hammered.Constants" />
     </data>
 
     <com.google.android.material.card.MaterialCardView
@@ -24,7 +32,7 @@
         app:cardCornerRadius="8dp"
         app:rippleColor="@color/secondaryLightColor">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="4dp"
@@ -36,16 +44,26 @@
                 android:layout_height="@dimen/circular_image_height"
                 android:padding="1.8dp"
                 app:imageSource="@{ingredientWithCocktail.ingredient.ingredient_image}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
                 app:shapeAppearanceOverlay="@style/roundedImage"
                 app:strokeColor="@color/secondaryDarkColor"
                 app:strokeWidth="2dp"
                 tools:srcCompat="@drawable/summer_food" />
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_marginStart="12dp"
-                android:orientation="vertical">
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/imageButton"
+                app:layout_constraintStart_toEndOf="@+id/item_in_cart_image"
+                app:layout_constraintTop_toTopOf="parent">
 
                 <TextView
                     android:id="@+id/item_in_cart_name"
@@ -63,7 +81,21 @@
                     android:text="@{ingredientWithCocktail.ingredient.ingredient_description}"
                     tools:text="Make pizza out of it" />
             </LinearLayout>
-        </LinearLayout>
+
+            <ImageView
+                android:id="@+id/imageButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:contentDescription="@string/cross_description"
+                android:onClick="@{()-> cartStatusChangeListener.onCheckedChangeListener
+                (ingredientWithCocktail,constants.ITEM_IN_CART)}"
+
+                android:src="@drawable/cross"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
 
 </layout>

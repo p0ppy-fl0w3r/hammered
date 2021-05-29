@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="clickListener"
             type="com.example.hammered.ingredients.IngredientClickListener" />
@@ -11,6 +12,14 @@
         <variable
             name="ingredientWithCocktail"
             type="com.example.hammered.entities.relations.IngredientWithCocktail" />
+
+        <variable
+            name="itemStockChangeListener"
+            type="com.example.hammered.ingredients.ItemStatusChangeListener" />
+
+        <variable
+            name="constants"
+            type="com.example.hammered.Constants" />
     </data>
 
     <com.google.android.material.card.MaterialCardView
@@ -19,11 +28,11 @@
         android:layout_margin="@dimen/my_item_margin"
         android:clickable="true"
         android:elevation="4dp"
+        android:onClick="@{() -> clickListener.onClick(ingredientWithCocktail)}"
         app:cardCornerRadius="8dp"
-        app:rippleColor="@color/secondaryLightColor"
-        android:onClick="@{() -> clickListener.onClick(ingredientWithCocktail)}">
+        app:rippleColor="@color/secondaryLightColor">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="4dp"
@@ -34,17 +43,25 @@
                 android:layout_width="@dimen/circular_image_width"
                 android:layout_height="@dimen/circular_image_height"
                 android:padding="1.8dp"
-                app:shapeAppearanceOverlay="@style/roundedImage"
                 app:imageSource="@{ingredientWithCocktail.ingredient.ingredient_image}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:shapeAppearanceOverlay="@style/roundedImage"
                 app:strokeColor="@color/secondaryDarkColor"
                 app:strokeWidth="2dp"
                 tools:srcCompat="@drawable/summer_food" />
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:id="@+id/linearLayout"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_marginStart="12dp"
-                android:orientation="vertical">
+                android:layout_margin="8dp"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/add_stock_check"
+                app:layout_constraintStart_toEndOf="@+id/item_image"
+                app:layout_constraintTop_toTopOf="parent">
 
                 <TextView
                     android:id="@+id/item_name"
@@ -53,15 +70,30 @@
                     android:text="@{ingredientWithCocktail.ingredient.ingredient_name}"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                     tools:text="Hamburger" />
+
                 <TextView
+                    android:id="@+id/item_drinks"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/item_drinks"
-                    android:text="@{ingredientWithCocktail.ingredient.ingredient_description}"
                     android:layout_marginTop="2dp"
-                    tools:text="Make pizza out of it"/>
+                    android:text="@{ingredientWithCocktail.ingredient.ingredient_description}"
+                    tools:text="Make pizza out of it" />
             </LinearLayout>
-        </LinearLayout>
+
+            <CheckBox
+                android:id="@+id/add_stock_check"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="@{ingredientWithCocktail.ingredient.inStock}"
+                android:onClick="@{() -> itemStockChangeListener.onCheckedChangeListener
+                (ingredientWithCocktail,constants.NORMAL_ITEM)}"
+
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
     </com.google.android.material.card.MaterialCardView>
 
 </layout>

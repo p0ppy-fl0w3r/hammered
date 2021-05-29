@@ -17,6 +17,9 @@ interface CocktailDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertIngredient(ingredient: Ingredient)
 
+    @Update
+    suspend fun updateIngredient(ingredient: Ingredient)
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertIngredientCocktailRef(ingredientCocktailRef: IngredientCocktailRef)
 

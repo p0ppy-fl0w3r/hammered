@@ -106,7 +106,8 @@ class AllCocktailViewHolder(private val binding: AllCocktailItemBinding) :
     fun bind(clickListener: CocktailClickListener, cocktailWithIngredient: CocktailWithIngredient) {
         binding.cocktailWithIngredient = cocktailWithIngredient
         binding.clickListener = clickListener
-
+        binding.checkBox.setOnCheckedChangeListener { buttonView, isChecked ->  }
+        
         binding.executePendingBindings()
     }
 

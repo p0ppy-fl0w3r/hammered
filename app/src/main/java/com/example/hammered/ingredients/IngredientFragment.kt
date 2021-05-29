@@ -8,11 +8,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import com.example.hammered.Constants
 import com.example.hammered.R
 import com.example.hammered.database.CocktailDatabase
 import com.example.hammered.databinding.IngredientFragmentBinding
 
-
+// TODO create a class to store constants
 class IngredientFragment : Fragment() {
 
     private lateinit var binding: IngredientFragmentBinding
@@ -21,7 +22,7 @@ class IngredientFragment : Fragment() {
         ViewModelProvider(this).get(IngredientViewModel::class.java)
     }
 
-    private var msg = 1
+    private var msg = Constants.NORMAL_ITEM
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,6 +37,8 @@ class IngredientFragment : Fragment() {
                 it.ingredient.ingredient_description,
                 Toast.LENGTH_SHORT
             ).show()
+        }, ItemStatusChangeListener{ ingredient, valueFrom ->
+                viewModel.checkChanged(ingredient, valueFrom)
         })
 
         val database = CocktailDatabase.getDatabase(requireContext())
@@ -57,9 +60,9 @@ class IngredientFragment : Fragment() {
 
     private fun filterDataFromChip(checkedId: Int) {
         when (checkedId) {
-            binding.chipAllIngredient.id -> msg = 1
-            binding.chipMyStock.id -> msg = 2
-            binding.chipShoppingCart.id -> msg = 3
+            binding.chipAllIngredient.id -> msg = Constants.NORMAL_ITEM
+            binding.chipMyStock.id -> msg = Constants.ITEM_IN_STOCK
+            binding.chipShoppingCart.id -> msg = Constants.ITEM_IN_CART
         }
 
         viewModel.checkedData(msg)

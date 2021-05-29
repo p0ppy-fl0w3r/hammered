@@ -41,7 +41,6 @@ class CocktailFragment : Fragment() {
             filterDataFromChip(binding.cocktailChipGroup.checkedChipId)
         }
 
-
         val adapter = CocktailAdapter(CocktailClickListener {
             val clickedData = it.cocktail.asData()
             findNavController().navigate(

@@ -16,4 +16,5 @@
     <string name="all_ingredients">All ingredients</string>
     <string name="my_stock">My Stock</string>
     <string name="shopping_cart">Shopping Cart</string>
+    <string name="cross_description">Cross to remove item from cart</string>
 </resources>
