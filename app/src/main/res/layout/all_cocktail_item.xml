@@ -53,7 +53,7 @@
                 android:layout_marginStart="8dp"
                 android:orientation="vertical"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/checkBox"
+                app:layout_constraintEnd_toStartOf="@+id/isMakable"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/cocktail_image"
                 app:layout_constraintTop_toTopOf="parent">
@@ -75,17 +75,27 @@
                     tools:text="Make pizza out of it" />
             </LinearLayout>
 
-            <CheckBox
-                android:id="@+id/checkBox"
+            <ImageView
+                android:id="@+id/isMakable"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:checked="@{cocktailWithIngredient.cocktail.favorite}"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:contentDescription="@string/tick_info"
+                app:isMakable="@{cocktailWithIngredient.ingredients}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/cocktail_text_container"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="@+id/cocktail_text_container"
+                app:srcCompat="@drawable/tick" />
+
+            <ImageView
+                android:id="@+id/favorite_drink"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/tick_info"
+                app:isFavourite="@{cocktailWithIngredient.cocktail.favorite}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:srcCompat="@drawable/star" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>

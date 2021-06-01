@@ -85,8 +85,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:checked="@{ingredientWithCocktail.ingredient.inStock}"
-                android:onClick="@{() -> itemStockChangeListener.onCheckedChangeListener
-                (ingredientWithCocktail,constants.NORMAL_ITEM)}"
+                android:onClick="@{() -> itemStockChangeListener.onCheckedChangeListener(ingredientWithCocktail,constants.NORMAL_ITEM)}"
 
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

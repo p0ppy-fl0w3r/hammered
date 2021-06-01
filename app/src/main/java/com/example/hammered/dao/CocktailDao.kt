@@ -33,6 +33,10 @@ interface CocktailDao {
     suspend fun getIngredientCocktailRefCount(): Int
 
     @Transaction
+    @Query("SELECT * FROM IngredientCocktailRef")
+    suspend fun getAllIngredientCocktailDetails(): List<IngredientCocktailRef>
+
+    @Transaction
     @Query("SELECT * FROM cocktail WHERE cocktail_id = :cocktail_id")
     suspend fun getIngredientFromCocktail(cocktail_id: Long): List<CocktailWithIngredient>
 
@@ -42,7 +46,7 @@ interface CocktailDao {
 
     @Transaction
     @Query("SELECT * FROM cocktail")
-    fun getLiveIngredientFromCocktail(): LiveData<List<CocktailWithIngredient>>
+    fun getLiveIngredientFromCocktail(): LiveData<List<CocktailWithIngredient>?>
 
     @Transaction
     @Query("SELECT * FROM cocktail where isFavorite=1")

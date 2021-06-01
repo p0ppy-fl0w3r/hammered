@@ -88,8 +88,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:contentDescription="@string/cross_description"
-                android:onClick="@{()-> cartStatusChangeListener.onCheckedChangeListener
-                (ingredientWithCocktail,constants.ITEM_IN_CART)}"
+                android:onClick="@{()-> cartStatusChangeListener.onCheckedChangeListener(ingredientWithCocktail,constants.ITEM_IN_CART)}"
 
                 android:src="@drawable/cross"
                 app:layout_constraintBottom_toBottomOf="parent"

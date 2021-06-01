@@ -17,4 +17,7 @@
     <string name="my_stock">My Stock</string>
     <string name="shopping_cart">Shopping Cart</string>
     <string name="cross_description">Cross to remove item from cart</string>
+    <string name="tick_info">You have ingredients to make this drink.</string>
+    <string name="not_in_stock_msg">You do not have %1$s</string>
+    <string name="cocktail_glass">Cocktail Glass</string>
 </resources>

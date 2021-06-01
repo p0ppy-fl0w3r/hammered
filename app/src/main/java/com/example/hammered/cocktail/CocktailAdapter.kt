@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.example.hammered.Constants
 import com.example.hammered.databinding.AllCocktailItemBinding
 import com.example.hammered.databinding.AvailableCocktailItemBinding
 import com.example.hammered.databinding.FavoriteCocktailItemBinding
@@ -17,12 +18,6 @@ import kotlinx.coroutines.withContext
 import timber.log.Timber
 import java.lang.IllegalArgumentException
 
-
-// Create a sealed class for different layouts
-
-private const val NORMAL_COCKTAIL_ITEM = 1
-private const val AVAILABLE_COCKTAIL_ITEM = 2
-private const val FAVORITE_COCKTAIL_ITEM = 3
 
 class CocktailAdapter(private val clickListener: CocktailClickListener) :
     ListAdapter<CocktailItem, RecyclerView.ViewHolder>(ItemsDiffUtils()) {
@@ -48,16 +43,15 @@ class CocktailAdapter(private val clickListener: CocktailClickListener) :
         adapterScope.launch {
             if (!list.isNullOrEmpty()) {
                 val items = when (filterVal) {
-                    NORMAL_COCKTAIL_ITEM -> list.map { CocktailItem.NormalCocktailItem(it) }
-                    AVAILABLE_COCKTAIL_ITEM -> list.map { CocktailItem.AvailableCocktailItem(it) }
-                    FAVORITE_COCKTAIL_ITEM -> list.map { CocktailItem.FavoriteCocktailItem(it) }
+                    Constants.NORMAL_COCKTAIL_ITEM -> list.map { CocktailItem.NormalCocktailItem(it) }
+                    Constants.AVAILABLE_COCKTAIL_ITEM -> list.map { CocktailItem.AvailableCocktailItem(it) }
+                    Constants.FAVORITE_COCKTAIL_ITEM -> list.map { CocktailItem.FavoriteCocktailItem(it) }
                     else -> throw IllegalArgumentException("Filter val not found: $filterVal")
                 }
-                withContext(Dispatchers.Main){
+                withContext(Dispatchers.Main) {
                     submitList(items)
                 }
-            }
-            else{
+            } else {
                 Timber.e("The list was empty or null $filterVal")
             }
         }
@@ -65,9 +59,9 @@ class CocktailAdapter(private val clickListener: CocktailClickListener) :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
-            NORMAL_COCKTAIL_ITEM -> AllCocktailViewHolder.from(parent)
-            AVAILABLE_COCKTAIL_ITEM -> AvailableCocktailViewHolder.from(parent)
-            FAVORITE_COCKTAIL_ITEM -> FavoriteCocktailViewHolder.from(parent)
+            Constants.NORMAL_COCKTAIL_ITEM -> AllCocktailViewHolder.from(parent)
+            Constants.AVAILABLE_COCKTAIL_ITEM -> AvailableCocktailViewHolder.from(parent)
+            Constants.FAVORITE_COCKTAIL_ITEM -> FavoriteCocktailViewHolder.from(parent)
             else -> throw ClassNotFoundException("View Class not found $viewType")
         }
     }
@@ -94,9 +88,9 @@ class CocktailAdapter(private val clickListener: CocktailClickListener) :
 
     override fun getItemViewType(position: Int): Int {
         return when (getItem(position)) {
-            is CocktailItem.NormalCocktailItem -> NORMAL_COCKTAIL_ITEM
-            is CocktailItem.AvailableCocktailItem -> AVAILABLE_COCKTAIL_ITEM
-            is CocktailItem.FavoriteCocktailItem -> FAVORITE_COCKTAIL_ITEM
+            is CocktailItem.NormalCocktailItem -> Constants.NORMAL_COCKTAIL_ITEM
+            is CocktailItem.AvailableCocktailItem -> Constants.AVAILABLE_COCKTAIL_ITEM
+            is CocktailItem.FavoriteCocktailItem -> Constants.FAVORITE_COCKTAIL_ITEM
         }
     }
 }
@@ -106,8 +100,6 @@ class AllCocktailViewHolder(private val binding: AllCocktailItemBinding) :
     fun bind(clickListener: CocktailClickListener, cocktailWithIngredient: CocktailWithIngredient) {
         binding.cocktailWithIngredient = cocktailWithIngredient
         binding.clickListener = clickListener
-        binding.checkBox.setOnCheckedChangeListener { buttonView, isChecked ->  }
-        
         binding.executePendingBindings()
     }
 

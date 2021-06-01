@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.findNavController
+import com.example.hammered.Constants
 import com.example.hammered.R
 import com.example.hammered.database.CocktailDatabase
 import com.example.hammered.databinding.CocktailFragmentBinding
@@ -62,9 +63,9 @@ class CocktailFragment : Fragment() {
 
     private fun filterDataFromChip(checkedId: Int) {
         when (checkedId) {
-            binding.chipAllDrinks.id -> msg = 1
-            binding.chipFavoriteDrinks.id -> msg = 2
-            binding.chipMyDrinks.id -> msg = 3
+            binding.chipAllDrinks.id -> msg = Constants.NORMAL_COCKTAIL_ITEM
+            binding.chipMyDrinks.id -> msg = Constants.AVAILABLE_COCKTAIL_ITEM
+            binding.chipFavoriteDrinks.id -> msg = Constants.FAVORITE_COCKTAIL_ITEM
         }
 
         viewModel.checkedData(msg)
