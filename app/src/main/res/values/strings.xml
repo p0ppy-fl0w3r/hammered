@@ -19,5 +19,13 @@
     <string name="cross_description">Cross to remove item from cart</string>
     <string name="tick_info">You have ingredients to make this drink.</string>
     <string name="not_in_stock_msg">You do not have %1$s</string>
+    <string name="used_in_msg">Used in %1$s.</string>
+    <string name="used_in_num_msg">Used in %1$d drinks.</string>
+    <string name="quantity">%1$d %2$s</string>
+    <string name="quantity_f">%1$.2f %2$s</string>
     <string name="cocktail_glass">Cocktail Glass</string>
+    <string name="drink_empty_msg">Nothing to see here. Cheers!</string>
+    <string name="empty_drink_msg">There are no drinks here.</string>
+    <string name="cocktail_is_favourite">Cocktail is favourite.</string>
+    <string name="edit_cocktail">Edit cocktail</string>
 </resources>

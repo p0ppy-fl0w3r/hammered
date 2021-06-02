@@ -8,12 +8,16 @@
         android:id="@+id/ingredientFragment"
         android:name="com.example.hammered.ingredients.IngredientFragment"
         android:label="ingredient_fragment"
-        tools:layout="@layout/ingredient_fragment" />
+        tools:layout="@layout/ingredient_fragment">
+        <action
+            android:id="@+id/from_ingredient_to_ingredient_details"
+            app:destination="@id/ingredientDetailsFragment" />
+    </fragment>
     <fragment
         android:id="@+id/cocktailFragment"
         android:name="com.example.hammered.cocktail.CocktailFragment"
         android:label="CocktailFragment"
-        tools:layout="@layout/cocktail_fragment" >
+        tools:layout="@layout/cocktail_fragment">
         <action
             android:id="@+id/action_cocktailFragment_to_cocktailDetailFragment"
             app:destination="@id/cocktailDetailFragment" />
@@ -25,10 +29,23 @@
         tools:layout="@layout/settings_fragment" />
     <fragment
         android:id="@+id/cocktailDetailFragment"
-        android:name="com.example.hammered.cocktail.CocktailDetailFragment"
+        android:name="com.example.hammered.cocktail.cocktailDetails.CocktailDetailFragment"
         android:label="fragment_cocktail_detail"
-        tools:layout="@layout/fragment_cocktail_detail" >
-        <argument android:name="cocktail"
-            app:argType="com.example.hammered.cocktail.CocktailData"/>
+        tools:layout="@layout/fragment_cocktail_detail">
+        <argument
+            android:name="cocktail"
+            app:argType="com.example.hammered.cocktail.CocktailData" />
+        <action
+            android:id="@+id/cocktail_detail_to_ingredient_detail"
+            app:destination="@id/ingredientDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/ingredientDetailsFragment"
+        android:name="com.example.hammered.ingredients.IngredientDetailsFragment"
+        android:label="IngredientDetailsFragment"
+        tools:layout="@layout/fragment_ingredient_details">
+        <argument
+            android:name="ingredient"
+            app:argType="com.example.hammered.ingredients.IngredientData" />
     </fragment>
 </navigation>

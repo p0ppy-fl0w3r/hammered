@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import androidx.navigation.fragment.findNavController
 import com.example.hammered.Constants
 import com.example.hammered.R
 import com.example.hammered.database.CocktailDatabase
@@ -32,13 +33,13 @@ class IngredientFragment : Fragment() {
         binding = DataBindingUtil.inflate(inflater, R.layout.ingredient_fragment, container, false)
 
         val adapter = IngredientAdapter(IngredientClickListener {
-            Toast.makeText(
-                requireContext(),
-                it.ingredient.ingredient_description,
-                Toast.LENGTH_SHORT
-            ).show()
-        }, ItemStatusChangeListener{ ingredient, valueFrom ->
-                viewModel.checkChanged(ingredient, valueFrom)
+            findNavController().navigate(
+                IngredientFragmentDirections.fromIngredientToIngredientDetails(
+                    it.ingredient.asIngredientData()
+                )
+            )
+        }, ItemStatusChangeListener { ingredient, valueFrom ->
+            viewModel.checkChanged(ingredient, valueFrom)
         })
 
         val database = CocktailDatabase.getDatabase(requireContext())

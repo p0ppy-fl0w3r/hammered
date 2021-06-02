@@ -1,39 +1,99 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
-            name="cocktailData"
-            type="com.example.hammered.cocktail.CocktailData" />
+            name="viewModel"
+            type="com.example.hammered.cocktail.cocktailDetails.CocktailDetailsViewModel" />
     </data>
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        tools:context=".cocktail.CocktailDetailFragment">
+        android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/cocktailDetailName"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@{cocktailData.cocktail_name}"
-            tools:text="Hamburger" />
+            android:orientation="vertical"
+            tools:context=".cocktail.cocktailDetails.CocktailDetailFragment">
 
-        <TextView
-            android:id="@+id/cocktailDetailsDescription"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@{cocktailData.cocktail_description}"
-            tools:text="Make a pizza" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="end"
+                android:orientation="horizontal">
 
-        <ImageView
-            android:id="@+id/cocktailDetailImage"
-            android:contentDescription="@string/cocktail_detail_desc"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:imageSource="@{cocktailData.cocktail_image}"/>
-    </LinearLayout>
+                <ImageView
+                    android:id="@+id/detail_is_fav"
+                    android:layout_width="38dp"
+                    android:layout_height="38dp"
+                    android:layout_marginEnd="16dp"
+                    android:contentDescription="@string/cocktail_is_favourite"
+                    android:scaleType="fitXY"
+                    app:detailCocktailFavourite="@{viewModel.currentCocktail}"
+                    tools:src="@drawable/star" />
+
+                <ImageView
+                    android:id="@+id/detail_cocktail_edit"
+                    android:layout_width="38dp"
+                    android:layout_height="38dp"
+                    android:layout_marginEnd="16dp"
+                    android:contentDescription="@string/edit_cocktail"
+                    android:src="@drawable/ic_edit" />
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/cocktailDetailImage"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/default_details_image_height"
+                android:layout_margin="16dp"
+                android:contentDescription="@string/cocktail_detail_desc"
+                android:foregroundGravity="center"
+                android:scaleType="fitCenter"
+                app:imageSource="@{viewModel.currentCocktail.cocktail_image}"
+                tools:src="@drawable/summer_food" />
+
+            <TextView
+                android:id="@+id/cocktailDetailName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="@{viewModel.currentCocktail.cocktail_name}"
+                android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+                android:textColor="@color/color_black"
+                tools:text="Hamburger" />
+
+            <TextView
+                android:id="@+id/cocktailDetailsDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/detail_text_back"
+                android:padding="8dp"
+                android:text="@{viewModel.currentCocktail.cocktail_description}"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                tools:text="Make a pizza.\nMake more for everyone" />
+
+            <TextView
+                android:id="@+id/cocktailDetailsSteps"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/detail_text_back"
+                android:padding="8dp"
+                android:text="@{viewModel.currentCocktail.steps}"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                tools:text="1. Add cheese to tomato.\n\n2. Add butter to cheese" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/cocktailDetailRecycler"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                tools:listitem="@layout/details_ingredient_item" />
+        </LinearLayout>
+    </ScrollView>
 </layout>

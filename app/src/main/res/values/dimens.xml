@@ -3,4 +3,5 @@
     <dimen name="my_item_margin">4dp</dimen>
     <dimen name="circular_image_width">55dp</dimen>
     <dimen name="circular_image_height">55dp</dimen>
+    <dimen name="default_details_image_height">150dp</dimen>
 </resources>

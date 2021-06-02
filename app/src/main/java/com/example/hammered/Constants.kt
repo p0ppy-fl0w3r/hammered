@@ -1,6 +1,9 @@
 package com.example.hammered
 
 object Constants {
+
+    const val EMPTY_ITEM = -1
+
     // Ingredient, Ingredient Adaptors and Layouts
     const val NORMAL_ITEM = 1
     const val ITEM_IN_STOCK = 2

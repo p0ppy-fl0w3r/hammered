@@ -20,6 +20,9 @@ interface CocktailDao {
     @Update
     suspend fun updateIngredient(ingredient: Ingredient)
 
+    @Update
+    suspend fun updateCocktail(cocktail: Cocktail)
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertIngredientCocktailRef(ingredientCocktailRef: IngredientCocktailRef)
 
@@ -31,6 +34,13 @@ interface CocktailDao {
 
     @Query("SELECT COUNT(*) FROM IngredientCocktailRef")
     suspend fun getIngredientCocktailRefCount(): Int
+
+    @Query("SELECT * FROM Ingredient WHERE ingredient_name=:ingredient_name")
+    suspend fun getIngredient(ingredient_name:String):Ingredient
+
+    @Transaction
+    @Query("SELECT * FROM IngredientCocktailRef WHERE cocktail_id=:cocktail_id")
+    suspend fun getRefFromCocktail(cocktail_id: Long): List<IngredientCocktailRef>
 
     @Transaction
     @Query("SELECT * FROM IngredientCocktailRef")

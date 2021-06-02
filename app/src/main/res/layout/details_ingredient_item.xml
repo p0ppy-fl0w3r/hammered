@@ -6,20 +6,13 @@
     <data>
 
         <variable
+            name="ingredientRef"
+            type="com.example.hammered.cocktail.cocktailDetails.RefIngredientWrapper"/>
+
+
+        <variable
             name="clickListener"
-            type="com.example.hammered.ingredients.IngredientClickListener" />
-
-        <variable
-            name="ingredientWithCocktail"
-            type="com.example.hammered.entities.relations.IngredientWithCocktail" />
-
-        <variable
-            name="itemStockChangeListener"
-            type="com.example.hammered.ingredients.ItemStatusChangeListener" />
-
-        <variable
-            name="constants"
-            type="com.example.hammered.Constants" />
+            type="com.example.hammered.cocktail.cocktailDetails.CocktailDetailsClickListener" />
     </data>
 
     <com.google.android.material.card.MaterialCardView
@@ -28,7 +21,7 @@
         android:layout_margin="@dimen/my_item_margin"
         android:clickable="true"
         android:elevation="4dp"
-        android:onClick="@{() -> clickListener.onClick(ingredientWithCocktail)}"
+        android:onClick="@{() -> clickListener.onClick(ingredientRef)}"
         app:cardCornerRadius="8dp"
         app:rippleColor="@color/secondaryLightColor">
 
@@ -39,11 +32,11 @@
             android:orientation="horizontal">
 
             <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/item_image"
+                android:id="@+id/details_item_image"
                 android:layout_width="@dimen/circular_image_width"
                 android:layout_height="@dimen/circular_image_height"
                 android:padding="1.8dp"
-                app:imageSource="@{ingredientWithCocktail.ingredient.ingredient_image}"
+                app:imageSource="@{ingredientRef.ingredient.ingredient_image}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -53,43 +46,44 @@
                 tools:srcCompat="@drawable/summer_food" />
 
             <LinearLayout
-                android:id="@+id/linearLayout"
+                android:id="@+id/details_linear_layout"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_margin="8dp"
                 android:orientation="vertical"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/add_stock_check"
-                app:layout_constraintStart_toEndOf="@+id/item_image"
+                app:layout_constraintEnd_toStartOf="@+id/details_in_stock"
+                app:layout_constraintStart_toEndOf="@+id/details_item_image"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <TextView
-                    android:id="@+id/item_name"
+                    android:id="@+id/details_ingredient_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{ingredientWithCocktail.ingredient.ingredient_name}"
+                    android:text="@{ingredientRef.ingredient.ingredient_name}"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                     tools:text="Hamburger" />
 
                 <TextView
-                    android:id="@+id/item_drinks"
+                    android:id="@+id/item_amount"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
-                    app:cocktailsFromIngredients="@{ingredientWithCocktail.cocktails}"
-                    tools:text="Make pizza out of it" />
+                    app:quantity="@{ingredientRef.ingredientRef}"
+                    tools:text="40 Ml" />
             </LinearLayout>
 
-            <CheckBox
-                android:id="@+id/add_stock_check"
+            <ImageView
+                android:id="@+id/details_in_stock"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:checked="@{ingredientWithCocktail.ingredient.inStock}"
-                android:onClick="@{() -> itemStockChangeListener.onCheckedChangeListener(ingredientWithCocktail,constants.NORMAL_ITEM)}"
-
+                android:contentDescription="@string/tick_info"
+                app:isInStock="@{ingredientRef.ingredient}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/tick" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 

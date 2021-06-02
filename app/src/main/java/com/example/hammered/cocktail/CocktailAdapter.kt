@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.hammered.Constants
 import com.example.hammered.databinding.AllCocktailItemBinding
 import com.example.hammered.databinding.AvailableCocktailItemBinding
+import com.example.hammered.databinding.EmptyItemBinding
 import com.example.hammered.databinding.FavoriteCocktailItemBinding
 import com.example.hammered.entities.relations.CocktailWithIngredient
 import kotlinx.coroutines.CoroutineScope
@@ -44,15 +45,27 @@ class CocktailAdapter(private val clickListener: CocktailClickListener) :
             if (!list.isNullOrEmpty()) {
                 val items = when (filterVal) {
                     Constants.NORMAL_COCKTAIL_ITEM -> list.map { CocktailItem.NormalCocktailItem(it) }
-                    Constants.AVAILABLE_COCKTAIL_ITEM -> list.map { CocktailItem.AvailableCocktailItem(it) }
-                    Constants.FAVORITE_COCKTAIL_ITEM -> list.map { CocktailItem.FavoriteCocktailItem(it) }
+                    Constants.AVAILABLE_COCKTAIL_ITEM -> list.map {
+                        CocktailItem.AvailableCocktailItem(
+                            it
+                        )
+                    }
+                    Constants.FAVORITE_COCKTAIL_ITEM -> list.map {
+                        CocktailItem.FavoriteCocktailItem(
+                            it
+                        )
+                    }
                     else -> throw IllegalArgumentException("Filter val not found: $filterVal")
                 }
                 withContext(Dispatchers.Main) {
                     submitList(items)
                 }
-            } else {
-                Timber.e("The list was empty or null $filterVal")
+            }
+            else {
+                val emptyItem = CocktailItem.EmptyListItem()
+                withContext(Dispatchers.Main) {
+                    submitList(listOf(emptyItem))
+                }
             }
         }
     }
@@ -62,7 +75,8 @@ class CocktailAdapter(private val clickListener: CocktailClickListener) :
             Constants.NORMAL_COCKTAIL_ITEM -> AllCocktailViewHolder.from(parent)
             Constants.AVAILABLE_COCKTAIL_ITEM -> AvailableCocktailViewHolder.from(parent)
             Constants.FAVORITE_COCKTAIL_ITEM -> FavoriteCocktailViewHolder.from(parent)
-            else -> throw ClassNotFoundException("View Class not found $viewType")
+
+            else -> EmptyItemViewHolder.from(parent)
         }
     }
 
@@ -83,6 +97,10 @@ class CocktailAdapter(private val clickListener: CocktailClickListener) :
                 val item = currentItem as CocktailItem.FavoriteCocktailItem
                 holder.bind(clickListener, item.cocktail)
             }
+
+            is EmptyItemViewHolder -> {
+                holder.bind()
+            }
         }
     }
 
@@ -91,6 +109,7 @@ class CocktailAdapter(private val clickListener: CocktailClickListener) :
             is CocktailItem.NormalCocktailItem -> Constants.NORMAL_COCKTAIL_ITEM
             is CocktailItem.AvailableCocktailItem -> Constants.AVAILABLE_COCKTAIL_ITEM
             is CocktailItem.FavoriteCocktailItem -> Constants.FAVORITE_COCKTAIL_ITEM
+            is CocktailItem.EmptyListItem -> Constants.EMPTY_ITEM
         }
     }
 }
@@ -151,6 +170,22 @@ class FavoriteCocktailViewHolder(private val binding: FavoriteCocktailItemBindin
     }
 }
 
+class EmptyItemViewHolder(private val binding: EmptyItemBinding) :
+    RecyclerView.ViewHolder(binding.root) {
+    fun bind() {
+        binding.executePendingBindings()
+    }
+
+    companion object {
+        fun from(parent: ViewGroup): EmptyItemViewHolder {
+            val inflater = LayoutInflater.from(parent.context)
+            val binding = EmptyItemBinding.inflate(inflater, parent, false)
+
+            return EmptyItemViewHolder(binding)
+        }
+    }
+}
+
 class CocktailClickListener(val clickListener: (CocktailWithIngredient) -> Unit) {
     fun onClick(cocktailWithIngredient: CocktailWithIngredient) =
         clickListener(cocktailWithIngredient)
@@ -168,6 +203,10 @@ sealed class CocktailItem {
 
     data class FavoriteCocktailItem(val cocktail: CocktailWithIngredient) : CocktailItem() {
         override val id = cocktail.cocktail.cocktail_id
+    }
+
+    class EmptyListItem() : CocktailItem() {
+        override val id = Long.MIN_VALUE
     }
 
     abstract val id: Long

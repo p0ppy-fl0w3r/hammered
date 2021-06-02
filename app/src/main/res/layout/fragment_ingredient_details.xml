@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="ingredient"
+            type="com.example.hammered.ingredients.IngredientData" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".cocktail.cocktailDetails.CocktailDetailFragment">
+
+        <TextView
+            android:id="@+id/ingredientDetailName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{ingredient.ingredient_name}"
+            tools:text="Hamburger" />
+
+        <TextView
+            android:id="@+id/cocktailDetailsDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{ingredient.ingredient_description}"
+            tools:text="Make a pizza" />
+
+        <ImageView
+            android:id="@+id/cocktailDetailImage"
+            android:contentDescription="@string/cocktail_detail_desc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:imageSource="@{ingredient.ingredient_image}"/>
+    </LinearLayout>
+</layout>

@@ -9,5 +9,6 @@
     <color name="primaryTextColor">#000000</color>
     <color name="secondaryTextColor">#ffffff</color>
     <color name="colorOnSurface">#33888888</color>
+    <color name="color_black">#FF000000</color>
 </resources>
 

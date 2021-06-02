@@ -7,7 +7,7 @@ import androidx.room.Entity
 data class IngredientCocktailRef(
     var cocktail_id: Long,
     var ingredient_name: String,
-    var quantity:Int,
+    var quantity:Float,
     var quantityUnit: String,
     var isGarnish:Boolean,
     var isOptional:Boolean
