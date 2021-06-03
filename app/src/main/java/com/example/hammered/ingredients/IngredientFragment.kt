@@ -14,7 +14,6 @@ import com.example.hammered.R
 import com.example.hammered.database.CocktailDatabase
 import com.example.hammered.databinding.IngredientFragmentBinding
 
-// TODO create a class to store constants
 class IngredientFragment : Fragment() {
 
     private lateinit var binding: IngredientFragmentBinding

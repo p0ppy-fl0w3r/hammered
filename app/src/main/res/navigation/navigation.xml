@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation"
-    app:startDestination="@id/cocktailFragment">
+    app:startDestination="@id/ingredientFragment">
     <fragment
         android:id="@+id/ingredientFragment"
         android:name="com.example.hammered.ingredients.IngredientFragment"
@@ -41,11 +41,14 @@
     </fragment>
     <fragment
         android:id="@+id/ingredientDetailsFragment"
-        android:name="com.example.hammered.ingredients.IngredientDetailsFragment"
+        android:name="com.example.hammered.ingredients.ingredientDetails.IngredientDetailsFragment"
         android:label="IngredientDetailsFragment"
         tools:layout="@layout/fragment_ingredient_details">
         <argument
             android:name="ingredient"
             app:argType="com.example.hammered.ingredients.IngredientData" />
+        <action
+            android:id="@+id/ingredient_details_to_cocktail_details"
+            app:destination="@id/cocktailDetailFragment" />
     </fragment>
 </navigation>

@@ -4,12 +4,12 @@ import com.example.hammered.database.CocktailDatabase
 import com.example.hammered.entities.Cocktail
 import com.example.hammered.entities.Ingredient
 import com.example.hammered.entities.relations.IngredientCocktailRef
+import com.example.hammered.entities.relations.IngredientWithCocktail
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import timber.log.Timber
 
 class CocktailRepository(private val database: CocktailDatabase) {
-    val allRefs = database.cocktailDao.getLiveIngredientFromCocktail()
 
     suspend fun insertAll() {
         withContext(Dispatchers.IO) {
@@ -33,7 +33,7 @@ class CocktailRepository(private val database: CocktailDatabase) {
                     database.cocktailDao.insertCocktail(i)
                 }
 
-                val ref1 = IngredientCocktailRef(1, "Lemon", 1.0f ,"oz", false, false)
+                val ref1 = IngredientCocktailRef(1, "Lemon", 1.0f, "oz", false, false)
                 val ref2 = IngredientCocktailRef(1, "Salt", 1f, "oz", false, false)
                 val ref3 = IngredientCocktailRef(1, "Water", 3f, "oz", false, false)
                 val ref4 = IngredientCocktailRef(2, "Gin", 1f, "oz", true, false)
@@ -64,16 +64,40 @@ class CocktailRepository(private val database: CocktailDatabase) {
         }
     }
 
-    suspend fun getIngredient(name:String):Ingredient{
+    suspend fun getIngredient(name: String): Ingredient {
         return database.cocktailDao.getIngredient(name)
     }
 
-    suspend fun getRefFromCocktail(id:Long):List<IngredientCocktailRef>{
+    suspend fun getCocktail(id:Long):Cocktail{
+        return database.cocktailDao.getCocktail(id)
+    }
+
+    suspend fun getRefFromCocktail(id: Long): List<IngredientCocktailRef> {
         return database.cocktailDao.getRefFromCocktail(id)
     }
 
-    suspend fun updateCocktail(cocktail: Cocktail){
+    suspend fun getRefFromIngredient(name: String): List<IngredientCocktailRef>{
+        return database.cocktailDao.getRefFromIngredient(name)
+    }
+
+    suspend fun updateCocktail(cocktail: Cocktail) {
         database.cocktailDao.updateCocktail(cocktail)
+    }
+
+    suspend fun updateIngredient(ingredient: Ingredient) {
+        database.cocktailDao.updateIngredient(ingredient)
+    }
+
+    suspend fun getAllCocktailsFromIngredient(): List<IngredientWithCocktail> {
+        return database.cocktailDao.getAllCocktailsFromIngredient()
+    }
+
+    suspend fun getInStockCocktailsFromIngredient(): List<IngredientWithCocktail> {
+        return database.cocktailDao.getInStockCocktailsFromIngredient()
+    }
+
+    suspend fun getInCartCocktailsFromIngredient(): List<IngredientWithCocktail> {
+        return database.cocktailDao.getInCartCocktailsFromIngredient()
     }
 
 }

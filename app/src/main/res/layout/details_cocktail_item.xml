@@ -5,16 +5,16 @@
 
     <data>
 
-        <import type="com.example.hammered.ingredients.IngredientData" />
+        <import type="com.example.hammered.cocktail.CocktailData" />
 
         <variable
-            name="refIngredient"
-            type="com.example.hammered.wrappers.RefItemWrapper&lt;IngredientData&gt;" />
+            name="refCocktail"
+            type="com.example.hammered.wrappers.RefItemWrapper&lt;CocktailData&gt;" />
 
 
         <variable
             name="clickListener"
-            type="com.example.hammered.cocktail.cocktailDetails.CocktailDetailsClickListener" />
+            type="com.example.hammered.ingredients.ingredientDetails.IngredientDetailsClickListener" />
     </data>
 
     <com.google.android.material.card.MaterialCardView
@@ -23,7 +23,7 @@
         android:layout_margin="@dimen/my_item_margin"
         android:clickable="true"
         android:elevation="4dp"
-        android:onClick="@{() -> clickListener.onClick(refIngredient)}"
+        android:onClick="@{() -> clickListener.onClick(refCocktail)}"
         app:cardCornerRadius="8dp"
         app:rippleColor="@color/secondaryLightColor">
 
@@ -34,11 +34,11 @@
             android:orientation="horizontal">
 
             <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/details_item_image"
+                android:id="@+id/details_cocktail_image"
                 android:layout_width="@dimen/circular_image_width"
                 android:layout_height="@dimen/circular_image_height"
                 android:padding="1.8dp"
-                app:imageSource="@{refIngredient.item.ingredient_image}"
+                app:imageSource="@{refCocktail.item.cocktail_image}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -54,38 +54,19 @@
                 android:layout_margin="8dp"
                 android:orientation="vertical"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/details_in_stock"
-                app:layout_constraintStart_toEndOf="@+id/details_item_image"
+                app:layout_constraintStart_toEndOf="@+id/details_cocktail_image"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <TextView
                     android:id="@+id/details_ingredient_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{refIngredient.item.ingredient_name}"
+                    android:text="@{refCocktail.item.cocktail_name}"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                     tools:text="Hamburger" />
 
-                <TextView
-                    android:id="@+id/item_amount"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
-                    app:quantity="@{refIngredient.ingredientRef}"
-                    tools:text="40 Ml" />
             </LinearLayout>
 
-            <ImageView
-                android:id="@+id/details_in_stock"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:contentDescription="@string/tick_info"
-                app:isInStock="@{refIngredient.item}"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/tick" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 

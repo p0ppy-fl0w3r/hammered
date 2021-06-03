@@ -7,16 +7,18 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.hammered.database.CocktailDatabase
 import com.example.hammered.entities.Cocktail
+import com.example.hammered.ingredients.IngredientData
 import com.example.hammered.repository.CocktailRepository
+import com.example.hammered.wrappers.RefItemWrapper
 import kotlinx.coroutines.launch
 
 class CocktailDetailsViewModel(application: Application) : AndroidViewModel(application) {
 
     private val repository = CocktailRepository(CocktailDatabase.getDatabase(application))
 
-    private val _ingredientRefLiveData = MutableLiveData<List<RefIngredientWrapper>>()
+    private val _ingredientRefLiveData = MutableLiveData<List<RefItemWrapper<IngredientData>>>()
 
-    val ingredientRefLiveData: LiveData<List<RefIngredientWrapper>>
+    val ingredientRefLiveData: LiveData<List<RefItemWrapper<IngredientData>>>
         get() = _ingredientRefLiveData
 
     private val _currentCocktail = MutableLiveData<Cocktail?>()
@@ -28,12 +30,12 @@ class CocktailDetailsViewModel(application: Application) : AndroidViewModel(appl
 
     fun getFromCocktail(id: Long) {
         viewModelScope.launch {
-            val allIngredientRef = mutableListOf<RefIngredientWrapper>()
+            val allIngredientRef = mutableListOf<RefItemWrapper<IngredientData>>()
             val allRefFromCocktail = repository.getRefFromCocktail(id)
 
             for (ref in allRefFromCocktail) {
                 val ingredient = repository.getIngredient(ref.ingredient_name)
-                val ingredientRef = RefIngredientWrapper(ingredient.asIngredientData(), ref)
+                val ingredientRef = RefItemWrapper(ingredient.asIngredientData(), ref)
                 allIngredientRef.add(ingredientRef)
             }
             _ingredientRefLiveData.value = allIngredientRef

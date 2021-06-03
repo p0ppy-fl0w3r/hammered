@@ -12,7 +12,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.lang.IllegalArgumentException
 
-// TODO add layout for empty list
 class IngredientAdapter(
     private val clickListener: IngredientClickListener,
     private val itemStatusChangeListener: ItemStatusChangeListener
@@ -40,17 +39,23 @@ class IngredientAdapter(
 
     fun addFilterAndSubmitList(list: List<IngredientWithCocktail>?, filterVal: Int) {
         adapterScope.launch {
-            // TODO add condition for empty list
-            val items = when (filterVal) {
-                Constants.NORMAL_ITEM -> list?.map { IngredientItem.NormalIngredientItem(it) }
-                Constants.ITEM_IN_STOCK -> list?.map { IngredientItem.IngredientInStock(it) }
-                Constants.ITEM_IN_CART -> list?.map { IngredientItem.IngredientInCart(it) }
-                else -> throw IllegalArgumentException("Filter val not found: $filterVal")
+            if (!list.isNullOrEmpty()) {
+                val items = when (filterVal) {
+                    Constants.NORMAL_ITEM -> list.map { IngredientItem.NormalIngredientItem(it) }
+                    Constants.ITEM_IN_STOCK -> list.map { IngredientItem.IngredientInStock(it) }
+                    Constants.ITEM_IN_CART -> list.map { IngredientItem.IngredientInCart(it) }
+                    else -> throw IllegalArgumentException("Filter val not found: $filterVal")
+                }
+                withContext(Dispatchers.Main) {
+                    submitList(items)
+                }
             }
-            withContext(Dispatchers.Main) {
-                submitList(items)
+            else {
+                val emptyItem = IngredientItem.EmptyListItem()
+                withContext(Dispatchers.Main) {
+                    submitList(listOf(emptyItem))
+                }
             }
-
         }
     }
 
@@ -59,7 +64,7 @@ class IngredientAdapter(
             Constants.NORMAL_ITEM -> AllIngredientViewHolder.from(parent)
             Constants.ITEM_IN_STOCK -> StockIngredientViewHolder.from(parent)
             Constants.ITEM_IN_CART -> CartIngredientViewHolder.from(parent)
-            else -> throw ClassNotFoundException("View class not found $viewType")
+            else -> EmptyItemViewHolder.from(parent)
         }
     }
 
@@ -81,6 +86,10 @@ class IngredientAdapter(
                 val cartIngredient = currentItem as IngredientItem.IngredientInCart
                 holder.bind(clickListener, itemStatusChangeListener, cartIngredient.ingredient)
             }
+
+            is EmptyItemViewHolder -> {
+                holder.bind()
+            }
         }
     }
 
@@ -89,6 +98,7 @@ class IngredientAdapter(
             is IngredientItem.NormalIngredientItem -> Constants.NORMAL_ITEM
             is IngredientItem.IngredientInStock -> Constants.ITEM_IN_STOCK
             is IngredientItem.IngredientInCart -> Constants.ITEM_IN_CART
+            is IngredientItem.EmptyListItem -> Constants.EMPTY_ITEM
         }
     }
 }

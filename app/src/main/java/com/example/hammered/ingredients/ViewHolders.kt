@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hammered.databinding.AllIngredientItemBinding
 import com.example.hammered.databinding.CartIngredientItemBinding
+import com.example.hammered.databinding.EmptyItemBinding
 import com.example.hammered.databinding.StockIngredientItemBinding
 import com.example.hammered.entities.relations.IngredientWithCocktail
 
@@ -71,6 +72,22 @@ class CartIngredientViewHolder(private val binding: CartIngredientItemBinding) :
             val binding = CartIngredientItemBinding.inflate(inflater, parent, false)
 
             return CartIngredientViewHolder(binding)
+        }
+    }
+}
+
+class EmptyItemViewHolder(private val binding: EmptyItemBinding) :
+    RecyclerView.ViewHolder(binding.root) {
+    fun bind() {
+        binding.executePendingBindings()
+    }
+
+    companion object {
+        fun from(parent: ViewGroup): EmptyItemViewHolder {
+            val inflater = LayoutInflater.from(parent.context)
+            val binding = EmptyItemBinding.inflate(inflater, parent, false)
+
+            return EmptyItemViewHolder(binding)
         }
     }
 }
