@@ -7,7 +7,6 @@
     <string name="logo_image">Logo Image</string>
     <string name="create_cocktail">Create Cocktail</string>
     <string name="create_ingredient">Create Ingredient</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="cocktail_detail_desc">Image of the drink</string>
     <string name="all_drinks">All Drinks</string>
@@ -28,4 +27,12 @@
     <string name="empty_drink_msg">There are no drinks here.</string>
     <string name="cocktail_is_favourite">Cocktail is favourite.</string>
     <string name="edit_cocktail">Edit cocktail</string>
+    <string name="used_in">%1$s is used in :</string>
+    <string name="ingredient_name_edit_text">Ingredient Name...</string>
+    <string name="ingredient_description_edit_text">Ingredient Description</string>
+    <string name="add_ingredient_check_msg">You have this ingredient in stock.</string>
+    <string name="save">Save</string>
+    <string name="fab_desc">Add ingredient.</string>
+    <string name="add_ingredient_image">Add ingredient image</string>
+    <string name="all_ingredient_check_msg">Ingredient is in stock.</string>
 </resources>

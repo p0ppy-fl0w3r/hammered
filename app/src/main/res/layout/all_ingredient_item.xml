@@ -35,8 +35,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="4dp"
-            android:orientation="horizontal">
+            android:layout_margin="4dp">
 
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/item_image"
@@ -58,8 +57,7 @@
                 android:layout_height="match_parent"
                 android:layout_margin="8dp"
                 android:orientation="vertical"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/add_stock_check"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/item_image"
                 app:layout_constraintTop_toTopOf="parent">
 
@@ -80,16 +78,6 @@
                     tools:text="Make pizza out of it" />
             </LinearLayout>
 
-            <CheckBox
-                android:id="@+id/add_stock_check"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:checked="@{ingredientWithCocktail.ingredient.inStock}"
-                android:onClick="@{() -> itemStockChangeListener.onCheckedChangeListener(ingredientWithCocktail,constants.NORMAL_ITEM)}"
-
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 

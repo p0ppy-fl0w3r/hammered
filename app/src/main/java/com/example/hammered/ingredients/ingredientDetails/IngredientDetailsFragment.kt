@@ -12,10 +12,9 @@ import androidx.navigation.fragment.findNavController
 import com.example.hammered.R
 import com.example.hammered.databinding.FragmentIngredientDetailsBinding
 
-
 class IngredientDetailsFragment : Fragment() {
     private lateinit var viewModel: IngredientDetailsViewModel
-
+    private lateinit var binding: FragmentIngredientDetailsBinding
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -25,7 +24,7 @@ class IngredientDetailsFragment : Fragment() {
             requireArguments()
         ).ingredient
 
-        val binding = DataBindingUtil.inflate<FragmentIngredientDetailsBinding>(
+        binding = DataBindingUtil.inflate(
             inflater,
             R.layout.fragment_ingredient_details,
             container,
@@ -38,6 +37,10 @@ class IngredientDetailsFragment : Fragment() {
 
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
+
+
+        onClickCartIcon()
+        onClickCheckBox()
 
         val adapter = IngredientDetailsAdapter(IngredientDetailsClickListener {
             findNavController().navigate(
@@ -57,4 +60,34 @@ class IngredientDetailsFragment : Fragment() {
         return binding.root
     }
 
+    private fun onClickCartIcon() {
+        binding.detailIngredientCart.setOnClickListener {
+            viewModel.changeInCart()
+            val msg = when (viewModel.currentIngredient.value!!.inCart) {
+                false -> "${viewModel.currentIngredient.value!!.ingredient_name} removed from cart!"
+                else -> "${viewModel.currentIngredient.value!!.ingredient_name} added to cart!"
+            }
+            Toast.makeText(
+                context,
+                msg,
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
+
+    private fun onClickCheckBox() {
+        binding.detailIngredientStockCheck.setOnClickListener {
+            viewModel.changeInStock()
+            val msg = when (viewModel.currentIngredient.value!!.inStock) {
+                false -> "${viewModel.currentIngredient.value!!.ingredient_name} removed from stock!"
+                else -> "${viewModel.currentIngredient.value!!.ingredient_name} added to stock!"
+            }
+            Toast.makeText(
+                context,
+                msg,
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
 }
+

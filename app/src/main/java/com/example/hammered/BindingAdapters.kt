@@ -6,6 +6,7 @@ import android.widget.TextView
 import androidx.appcompat.content.res.AppCompatResources
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.example.hammered.entities.Cocktail
 import com.example.hammered.entities.Ingredient
 import com.example.hammered.entities.relations.IngredientCocktailRef
@@ -15,7 +16,8 @@ import com.example.hammered.ingredients.IngredientData
 fun imageSource(imageView: ImageView, imageUrl: String?) {
     imageUrl?.let {
         Glide.with(imageView.context)
-            .load(Uri.parse("file:///android_asset/$imageUrl"))
+            .load(Uri.parse("$imageUrl"))
+            .apply(RequestOptions().error(R.drawable.no_drinks))
             .into(imageView)
     }
 }
@@ -110,11 +112,11 @@ fun isInStock(imageView: ImageView, ingredient: IngredientData) {
 }
 
 @BindingAdapter("detailCocktailFavourite")
-fun detailCocktailFavourite(imageView: ImageView, cocktail: Cocktail){
-    if(cocktail.isFavorite){
+fun detailCocktailFavourite(imageView: ImageView, cocktail: Cocktail) {
+    if (cocktail.isFavorite) {
         Glide.with(imageView.context).load(R.drawable.star).into(imageView)
     }
-    else{
+    else {
         Glide.with(imageView.context).load(R.drawable.star_unselect).into(imageView)
     }
 }
@@ -130,7 +132,7 @@ fun quantity(textView: TextView, ingredientRef: IngredientCocktailRef) {
             ingredientRef.quantityUnit
         )
     }
-    else{
+    else {
         textView.text = textView.context.getString(
             R.string.quantity_f,
             ingredientRef.quantity,
@@ -164,4 +166,19 @@ fun cocktailsFromIngredients(textView: TextView, cocktails: List<Cocktail>) {
             textView.text = textView.context.getString(R.string.used_in_num_msg, cocktails.size)
         }
     }
+}
+
+@BindingAdapter("detailInCart")
+fun detailInCart(imageView: ImageView, inCart: Boolean) {
+    if (inCart) {
+        Glide.with(imageView.context).load(R.drawable.ic_cart_filled).into(imageView)
+    }
+    else {
+        Glide.with(imageView.context).load(R.drawable.ic_cart_empty).into(imageView)
+    }
+}
+
+@BindingAdapter("usedInText")
+fun usedInText(textView: TextView, name: String) {
+    textView.text = textView.context.getString(R.string.used_in, name)
 }

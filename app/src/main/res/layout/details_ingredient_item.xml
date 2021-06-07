@@ -54,7 +54,7 @@
                 android:layout_margin="8dp"
                 android:orientation="vertical"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/details_in_stock"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/details_item_image"
                 app:layout_constraintTop_toTopOf="parent">
 
@@ -65,27 +65,7 @@
                     android:text="@{refIngredient.item.ingredient_name}"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                     tools:text="Hamburger" />
-
-                <TextView
-                    android:id="@+id/item_amount"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
-                    app:quantity="@{refIngredient.ingredientRef}"
-                    tools:text="40 Ml" />
             </LinearLayout>
-
-            <ImageView
-                android:id="@+id/details_in_stock"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:contentDescription="@string/tick_info"
-                app:isInStock="@{refIngredient.item}"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/tick" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 

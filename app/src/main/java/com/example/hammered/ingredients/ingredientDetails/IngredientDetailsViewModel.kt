@@ -33,6 +33,7 @@ class IngredientDetailsViewModel(application: Application) : AndroidViewModel(ap
             val allRefFromCocktail = repository.getRefFromIngredient(name)
 
             for (ref in allRefFromCocktail) {
+                // TODO change Cocktail to CocktailWithIngredient.
                 val cocktail = repository.getCocktail(ref.cocktail_id)
                 val cocktailRef = RefItemWrapper(cocktail.asData(), ref)
                 allIngredientRef.add(cocktailRef)
@@ -41,8 +42,26 @@ class IngredientDetailsViewModel(application: Application) : AndroidViewModel(ap
         }
     }
 
-    fun setIngredient(ingredient: Ingredient){
+    fun setIngredient(ingredient: Ingredient) {
         _currentIngredient.value = ingredient
+    }
+
+    fun changeInCart() {
+        viewModelScope.launch {
+            val mIngredient = _currentIngredient.value!!
+            mIngredient.inCart = !mIngredient.inCart
+            repository.updateIngredient(mIngredient)
+            _currentIngredient.value = mIngredient
+        }
+    }
+
+    fun changeInStock(){
+        viewModelScope.launch {
+            val mIngredient = _currentIngredient.value!!
+            mIngredient.inStock = !mIngredient.inStock
+            repository.updateIngredient(mIngredient)
+            _currentIngredient.value = mIngredient
+        }
     }
 
 

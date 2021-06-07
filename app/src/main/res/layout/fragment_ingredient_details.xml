@@ -26,6 +26,21 @@
                 android:gravity="end"
                 android:orientation="horizontal">
 
+                <CheckBox
+                    android:id="@+id/detail_ingredient_stock_check"
+                    android:checked="@{viewModel.currentIngredient.inStock}"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="8dp" />
+
+                <ImageView
+                    android:id="@+id/detail_ingredient_cart"
+                    android:layout_width="38dp"
+                    android:layout_height="38dp"
+                    android:layout_marginEnd="16dp"
+                    android:contentDescription="@string/edit_cocktail"
+                    app:detailInCart = "@{viewModel.currentIngredient.inCart}"
+                    tools:src="@drawable/ic_cart_filled"/>
 
                 <ImageView
                     android:id="@+id/detail_ingredient_edit"
@@ -68,7 +83,16 @@
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 tools:text="Make a pizza.\nMake more for everyone" />
 
-
+            <TextView
+                android:id="@+id/inCocktailText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:padding="8dp"
+                app:usedInText="@{viewModel.currentIngredient.ingredient_name}"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="@color/color_black"
+                tools:text="Hamburger is used in: " />
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/ingredientDetailRecycler"
                 android:layout_width="match_parent"
