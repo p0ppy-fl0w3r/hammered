@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation"
-    app:startDestination="@id/ingredientFragment">
+    app:startDestination="@id/createCocktailFragment">
     <fragment
         android:id="@+id/ingredientFragment"
         android:name="com.example.hammered.ingredients.IngredientFragment"
@@ -63,4 +63,9 @@
             android:id="@+id/create_to_ingredient"
             app:destination="@id/ingredientFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/createCocktailFragment"
+        android:name="com.example.hammered.cocktail.createCocktail.CreateCocktailFragment"
+        android:label="CreateCocktailFragment"
+        tools:layout="@layout/fragment_create_cocktail"/>
 </navigation>

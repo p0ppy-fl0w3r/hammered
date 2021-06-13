@@ -35,4 +35,12 @@
     <string name="fab_desc">Add ingredient.</string>
     <string name="add_ingredient_image">Add ingredient image</string>
     <string name="all_ingredient_check_msg">Ingredient is in stock.</string>
+    <string name="cocktail_description">Cocktail description</string>
+    <string name="cocktail_name_hint">Cocktail Name</string>
+    <string name="quantity_string">Quantity</string>
+    <string name="optional">Optional</string>
+    <string name="garnish">Garnish</string>
+    <string name="remove">Remove</string>
+    <string name="add_step">Add step.</string>
+    <string name="add_ingredient">Add ingredient</string>
 </resources>

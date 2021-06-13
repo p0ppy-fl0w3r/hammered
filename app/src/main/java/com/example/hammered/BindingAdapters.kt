@@ -1,6 +1,7 @@
 package com.example.hammered
 
 import android.net.Uri
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.content.res.AppCompatResources
@@ -182,3 +183,4 @@ fun detailInCart(imageView: ImageView, inCart: Boolean) {
 fun usedInText(textView: TextView, name: String) {
     textView.text = textView.context.getString(R.string.used_in, name)
 }
+

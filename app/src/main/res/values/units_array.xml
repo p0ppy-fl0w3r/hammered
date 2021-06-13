@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="units_array">
+        <item>Ml</item>
+        <item>Oz</item>
+        <item>Gm</item>
+        <item>Unit/s</item>
+        <item>Drops</item>
+    </string-array>
+</resources>
