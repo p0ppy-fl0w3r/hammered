@@ -18,4 +18,13 @@ object Constants {
     const val SPINNER_ITEM = 1
     const val IS_OPTIONAL_CHECK = 2
     const val IS_GARNISH_CHECK = 3
+
+    // Quantity units list
+    val UNITS = listOf(
+        "Ml",
+        "Oz",
+        "Gm",
+        "Unit/s",
+        "Drops"
+    )
 }

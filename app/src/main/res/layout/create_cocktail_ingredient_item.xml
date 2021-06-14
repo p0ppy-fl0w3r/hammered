@@ -6,15 +6,11 @@
 
         <variable
             name="ingredientItem"
-            type="com.example.hammered.cocktail.createCocktail.NewCocktailRef" />
-
+            type="com.example.hammered.wrappers.NewCocktailRef" />
         <variable
-            name="onClickListener"
+            name="clickListener"
             type="com.example.hammered.cocktail.createCocktail.ItemOnClickListener" />
 
-        <import
-
-            type="com.example.hammered.Constants" />
     </data>
 
 
@@ -40,7 +36,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <!--TODO add a binding adapter for quantity-->
         <EditText
             android:id="@+id/refQuantity"
             android:layout_width="wrap_content"
@@ -48,10 +43,10 @@
             android:layout_marginStart="2dp"
             android:layout_marginTop="4dp"
             android:ems="10"
-            android:text="@={ingredientItem.quantity}"
             android:hint="@string/quantity_string"
             android:importantForAutofill="no"
             android:inputType="numberDecimal"
+            android:text="@={ingredientItem.quantity}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/RefIngredientName" />
 
@@ -60,6 +55,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
+
+            app:spinnerSelected="@={ingredientItem.quantityUnitPos}"
             app:layout_constraintBottom_toBottomOf="@+id/refQuantity"
             app:layout_constraintStart_toEndOf="@+id/refQuantity"
             app:layout_constraintTop_toTopOf="@+id/refQuantity" />
@@ -92,6 +89,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="@string/remove"
+            android:onClick="@{()->clickListener.onItemClick(ingredientItem.ref_number)}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/isOptional" />

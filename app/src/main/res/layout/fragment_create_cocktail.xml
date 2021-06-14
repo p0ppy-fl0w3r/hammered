@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -69,7 +69,16 @@
                 app:layout_constraintBottom_toTopOf="@id/addStep"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/cocktailDescriptionText" />
+                app:layout_constraintTop_toBottomOf="@id/cocktailDescriptionText">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/stepsRecycler"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:itemCount="1"
+                    tools:listitem="@layout/cocktail_steps_item" />
+            </LinearLayout>
 
 
             <ImageView
@@ -85,8 +94,9 @@
             <LinearLayout
                 android:id="@+id/recyclerContainer"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintBottom_toTopOf="@+id/addIngredient"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/addStep">
@@ -98,29 +108,21 @@
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     tools:itemCount="1"
                     tools:listitem="@layout/create_cocktail_ingredient_item" />
+
+                <ImageView
+                    android:id="@+id/addIngredient"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/add_ingredient"
+                    android:src="@drawable/ic_add" />
+
+                <Button
+                    android:id="@+id/saveCocktail"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="@string/save" />
             </LinearLayout>
 
-
-            <ImageView
-                android:id="@+id/addIngredient"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:contentDescription="@string/add_ingredient"
-                android:src="@drawable/ic_add"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/recyclerContainer" />
-
-            <Button
-                android:id="@+id/saveCocktail"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="@string/save"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/addIngredient" />
-
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 </layout>

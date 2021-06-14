@@ -1,17 +1,19 @@
 package com.example.hammered
 
 import android.net.Uri
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.TextView
-import androidx.appcompat.content.res.AppCompatResources
+import android.view.View
+import android.widget.*
 import androidx.databinding.BindingAdapter
+import androidx.databinding.InverseBindingAdapter
+import androidx.databinding.InverseBindingListener
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.hammered.entities.Cocktail
 import com.example.hammered.entities.Ingredient
 import com.example.hammered.entities.relations.IngredientCocktailRef
 import com.example.hammered.ingredients.IngredientData
+import com.example.hammered.utils.SpinnerItemChangeListener
+import timber.log.Timber
 
 @BindingAdapter("imageSource")
 fun imageSource(imageView: ImageView, imageUrl: String?) {
@@ -182,5 +184,22 @@ fun detailInCart(imageView: ImageView, inCart: Boolean) {
 @BindingAdapter("usedInText")
 fun usedInText(textView: TextView, name: String) {
     textView.text = textView.context.getString(R.string.used_in, name)
+}
+
+@BindingAdapter("spinnerSelected")
+fun spinnerSelected(spinner: Spinner, itemPos: Int) {
+    if (spinner.selectedItemPosition != itemPos) {
+        spinner.setSelection(itemPos)
+    }
+}
+
+@InverseBindingAdapter(attribute = "spinnerSelected")
+fun getPos(spinner: Spinner): Int {
+    return spinner.selectedItemPosition
+}
+
+@BindingAdapter("app:spinnerSelectedAttrChanged")
+fun setListeners(spinner: Spinner, attrChange: InverseBindingListener) {
+    spinner.onItemSelectedListener = SpinnerItemChangeListener(attrChange)
 }
 

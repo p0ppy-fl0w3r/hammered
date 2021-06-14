@@ -1,23 +1,18 @@
 package com.example.hammered.cocktail.createCocktail
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.EditText
-import androidx.core.widget.doOnTextChanged
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.hammered.R
 import com.example.hammered.databinding.CreateCocktailIngredientItemBinding
-import timber.log.Timber
+import com.example.hammered.wrappers.NewCocktailRef
 
 
 class CreateCocktailAdapter(
-    private val spinnerItemListener: SpinnerItemSelectListener,
     private val onClickListener: ItemOnClickListener
 ) :
     ListAdapter<NewCocktailRef, CocktailIngredientViewHolder>(ItemDiffUtil()) {
@@ -31,19 +26,9 @@ class CreateCocktailAdapter(
     }
 
     override fun onBindViewHolder(holder: CocktailIngredientViewHolder, position: Int) {
-        // ehh... Good enough for now.
-        Timber.e("Item pos is $position")
         val item = getItem(position)
-        holder.bind(item, spinnerItemListener, onClickListener)
-
-//        holder.itemView.findViewById<EditText>(R.id.RefIngredientName)
-//            .doOnTextChanged { text, _, _, _ ->
-//                eventListener.listener(item.ref_number, text.toString())
-//                Timber.e("Text was changed in ${item.ref_number}")
-//            }
+        holder.bind(item, onClickListener)
     }
-
-
 }
 
 class CocktailIngredientViewHolder(private val binding: CreateCocktailIngredientItemBinding) :
@@ -51,13 +36,10 @@ class CocktailIngredientViewHolder(private val binding: CreateCocktailIngredient
 
     fun bind(
         item: NewCocktailRef,
-        spinnerItemListener: SpinnerItemSelectListener,
-        onClickListener: ItemOnClickListener
+        clickListener: ItemOnClickListener
     ) {
-        // TODO clean the code and write more comments
         binding.ingredientItem = item
-        binding.onClickListener = onClickListener
-
+        binding.clickListener = clickListener
 
         // Creating and attaching adapter for spinner
         ArrayAdapter.createFromResource(
@@ -68,11 +50,6 @@ class CocktailIngredientViewHolder(private val binding: CreateCocktailIngredient
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             binding.cocktailIngRecyclerUnits.adapter = adapter
         }
-
-        binding.cocktailIngRecyclerUnits.onItemSelectedListener = spinnerItemListener
-
-
-        binding.cocktailIngRecyclerUnits.setSelection(item.quantityUnitPos)
 
         binding.executePendingBindings()
     }
@@ -88,7 +65,6 @@ class CocktailIngredientViewHolder(private val binding: CreateCocktailIngredient
             return CocktailIngredientViewHolder(binding)
         }
     }
-
 }
 
 class ItemDiffUtil : DiffUtil.ItemCallback<NewCocktailRef>() {
@@ -101,34 +77,8 @@ class ItemDiffUtil : DiffUtil.ItemCallback<NewCocktailRef>() {
     }
 }
 
-class EditTextEventListener(val listener: (position: Int, newText: String) -> Unit) {
-    fun onEvent(position: Int, newText: String) = listener(position, newText)
+
+class ItemOnClickListener(val listener: (itemNumber: Int) -> Unit) {
+    fun onItemClick(itemNumber: Int) = listener(itemNumber)
 }
 
-class SpinnerItemSelectListener(
-    val listener: (position: Int) -> Unit
-) :
-    AdapterView.OnItemSelectedListener {
-    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) =
-        listener(position)
-
-    override fun onNothingSelected(parent: AdapterView<*>?) {
-        Timber.e("Noting was selected.")
-    }
-}
-
-
-class ItemOnClickListener(val listener: (itemNumber: Int, clickableView: Int) -> Unit) {
-    fun onItemClick(position: Int, clickableView: Int) = listener(position, clickableView)
-}
-
-// TEST class for creating cocktail
-
-data class NewCocktailRef(
-    var ref_number: Int = 0,
-    var ingredient_name: String = "",
-    var quantity: String = "",
-    var quantityUnitPos: Int = 0,
-    var isGarnish: Boolean = false,
-    var isOptional: Boolean = false
-)

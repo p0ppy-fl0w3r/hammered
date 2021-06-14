@@ -15,15 +15,40 @@ class CocktailRepository(private val database: CocktailDatabase) {
         withContext(Dispatchers.IO) {
             if (database.cocktailDao.getIngredientCocktailRefCount() == 0) {
                 Timber.e("Insert started")
-                val ing1 = Ingredient("Lemon", "Nice", "file:///android_asset/lemon.png", true, false)
-                val ing2 = Ingredient("Salt", "Very nice", "file:///android_asset/salt.png", true, false)
-                val ing3 = Ingredient("Water", "Nice", "file:///android_asset/water.jpg", true, false)
+                val ing1 =
+                    Ingredient("Lemon", "Nice", "file:///android_asset/lemon.png", true, false)
+                val ing2 =
+                    Ingredient("Salt", "Very nice", "file:///android_asset/salt.png", true, false)
+                val ing3 =
+                    Ingredient("Water", "Nice", "file:///android_asset/water.jpg", true, false)
                 val ing4 = Ingredient("Gin", "Nice", "file:///android_asset/gin.png", false, true)
-                val ing5 = Ingredient("Vodka", "Nice", "file:///android_asset/vodka.webp", false, true)
+                val ing5 =
+                    Ingredient("Vodka", "Nice", "file:///android_asset/vodka.webp", false, true)
 
-                val cok1 = Cocktail(1, "Tonic", "Strong", "1. make it", false, "file:///android_asset/vodka.webp")
-                val cok2 = Cocktail(2, "Bionic", "Light", "1. make it", true, "file:///android_asset/gin.png")
-                val cok3 = Cocktail(3, "Ronic", "Strong", "1. Break it", true, "file:///android_asset/water.jpg")
+                val cok1 = Cocktail(
+                    1,
+                    "Tonic",
+                    "Strong",
+                    "1. make it",
+                    false,
+                    "file:///android_asset/vodka.webp"
+                )
+                val cok2 = Cocktail(
+                    2,
+                    "Bionic",
+                    "Light",
+                    "1. make it",
+                    true,
+                    "file:///android_asset/gin.png"
+                )
+                val cok3 = Cocktail(
+                    3,
+                    "Ronic",
+                    "Strong",
+                    "1. Break it",
+                    true,
+                    "file:///android_asset/water.jpg"
+                )
 
                 for (i in arrayOf(ing1, ing2, ing3, ing4, ing5)) {
                     database.cocktailDao.insertIngredient(i)
@@ -64,23 +89,35 @@ class CocktailRepository(private val database: CocktailDatabase) {
         }
     }
 
-    suspend fun insertIngredient(ingredient: Ingredient){
+    suspend fun insertIngredient(ingredient: Ingredient) {
         database.cocktailDao.insertIngredient(ingredient)
+    }
+
+    suspend fun insertCocktail(cocktail: Cocktail) {
+        database.cocktailDao.insertCocktail(cocktail)
+    }
+
+    suspend fun insertIngredientCocktailRef(ingredientCocktailRef: IngredientCocktailRef) {
+        database.cocktailDao.insertIngredientCocktailRef(ingredientCocktailRef)
     }
 
     suspend fun getIngredient(name: String): Ingredient {
         return database.cocktailDao.getIngredient(name)
     }
 
-    suspend fun getCocktail(id:Long):Cocktail{
+    suspend fun getCocktail(id: Long): Cocktail {
         return database.cocktailDao.getCocktail(id)
+    }
+
+    suspend fun getLastCocktailId(): Long {
+        return database.cocktailDao.getLastCocktailId()
     }
 
     suspend fun getRefFromCocktail(id: Long): List<IngredientCocktailRef> {
         return database.cocktailDao.getRefFromCocktail(id)
     }
 
-    suspend fun getRefFromIngredient(name: String): List<IngredientCocktailRef>{
+    suspend fun getRefFromIngredient(name: String): List<IngredientCocktailRef> {
         return database.cocktailDao.getRefFromIngredient(name)
     }
 

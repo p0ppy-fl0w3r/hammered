@@ -43,4 +43,6 @@
     <string name="remove">Remove</string>
     <string name="add_step">Add step.</string>
     <string name="add_ingredient">Add ingredient</string>
+    <string name="add_step_hint">Add step...</string>
+    <string name="remove_step_desc">Remove the current step.</string>
 </resources>
