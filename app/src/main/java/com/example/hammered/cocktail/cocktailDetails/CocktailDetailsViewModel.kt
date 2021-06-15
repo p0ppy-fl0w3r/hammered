@@ -35,7 +35,7 @@ class CocktailDetailsViewModel(application: Application) : AndroidViewModel(appl
 
             for (ref in allRefFromCocktail) {
                 val ingredient = repository.getIngredient(ref.ingredient_name)
-                val ingredientRef = RefItemWrapper(ingredient.asIngredientData(), ref)
+                val ingredientRef = RefItemWrapper(ingredient!!.asIngredientData(), ref)
                 allIngredientRef.add(ingredientRef)
             }
             _ingredientRefLiveData.value = allIngredientRef

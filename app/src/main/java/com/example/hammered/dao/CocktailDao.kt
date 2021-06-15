@@ -24,7 +24,7 @@ interface CocktailDao {
     suspend fun updateCocktail(cocktail: Cocktail)
 
     @Query("SELECT * FROM Cocktail WHERE cocktail_id=:id")
-    suspend fun getCocktail(id: Long): Cocktail
+    suspend fun getCocktail(id: Long): Cocktail?
 
     @Query("SElECT cocktail_id FROM Cocktail ORDER BY cocktail_id DESC LIMIT 1")
     suspend fun getLastCocktailId(): Long
@@ -35,6 +35,9 @@ interface CocktailDao {
     @Query("SELECT * FROM Cocktail")
     suspend fun getAllCocktails(): List<Cocktail>
 
+    @Query("SELECT * FROM Ingredient")
+    suspend fun getAllIngredient(): List<Ingredient>
+
     @Query("SELECT * FROM Cocktail WHERE isFavorite=1")
     suspend fun getFavouriteCocktails(): List<Cocktail>
 
@@ -42,7 +45,7 @@ interface CocktailDao {
     suspend fun getIngredientCocktailRefCount(): Int
 
     @Query("SELECT * FROM Ingredient WHERE ingredient_name=:ingredient_name")
-    suspend fun getIngredient(ingredient_name: String): Ingredient
+    suspend fun getIngredient(ingredient_name: String): Ingredient?
 
     @Transaction
     @Query("SELECT * FROM IngredientCocktailRef WHERE cocktail_id=:cocktail_id")

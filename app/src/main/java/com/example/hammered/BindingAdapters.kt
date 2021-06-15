@@ -1,7 +1,6 @@
 package com.example.hammered
 
 import android.net.Uri
-import android.view.View
 import android.widget.*
 import androidx.databinding.BindingAdapter
 import androidx.databinding.InverseBindingAdapter
@@ -202,4 +201,3 @@ fun getPos(spinner: Spinner): Int {
 fun setListeners(spinner: Spinner, attrChange: InverseBindingListener) {
     spinner.onItemSelectedListener = SpinnerItemChangeListener(attrChange)
 }
-

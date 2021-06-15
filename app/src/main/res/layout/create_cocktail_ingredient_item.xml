@@ -7,9 +7,14 @@
         <variable
             name="ingredientItem"
             type="com.example.hammered.wrappers.NewCocktailRef" />
+
         <variable
             name="clickListener"
             type="com.example.hammered.cocktail.createCocktail.ItemOnClickListener" />
+
+        <variable
+            name="viewModel"
+            type="com.example.hammered.cocktail.createCocktail.CreateCocktailViewModel" />
 
     </data>
 
@@ -20,7 +25,7 @@
         android:layout_marginBottom="4dp"
         android:background="@drawable/detail_text_back">
 
-        <EditText
+        <AutoCompleteTextView
             android:id="@+id/RefIngredientName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -34,7 +39,8 @@
             android:text="@={ingredientItem.ingredient_name}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+             />
 
         <EditText
             android:id="@+id/refQuantity"
@@ -56,10 +62,10 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
 
-            app:spinnerSelected="@={ingredientItem.quantityUnitPos}"
             app:layout_constraintBottom_toBottomOf="@+id/refQuantity"
             app:layout_constraintStart_toEndOf="@+id/refQuantity"
-            app:layout_constraintTop_toTopOf="@+id/refQuantity" />
+            app:layout_constraintTop_toTopOf="@+id/refQuantity"
+            app:spinnerSelected="@={ingredientItem.quantityUnitPos}" />
 
         <CheckBox
             android:id="@+id/isOptional"
@@ -88,8 +94,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="@string/remove"
             android:onClick="@{()->clickListener.onItemClick(ingredientItem.ref_number)}"
+            android:text="@string/remove"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/isOptional" />

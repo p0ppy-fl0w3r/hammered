@@ -29,19 +29,24 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <ImageView
+            <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/addCocktailImage"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/circular_image_width"
+                android:layout_height="@dimen/circular_image_height"
                 android:layout_marginStart="12dp"
                 android:layout_marginTop="2dp"
                 android:contentDescription="@string/add_ingredient_image"
+                android:padding="1.8dp"
+                android:scaleType="center"
                 android:src="@android:drawable/ic_menu_camera"
                 app:layout_constraintBottom_toBottomOf="@+id/textCocktailName"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/textCocktailName"
-                app:layout_constraintTop_toTopOf="@+id/textCocktailName" />
+                app:layout_constraintTop_toTopOf="@+id/textCocktailName"
+                app:shapeAppearanceOverlay="@style/roundedImage"
+                app:strokeColor="@color/secondaryDarkColor"
+                app:strokeWidth="2dp" />
 
             <EditText
                 android:id="@+id/cocktailDescriptionText"

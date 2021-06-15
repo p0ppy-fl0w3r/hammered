@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.hammered.database.CocktailDatabase
 import com.example.hammered.entities.Cocktail
+import com.example.hammered.entities.Ingredient
 import com.example.hammered.entities.relations.IngredientCocktailRef
 import com.example.hammered.repository.CocktailRepository
 import com.example.hammered.wrappers.NewCocktailRef
@@ -44,13 +45,29 @@ class CreateCocktailViewModel(application: Application) : AndroidViewModel(appli
 
     private val _cocktailId = MutableLiveData<Long>()
 
+    private val _allIngredientList = MutableLiveData<List<Ingredient>>()
+
+    val allIngredientList: LiveData<List<Ingredient>>
+        get() = _allIngredientList
+
     init {
-        val newIngredientList = mutableListOf(NewCocktailRef(ingredient_name = "Gin", quantity = "12"))
+
+        getAllIngredientFromDatabase()
+
+        val newIngredientList =
+            mutableListOf(NewCocktailRef(ingredient_name = "Gino", quantity = "12"))
         val newStepsList = mutableListOf(StepsWrapper(0, "Add water"))
 
         _ingredientList.value = newIngredientList
         _stepsList.value = newStepsList
         getLastCocktailId()
+    }
+
+    private fun getAllIngredientFromDatabase() {
+        viewModelScope.launch {
+            _allIngredientList.value = repository.getAllIngredient()
+            Timber.e("Got all ingredient from database ${_allIngredientList.value}")
+        }
     }
 
     fun addIngredient() {
@@ -146,25 +163,35 @@ class CreateCocktailViewModel(application: Application) : AndroidViewModel(appli
     }
 
     private fun checkIngredient() {
-        val allIngredient = _ingredientList.value
-        if (!allIngredient.isNullOrEmpty()) {
-            for (ingredients in allIngredient.withIndex()) {
-                if (ingredients.value.ingredient_name.isBlank() || ingredients.value.quantity.isBlank()) {
-                    _ingredientValid.value = ingredients.index
-                    return
-                }
-                else {
-                    val quantity = ingredients.value.quantity.toFloat()
-                    if (quantity == 0f) {
+        viewModelScope.launch {
+            val allIngredient = _ingredientList.value
+            if (!allIngredient.isNullOrEmpty()) {
+                for (ingredients in allIngredient.withIndex()) {
+                    if (ingredients.value.ingredient_name.isBlank() || ingredients.value.quantity.isBlank()) {
                         _ingredientValid.value = ingredients.index
-                        return
+                        return@launch
+                    }
+                    else {
+                        val quantity = ingredients.value.quantity.toFloat()
+                        if (quantity == 0f) {
+                            _ingredientValid.value = ingredients.index
+                            return@launch
+                        }
+                        val ingredientFromDatabase =
+                            repository.getIngredient(ingredients.value.ingredient_name)
+
+                        // There was no such cocktail in the database
+                        if (ingredientFromDatabase == null) {
+                            _ingredientValid.value = ingredients.index
+                            return@launch
+                        }
                     }
                 }
+                _ingredientValid.value = -2
             }
-            _ingredientValid.value = -2
-        }
-        else {
-            _ingredientValid.value = -1
+            else {
+                _ingredientValid.value = -1
+            }
         }
     }
 
@@ -177,14 +204,12 @@ class CreateCocktailViewModel(application: Application) : AndroidViewModel(appli
         }
     }
 
-    fun doneChecking() {
+    private fun doneChecking() {
         _saveCocktail.value = null
     }
 
     fun saveCocktail(name: String, description: String, imageUrl: String) {
         viewModelScope.launch {
-
-
             val newCocktail = _cocktailId.value?.plus(1)?.let {
                 Cocktail(
                     cocktail_id = it,
@@ -207,20 +232,18 @@ class CreateCocktailViewModel(application: Application) : AndroidViewModel(appli
                 }
             }
 
-            for(ingredientRef in listCocktailIngredientRef){
+            for (ingredientRef in listCocktailIngredientRef) {
                 repository.insertIngredientCocktailRef(ingredientRef)
             }
-
             doneChecking()
         }
 
     }
 
-    private fun getLastCocktailId(){
+    private fun getLastCocktailId() {
         viewModelScope.launch {
             val cocktailId = repository.getLastCocktailId()
             _cocktailId.value = cocktailId
-            Timber.e("The cocktail id is $cocktailId")
         }
     }
 

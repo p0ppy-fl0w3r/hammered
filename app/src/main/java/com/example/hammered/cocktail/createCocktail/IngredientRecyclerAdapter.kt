@@ -13,7 +13,8 @@ import com.example.hammered.wrappers.NewCocktailRef
 
 
 class CreateCocktailAdapter(
-    private val onClickListener: ItemOnClickListener
+    private val onClickListener: ItemOnClickListener,
+    var arrayAdapter: ArrayAdapter<String>
 ) :
     ListAdapter<NewCocktailRef, CocktailIngredientViewHolder>(ItemDiffUtil()) {
 
@@ -27,7 +28,7 @@ class CreateCocktailAdapter(
 
     override fun onBindViewHolder(holder: CocktailIngredientViewHolder, position: Int) {
         val item = getItem(position)
-        holder.bind(item, onClickListener)
+        holder.bind(item, onClickListener, arrayAdapter)
     }
 }
 
@@ -36,10 +37,15 @@ class CocktailIngredientViewHolder(private val binding: CreateCocktailIngredient
 
     fun bind(
         item: NewCocktailRef,
-        clickListener: ItemOnClickListener
+        clickListener: ItemOnClickListener,
+        arrayAdapter: ArrayAdapter<String>
     ) {
         binding.ingredientItem = item
         binding.clickListener = clickListener
+
+        // Setting adapters for autofill
+        binding.RefIngredientName.threshold = 2
+        binding.RefIngredientName.setAdapter(arrayAdapter)
 
         // Creating and attaching adapter for spinner
         ArrayAdapter.createFromResource(

@@ -101,12 +101,16 @@ class CocktailRepository(private val database: CocktailDatabase) {
         database.cocktailDao.insertIngredientCocktailRef(ingredientCocktailRef)
     }
 
-    suspend fun getIngredient(name: String): Ingredient {
+    suspend fun getIngredient(name: String): Ingredient? {
         return database.cocktailDao.getIngredient(name)
     }
 
-    suspend fun getCocktail(id: Long): Cocktail {
+    suspend fun getCocktail(id: Long): Cocktail? {
         return database.cocktailDao.getCocktail(id)
+    }
+
+    suspend fun getAllIngredient(): List<Ingredient> {
+        return database.cocktailDao.getAllIngredient()
     }
 
     suspend fun getLastCocktailId(): Long {
