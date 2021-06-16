@@ -1,23 +1,27 @@
 package com.example.hammered.cocktail.createCocktail
 
+import android.animation.ArgbEvaluator
+import android.animation.ObjectAnimator
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
+import android.widget.EditText
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.view.get
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
+import com.example.hammered.Constants
 import com.example.hammered.R
 import com.example.hammered.databinding.FragmentCreateCocktailBinding
 import kotlinx.android.synthetic.main.fragment_create_cocktail.*
 import timber.log.Timber
 
-// TODO add error messages for when the ingredients or cocktail are invalid
-// FIXME two ingredients with same name can be added.
-// FIXME SPAN_EXCLUSIVE_EXCLUSIVE spans cannot have a zero length
 // TODO consider creating this and ingredient in an activity
 class CreateCocktailFragment : Fragment() {
 
@@ -29,14 +33,13 @@ class CreateCocktailFragment : Fragment() {
     private val result = registerForActivityResult(ActivityResultContracts.GetContent()) {
         imageUrl = it.toString()
         val newCocktailImage = binding.addCocktailImage
-        // Display the new image in the add image button
+        // Display the selected image in the add image button
         Glide.with(requireContext()).load(imageUrl).into(newCocktailImage)
     }
 
     private val viewModel: CreateCocktailViewModel by lazy {
         ViewModelProvider(this).get(CreateCocktailViewModel::class.java)
     }
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -50,6 +53,10 @@ class CreateCocktailFragment : Fragment() {
                 container,
                 false
             )
+
+        val nestedScrollView = binding.nestedScrollView
+        val ingredientRecycler = binding.ingRefRecycler
+        val stepsRecycler = binding.stepsRecycler
 
         // TEST
         test()
@@ -99,37 +106,113 @@ class CreateCocktailFragment : Fragment() {
             stepsAdapter.notifyDataSetChanged()
         }
 
-        // TODO add animation to error fields
+
         viewModel.stepsValid.observe(viewLifecycleOwner) {
             when (it) {
-                -2 -> {
+                Constants.VALUE_OK -> {
                     Timber.e("The cocktail data is valid")
                 }
-                -1 -> {
-                    Timber.e("There are no steps")
+                Constants.NO_VALUES -> {
+                    Toast.makeText(
+                        requireContext(),
+                        "There are no steps.",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
                 else -> {
-                    binding.stepsRecycler.smoothScrollToPosition(it)
-                    Timber.e("The step is blank at $it")
+                    stepsRecycler.post {
+                        val yPos = stepsRecycler.y + stepsRecycler.getChildAt(it).y
+                        nestedScrollView.smoothScrollTo(0, yPos.toInt())
+                    }
+                    val errorItem = stepsRecycler[it].findViewById<EditText>(R.id.stepText)
+                    animateError(errorItem)
+
+                    Toast.makeText(
+                        requireContext(),
+                        "Looks like a step is blank!",
+                        Toast.LENGTH_SHORT
+                    ).show()
 
                 }
             }
 
         }
 
+
         viewModel.ingredientValid.observe(viewLifecycleOwner)
         {
-            when (it) {
-                -2 -> {
-                    Timber.e("The ingredient data is valid")
+
+            when (it[0]) {
+                Constants.VALUE_OK -> {
+                    Timber.e("The values are ok")
                     viewModel.setCocktailChecked()
                 }
-                -1 -> {
-                    Timber.e("There are no ingredient")
+
+                Constants.NO_VALUES -> {
+                    Toast.makeText(
+                        requireContext(),
+                        "You need to add an ingredient!",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
+
+                Constants.INGREDIENT_NAME_EMPTY -> {
+                    Toast.makeText(
+                        requireContext(),
+                        "Looks like an ingredient name is blank.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+
+                    val errorItem =
+                        ingredientRecycler[it[1]].findViewById<AutoCompleteTextView>(R.id.RefIngredientName)
+
+                    // Scroll to error item
+                    ingredientRecycler.post {
+                        val yPos = ingredientRecycler.y + ingredientRecycler.getChildAt(it[1]).y
+                        nestedScrollView.smoothScrollTo(0, yPos.toInt())
+                    }
+
+                    animateError(errorItem)
+                }
+
+                Constants.NO_INGREDIENT_IN_DATABASE -> {
+                    Toast.makeText(
+                        requireContext(),
+                        "Invalid ingredient name!",
+                        Toast.LENGTH_SHORT
+                    ).show()
+
+                    val errorItem =
+                        ingredientRecycler[it[1]].findViewById<AutoCompleteTextView>(R.id.RefIngredientName)
+
+                    ingredientRecycler.post {
+                        val yPos = ingredientRecycler.y + ingredientRecycler.getChildAt(it[1]).y
+                        nestedScrollView.smoothScrollTo(0, yPos.toInt())
+                    }
+
+                    animateError(errorItem)
+                }
+
+                Constants.QUANTITY_FIELD_EMPTY -> {
+                    binding.ingRefRecycler.smoothScrollToPosition(it[1])
+                    val errorItem =
+                        ingredientRecycler[it[1]].findViewById<EditText>(R.id.refQuantity)
+
+                    ingredientRecycler.post {
+                        val yPos = ingredientRecycler.y + ingredientRecycler.getChildAt(it[1]).y
+                        nestedScrollView.smoothScrollTo(0, yPos.toInt())
+                    }
+
+                    animateError(errorItem)
+                    Toast.makeText(
+                        requireContext(),
+                        "Quantity is invalid.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+
                 else -> {
-                    binding.stepsRecycler.smoothScrollToPosition(it)
-                    Timber.e("The ingredient is blank at $it")
+                    throw IllegalArgumentException("Error code or item index not valid $it")
                 }
             }
         }
@@ -169,19 +252,22 @@ class CreateCocktailFragment : Fragment() {
     }
 
     private fun saveCocktail() {
-        //TODO add an error message when the user has not selected an image for the cocktail
         binding.saveCocktail.setOnClickListener {
-            val cocktailName = binding.textCocktailName.text
-            // TODO consider allowing the user to set the description to blank
-            val description = binding.cocktailDescriptionText.text
-            var isValid = true
-            if (cocktailName.isBlank() || description.isBlank() || imageUrl.isBlank()) {
-                isValid = false
-                Timber.e("One of these is not correct $cocktailName $description $imageUrl")
-            }
-            if (isValid) {
-                Timber.e("The values are $cocktailName $description $imageUrl")
+            val cocktailNameView = binding.textCocktailName
+            val cocktailName = cocktailNameView.text
+            if (cocktailName.isNotBlank()) {
+                Timber.e("The values are $cocktailName $imageUrl")
                 viewModel.validate()
+            }
+            else {
+
+                Toast.makeText(
+                    requireContext(),
+                    "You must give the cocktail a name!",
+                    Toast.LENGTH_LONG
+                ).show()
+
+                animateError(cocktailNameView)
             }
         }
     }
@@ -194,7 +280,23 @@ class CreateCocktailFragment : Fragment() {
 
     //TEST
     private fun test() {
-        binding.textCocktailName.setText("Super Sonic")
+        binding.textCocktailName.setText("Gin")
         binding.cocktailDescriptionText.setText("This is very strong")
+    }
+
+    private fun animateError(view: View) {
+        val animation = ObjectAnimator.ofInt(
+            view,
+            "backgroundColor",
+            0x00000000,
+            0x55ff0000,
+            0x00000000
+        )
+
+        animation.duration = 500
+        animation.repeatMode = ObjectAnimator.REVERSE
+        animation.repeatCount = 1
+        animation.setEvaluator(ArgbEvaluator())
+        animation.start()
     }
 }

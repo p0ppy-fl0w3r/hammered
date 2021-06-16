@@ -5,6 +5,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.example.hammered.Constants
 import com.example.hammered.database.CocktailDatabase
 import com.example.hammered.entities.Cocktail
 import com.example.hammered.entities.Ingredient
@@ -31,9 +32,10 @@ class CreateCocktailViewModel(application: Application) : AndroidViewModel(appli
     val stepsValid: LiveData<Int>
         get() = _stepsValid
 
-    private val _ingredientValid = MutableLiveData<Int>()
+    // The error code convention is errorCode, Index eg:- (-2, 0)
+    private val _ingredientValid = MutableLiveData<List<Int>>()
 
-    val ingredientValid: LiveData<Int>
+    val ingredientValid: LiveData<List<Int>>
         get() = _ingredientValid
 
     private val _saveCocktail = MutableLiveData<Boolean?>()
@@ -66,7 +68,6 @@ class CreateCocktailViewModel(application: Application) : AndroidViewModel(appli
     private fun getAllIngredientFromDatabase() {
         viewModelScope.launch {
             _allIngredientList.value = repository.getAllIngredient()
-            Timber.e("Got all ingredient from database ${_allIngredientList.value}")
         }
     }
 
@@ -155,10 +156,10 @@ class CreateCocktailViewModel(application: Application) : AndroidViewModel(appli
                 }
             }
             // The steps are valid
-            _stepsValid.value = -2
+            _stepsValid.value = Constants.VALUE_OK
         }
         else {
-            _stepsValid.value = -1
+            _stepsValid.value = Constants.NO_VALUES
         }
     }
 
@@ -167,36 +168,46 @@ class CreateCocktailViewModel(application: Application) : AndroidViewModel(appli
             val allIngredient = _ingredientList.value
             if (!allIngredient.isNullOrEmpty()) {
                 for (ingredients in allIngredient.withIndex()) {
-                    if (ingredients.value.ingredient_name.isBlank() || ingredients.value.quantity.isBlank()) {
-                        _ingredientValid.value = ingredients.index
+                    // Get the value form the quantity editText
+                    var quantity = 0f
+                    if(ingredients.value.quantity.isNotBlank()){
+                        quantity = ingredients.value.quantity.toFloat()
+                    }
+
+                    val ingredientFromDatabase =
+                        repository.getIngredient(ingredients.value.ingredient_name)
+
+                    // The ingredient name field was left blank
+                    if (ingredients.value.ingredient_name.isBlank()) {
+                        _ingredientValid.value =
+                            listOf(Constants.INGREDIENT_NAME_EMPTY, ingredients.index)
                         return@launch
                     }
-                    else {
-                        val quantity = ingredients.value.quantity.toFloat()
-                        if (quantity == 0f) {
-                            _ingredientValid.value = ingredients.index
-                            return@launch
-                        }
-                        val ingredientFromDatabase =
-                            repository.getIngredient(ingredients.value.ingredient_name)
-
-                        // There was no such cocktail in the database
-                        if (ingredientFromDatabase == null) {
-                            _ingredientValid.value = ingredients.index
-                            return@launch
-                        }
+                    // The quantity field was empty or 0
+                    if (quantity == 0f) {
+                        _ingredientValid.value =
+                            listOf(Constants.QUANTITY_FIELD_EMPTY, ingredients.index)
+                        return@launch
                     }
+                    // There was no such ingredient in the database
+                    if (ingredientFromDatabase == null) {
+                        _ingredientValid.value =
+                            listOf(Constants.NO_INGREDIENT_IN_DATABASE, ingredients.index)
+                        return@launch
+                    }
+
                 }
-                _ingredientValid.value = -2
+                _ingredientValid.value = listOf(Constants.VALUE_OK, 0)
             }
             else {
-                _ingredientValid.value = -1
+                _ingredientValid.value = listOf(Constants.NO_VALUES, 0)
             }
         }
     }
 
     fun setCocktailChecked() {
-        if (_ingredientValid.value == -2 && _stepsValid.value == -2) {
+        if (_ingredientValid.value == listOf(Constants.VALUE_OK, 0)
+            && _stepsValid.value == Constants.VALUE_OK) {
             _saveCocktail.value = true
         }
         else {

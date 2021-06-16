@@ -14,11 +14,6 @@ object Constants {
     const val AVAILABLE_COCKTAIL_ITEM = 2
     const val FAVORITE_COCKTAIL_ITEM = 3
 
-    // Create Cocktail
-    const val SPINNER_ITEM = 1
-    const val IS_OPTIONAL_CHECK = 2
-    const val IS_GARNISH_CHECK = 3
-
     // Quantity units list
     val UNITS = listOf(
         "Ml",
@@ -27,4 +22,11 @@ object Constants {
         "Unit/s",
         "Drops"
     )
+
+    // Error handlers for create cocktail
+    const val VALUE_OK = -2
+    const val NO_VALUES = -1
+    const val NO_INGREDIENT_IN_DATABASE = -3
+    const val QUANTITY_FIELD_EMPTY = -4
+    const val INGREDIENT_NAME_EMPTY = -5
 }
