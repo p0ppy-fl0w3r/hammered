@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProvider
 import com.example.hammered.MainActivity
 import com.example.hammered.R
 import com.example.hammered.databinding.ActivitySplashBinding
@@ -18,6 +19,10 @@ class SplashActivity : AppCompatActivity() {
             DataBindingUtil.setContentView<ActivitySplashBinding>(this, R.layout.activity_splash)
         val animatedVector = binding.cocktailGlass.drawable as AnimatedVectorDrawable
         animatedVector.start()
+
+        // TODO start activity only when the database is populated
+        ViewModelProvider(this).get(SplashViewModel::class.java)
+
         Handler(Looper.getMainLooper()).postDelayed(
             {
                 val intent = Intent(this, MainActivity::class.java)

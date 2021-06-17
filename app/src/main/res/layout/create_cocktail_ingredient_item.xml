@@ -25,46 +25,57 @@
         android:layout_marginBottom="4dp"
         android:background="@drawable/detail_text_back">
 
-        <AutoCompleteTextView
-            android:id="@+id/RefIngredientName"
+        <LinearLayout
+            android:id="@+id/RefIngredientNameContainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="2dp"
-            android:ems="10"
-            android:hint="@string/ingredient_name_edit_text"
-            android:imeOptions="actionNext"
-            android:importantForAutofill="no"
-            android:inputType="textPersonName"
-            android:nextFocusDown="@id/refQuantity"
-            android:text="@={ingredientItem.ingredient_name}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-             />
+            app:layout_constraintTop_toTopOf="parent">
 
-        <EditText
-            android:id="@+id/refQuantity"
+            <AutoCompleteTextView
+                android:id="@+id/RefIngredientName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="2dp"
+                android:ems="10"
+                android:hint="@string/ingredient_name_edit_text"
+                android:imeOptions="actionNext"
+                android:importantForAutofill="no"
+                android:inputType="textPersonName"
+                android:nextFocusDown="@id/refQuantity"
+                android:text="@={ingredientItem.ingredient_name}" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/refQuantityContainer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="2dp"
-            android:layout_marginTop="4dp"
-            android:ems="10"
-            android:hint="@string/quantity_string"
-            android:importantForAutofill="no"
-            android:inputType="numberDecimal"
-            android:text="@={ingredientItem.quantity}"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/RefIngredientName" />
+            app:layout_constraintTop_toBottomOf="@+id/RefIngredientNameContainer">
+
+            <EditText
+                android:id="@+id/refQuantity"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="2dp"
+                android:layout_marginTop="4dp"
+                android:ems="10"
+                android:hint="@string/quantity_string"
+                android:importantForAutofill="no"
+                android:inputType="numberDecimal"
+                android:text="@={ingredientItem.quantity}" />
+        </LinearLayout>
+
 
         <Spinner
             android:id="@+id/cocktailIngRecyclerUnits"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-
-            app:layout_constraintBottom_toBottomOf="@+id/refQuantity"
-            app:layout_constraintStart_toEndOf="@+id/refQuantity"
-            app:layout_constraintTop_toTopOf="@+id/refQuantity"
+            app:layout_constraintBottom_toBottomOf="@+id/refQuantityContainer"
+            app:layout_constraintStart_toEndOf="@+id/refQuantityContainer"
+            app:layout_constraintTop_toTopOf="@+id/refQuantityContainer"
             app:spinnerSelected="@={ingredientItem.quantityUnitPos}" />
 
         <CheckBox
@@ -76,7 +87,7 @@
             app:layout_constraintEnd_toStartOf="@+id/isGarnishCheck"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/refQuantity" />
+            app:layout_constraintTop_toBottomOf="@+id/refQuantityContainer" />
 
         <CheckBox
             android:id="@+id/isGarnishCheck"
@@ -87,7 +98,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toEndOf="@+id/isOptional"
-            app:layout_constraintTop_toBottomOf="@+id/refQuantity" />
+            app:layout_constraintTop_toBottomOf="@+id/refQuantityContainer" />
 
         <Button
             android:id="@+id/removeButton"

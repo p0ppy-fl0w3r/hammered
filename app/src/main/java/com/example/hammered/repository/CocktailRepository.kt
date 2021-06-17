@@ -6,15 +6,18 @@ import com.example.hammered.entities.Ingredient
 import com.example.hammered.entities.relations.IngredientCocktailRef
 import com.example.hammered.entities.relations.IngredientWithCocktail
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.withContext
 import timber.log.Timber
 
 class CocktailRepository(private val database: CocktailDatabase) {
 
+
     suspend fun insertAll() {
         withContext(Dispatchers.IO) {
             if (database.cocktailDao.getIngredientCocktailRefCount() == 0) {
-                Timber.e("Insert started")
+                Timber.i("Insert started")
                 val ing1 =
                     Ingredient("Lemon", "Nice", "file:///android_asset/lemon.png", true, false)
                 val ing2 =
@@ -85,7 +88,7 @@ class CocktailRepository(private val database: CocktailDatabase) {
                     database.cocktailDao.insertIngredientCocktailRef(i)
                 }
             }
-            Timber.e("data inserted")
+            Timber.i("data inserted")
         }
     }
 

@@ -6,14 +6,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.findNavController
 import com.example.hammered.Constants
 import com.example.hammered.R
 import com.example.hammered.database.CocktailDatabase
 import com.example.hammered.databinding.IngredientFragmentBinding
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class IngredientFragment : Fragment() {
 
@@ -55,10 +53,6 @@ class IngredientFragment : Fragment() {
             adapter.addFilterAndSubmitList(it, msg)
         }
 
-        binding.addIngredientFab.setOnClickListener {
-            findNavController().navigate(IngredientFragmentDirections.ingredientToCreate())
-        }
-
         binding.ingredientRecycler.adapter = adapter
         return binding.root
     }
@@ -70,19 +64,6 @@ class IngredientFragment : Fragment() {
             binding.chipShoppingCart.id -> msg = Constants.ITEM_IN_CART
         }
 
-        // Make the fab visible only when allIngredient chip is selected.
-        setFabViewable(msg)
-
         viewModel.checkedData(msg)
     }
-
-    private fun setFabViewable(chipVal: Int){
-        if(chipVal == Constants.NORMAL_ITEM){
-            binding.addIngredientFab.visibility = FloatingActionButton.VISIBLE
-        }
-        else{
-            binding.addIngredientFab.visibility = FloatingActionButton.GONE
-        }
-    }
-
 }

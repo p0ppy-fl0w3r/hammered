@@ -11,5 +11,4 @@ data class IngredientCocktailRef(
     var quantityUnit: String,
     var isGarnish:Boolean,
     var isOptional:Boolean
-    // TODO add typeConverter for :- var substitutes:List<String>
 )

@@ -32,12 +32,10 @@ class IngredientViewModel(application: Application) : AndroidViewModel(applicati
         viewModelScope.launch {
             if (valueFrom == 1) {
                 currVal.ingredient.inStock = !currVal.ingredient.inStock
-                Timber.e("Updated stock status ${currVal.ingredient}")
                 repository.updateIngredient(currVal.ingredient)
             }
             else if (valueFrom == 3) {
                 currVal.ingredient.inCart = !currVal.ingredient.inCart
-                Timber.e("Updated cart status ${currVal.ingredient}")
                 repository.updateIngredient(currVal.ingredient)
             }
         }

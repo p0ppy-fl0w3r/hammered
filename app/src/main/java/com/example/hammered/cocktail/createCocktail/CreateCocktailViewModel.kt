@@ -53,15 +53,11 @@ class CreateCocktailViewModel(application: Application) : AndroidViewModel(appli
         get() = _allIngredientList
 
     init {
-
         getAllIngredientFromDatabase()
 
-        val newIngredientList =
-            mutableListOf(NewCocktailRef(ingredient_name = "Gino", quantity = "12"))
-        val newStepsList = mutableListOf(StepsWrapper(0, "Add water"))
+        _ingredientList.value = mutableListOf(NewCocktailRef())
+        _stepsList.value = mutableListOf(StepsWrapper())
 
-        _ingredientList.value = newIngredientList
-        _stepsList.value = newStepsList
         getLastCocktailId()
     }
 
@@ -80,7 +76,7 @@ class CreateCocktailViewModel(application: Application) : AndroidViewModel(appli
             _ingredientList.value = newList
         }
         catch (e: Exception) {
-            Timber.e("Looks like the list was empty or null $e")
+            Timber.w("Looks like the ingredient list was empty or null $e")
             _ingredientList.value = mutableListOf(
                 NewCocktailRef()
             )
@@ -109,7 +105,7 @@ class CreateCocktailViewModel(application: Application) : AndroidViewModel(appli
             _ingredientList.value = allValues!!
         }
         else {
-            throw   IllegalArgumentException("No such ingredient for reference number $ref_number")
+            throw IllegalArgumentException("No such ingredient for reference number $ref_number")
         }
     }
 
@@ -122,7 +118,7 @@ class CreateCocktailViewModel(application: Application) : AndroidViewModel(appli
             _stepsList.value = newList
         }
         catch (e: Exception) {
-            Timber.e("Looks like the steps list was empty or null $e")
+            Timber.w("Looks like the steps list was empty or null $e")
             _stepsList.value = mutableListOf(
                 StepsWrapper(0, "")
             )
@@ -142,10 +138,14 @@ class CreateCocktailViewModel(application: Application) : AndroidViewModel(appli
 
     fun validate() {
         checkSteps()
-        checkIngredient()
+
+        // Only check the ingredient if the steps are valid
+        // Otherwise the animation will play for both steps and ingredient.
+        if(_stepsValid.value == Constants.VALUE_OK){
+            checkIngredient()
+        }
     }
 
-    // TODO add the check values to constants
     private fun checkSteps() {
         val allSteps = _stepsList.value
         if (!allSteps.isNullOrEmpty()) {
@@ -228,8 +228,9 @@ class CreateCocktailViewModel(application: Application) : AndroidViewModel(appli
                     cocktail_description = description,
                     cocktail_image = imageUrl,
                     isFavorite = false,
-                    // TODO transform steps to string
-                    steps = _stepsList.value.toString()
+                    steps = _stepsList.value!!.joinToString(separator = "\n") { value ->
+                        value.steps
+                    }
                 )
             }
             if (newCocktail != null) {

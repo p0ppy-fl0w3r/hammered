@@ -14,6 +14,8 @@ import com.example.hammered.ingredients.IngredientData
 import com.example.hammered.utils.SpinnerItemChangeListener
 import timber.log.Timber
 
+// TODO see this again and optimize the TextView/EditText https://medium.com/androiddevelopers/underspanding-spans-1b91008b97e4
+
 @BindingAdapter("imageSource")
 fun imageSource(imageView: ImageView, imageUrl: String?) {
     imageUrl?.let {

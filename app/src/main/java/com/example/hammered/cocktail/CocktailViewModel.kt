@@ -37,7 +37,7 @@ class CocktailViewModel(application: Application) : AndroidViewModel(application
                     database.cocktailDao.getFavouriteIngredientFromCocktail()
 
             }
-            Timber.e("Databases updated form $id")
+            Timber.i("Databases updated form $id")
         }
 
     }

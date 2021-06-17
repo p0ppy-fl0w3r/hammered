@@ -1,33 +1,32 @@
 package com.example.hammered
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.Toast
-
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.NavigationUI
-import androidx.navigation.ui.NavigationUI.navigateUp
 import androidx.navigation.ui.NavigationUI.setupActionBarWithNavController
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupWithNavController
+import com.example.hammered.cocktail.createCocktail.CreateCocktailActivity
 import com.example.hammered.databinding.ActivityMainBinding
-import kotlinx.android.synthetic.main.activity_main.*
+import com.example.hammered.ingredients.createIngredient.CreateIngredientActivity
+import timber.log.Timber
 
 
 // FIXME pressing back on settings navigates to ingredient when setting was navigated from cocktail
 
 class MainActivity : AppCompatActivity() {
 
-    lateinit var binding: ActivityMainBinding
-    lateinit var navController: NavController
-    lateinit var drawerLayout: DrawerLayout
-    lateinit var appBarConfiguration: AppBarConfiguration
+    private lateinit var binding: ActivityMainBinding
+    private lateinit var navController: NavController
+    private lateinit var drawerLayout: DrawerLayout
+    private lateinit var appBarConfiguration: AppBarConfiguration
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,13 +62,25 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // TODO add navigation to the option menu selections
+
+        when(item.itemId){
+            R.id.createCocktail -> {
+                val intent = Intent(this, CreateCocktailActivity::class.java)
+                startActivity(intent)
+            }
+
+            R.id.createIngredient ->{
+                val intent = Intent(this, CreateIngredientActivity::class.java)
+                startActivity(intent)
+            }
+
+            else ->{
+                Timber.e("Options item selected: ${item.title}")
+            }
+
+        }
 
         return super.onOptionsItemSelected(item)
     }
 
-    override fun onBackPressed() {
-        super.onBackPressed()
-
-    }
 }

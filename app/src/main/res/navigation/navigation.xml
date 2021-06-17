@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation"
-    app:startDestination="@id/createCocktailFragment">
+    app:startDestination="@id/cocktailFragment">
     <fragment
         android:id="@+id/ingredientFragment"
         android:name="com.example.hammered.ingredients.IngredientFragment"
@@ -12,9 +12,6 @@
         <action
             android:id="@+id/from_ingredient_to_ingredient_details"
             app:destination="@id/ingredientDetailsFragment" />
-        <action
-            android:id="@+id/ingredient_to_create"
-            app:destination="@id/createIngredientFragment" />
     </fragment>
     <fragment
         android:id="@+id/cocktailFragment"
@@ -54,18 +51,4 @@
             android:id="@+id/ingredient_details_to_cocktail_details"
             app:destination="@id/cocktailDetailFragment" />
     </fragment>
-    <fragment
-        android:id="@+id/createIngredientFragment"
-        android:name="com.example.hammered.ingredients.createIngredient.CreateIngredientFragment"
-        android:label="fragment_create_ingredient"
-        tools:layout="@layout/fragment_create_ingredient" >
-        <action
-            android:id="@+id/create_to_ingredient"
-            app:destination="@id/ingredientFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/createCocktailFragment"
-        android:name="com.example.hammered.cocktail.createCocktail.CreateCocktailFragment"
-        android:label="CreateCocktailFragment"
-        tools:layout="@layout/fragment_create_cocktail"/>
 </navigation>
