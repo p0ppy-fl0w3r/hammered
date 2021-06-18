@@ -1,38 +1,48 @@
 package com.example.hammered.ingredients.createIngredient
-import android.app.AlertDialog
+
+import android.app.Activity
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
+import com.bumptech.glide.Glide
 import com.example.hammered.R
 import com.example.hammered.databinding.ActivityCreateIngredientBinding
+import com.example.hammered.dialog.CancelAlertDialog
+import com.example.hammered.dialog.WarningDialog
 import com.example.hammered.entities.Ingredient
 
-class CreateIngredientActivity : AppCompatActivity() {
+class CreateIngredientActivity : AppCompatActivity(), CancelAlertDialog.NoticeDialogListener {
     private var imageUrl = ""
 
-    private val result = registerForActivityResult(ActivityResultContracts.GetContent()) {
-        imageUrl = it.toString()
-    }
+    private val resultLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            if (it.resultCode == Activity.RESULT_OK) {
+                imageUrl = it.data?.data.toString()
+                val newCocktailImage = binding.addIngredientImage
+                // Display the selected image in the add image button
+                Glide.with(this).load(imageUrl).into(newCocktailImage)
+            }
+        }
 
-    lateinit var binding: ActivityCreateIngredientBinding
+    private lateinit var binding: ActivityCreateIngredientBinding
 
-    val viewModel: CreateIngredientViewModel by lazy {
+    private val viewModel: CreateIngredientViewModel by lazy {
         ViewModelProvider(this).get(CreateIngredientViewModel::class.java)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-    
-
         binding =
             DataBindingUtil.setContentView(this, R.layout.activity_create_ingredient)
 
         getImage()
-
         saveIngredient()
+        cancelAndGoBack()
 
         viewModel.newIngredient.observe(this) {
             if (it != null) {
@@ -41,13 +51,27 @@ class CreateIngredientActivity : AppCompatActivity() {
                 finish()
             }
         }
-        
+
+        viewModel.ingredientExists.observe(this) {
+            if (it == true) {
+                WarningDialog(R.layout.ingredient_exists_dialog).show(
+                    supportFragmentManager,
+                    "IngredientExistsWarning"
+                )
+                viewModel.checkedIngredient()
+            }
+        }
     }
 
     private fun getImage() {
         binding.addIngredientImage.setOnClickListener {
+            val result = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+                addCategory(Intent.CATEGORY_OPENABLE)
+                type = "image/*"
+            }
 
-            result.launch("image/*")
+            resultLauncher.launch(result)
+
         }
     }
 
@@ -66,21 +90,25 @@ class CreateIngredientActivity : AppCompatActivity() {
                     ingredient_image = imageUrl
                 )
 
-                viewModel.addIngredient(mIngredient)
+                viewModel.checkIngredient(mIngredient)
             }
             else {
-                // TODO change to a custom dialog
-                AlertDialog.Builder(this)
-                    .setMessage("Ingredient name is empty!!")
-                    .setTitle("Warning")
-                    .setCancelable(true)
-                    .setNegativeButton("Ok") { dialog, _ ->
-                        dialog.cancel()
-                    }
-                    .create()
-                    .show()
+                WarningDialog(R.layout.warning_dialog_layout).show(
+                    supportFragmentManager,
+                    "WarningDialog"
+                )
             }
         }
+    }
+
+    private fun cancelAndGoBack() {
+        binding.createIngredientBack.setOnClickListener {
+            CancelAlertDialog("ingredient").show(supportFragmentManager, "CancelAlertDialog")
+        }
+    }
+
+    override fun onDialogPositiveClick(dialog: DialogFragment) {
+        finish()
     }
 
 }

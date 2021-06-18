@@ -9,7 +9,7 @@
 
         <variable
             name="refCocktail"
-            type="com.example.hammered.wrappers.RefItemWrapper&lt;CocktailData&gt;" />
+            type="com.example.hammered.entities.relations.CocktailWithIngredient" />
 
 
         <variable
@@ -38,7 +38,7 @@
                 android:layout_width="@dimen/circular_image_width"
                 android:layout_height="@dimen/circular_image_height"
                 android:padding="1.8dp"
-                app:imageSource="@{refCocktail.item.cocktail_image}"
+                app:imageSource="@{refCocktail.cocktail.cocktail_image}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -54,6 +54,7 @@
                 android:layout_margin="8dp"
                 android:orientation="vertical"
                 app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/detailsIsMakable"
                 app:layout_constraintStart_toEndOf="@+id/details_cocktail_image"
                 app:layout_constraintTop_toTopOf="parent">
 
@@ -61,11 +62,40 @@
                     android:id="@+id/details_ingredient_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{refCocktail.item.cocktail_name}"
+                    android:text="@{refCocktail.cocktail.cocktail_name}"
                     android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                     tools:text="Hamburger" />
 
+                <TextView
+                    android:id="@+id/details_cocktail_items"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    app:ingredientList="@{refCocktail.ingredients}"
+                    tools:text="Make pizza out of it" />
+
             </LinearLayout>
+
+            <ImageView
+                android:id="@+id/detailsIsMakable"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/tick_info"
+                app:isMakable="@{refCocktail.ingredients}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/details_linear_layout"
+                app:layout_constraintTop_toTopOf="@+id/details_linear_layout"
+                app:srcCompat="@drawable/tick" />
+
+            <ImageView
+                android:id="@+id/detailsFavoriteDrink"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:contentDescription="@string/tick_info"
+                app:isFavourite="@{refCocktail.cocktail.favorite}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:srcCompat="@drawable/star" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

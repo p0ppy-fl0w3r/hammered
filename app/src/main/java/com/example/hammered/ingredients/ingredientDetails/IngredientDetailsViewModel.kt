@@ -8,17 +8,19 @@ import androidx.lifecycle.viewModelScope
 import com.example.hammered.cocktail.CocktailData
 import com.example.hammered.database.CocktailDatabase
 import com.example.hammered.entities.Ingredient
+import com.example.hammered.entities.relations.CocktailWithIngredient
 import com.example.hammered.repository.CocktailRepository
 import com.example.hammered.wrappers.RefItemWrapper
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 class IngredientDetailsViewModel(application: Application) : AndroidViewModel(application) {
 
     private val repository = CocktailRepository(CocktailDatabase.getDatabase(application))
 
-    private val _cocktailRefLiveData = MutableLiveData<List<RefItemWrapper<CocktailData>>>()
+    private val _cocktailRefLiveData = MutableLiveData<List<CocktailWithIngredient>>()
 
-    val cocktailRefLiveData: LiveData<List<RefItemWrapper<CocktailData>>>
+    val cocktailRefLiveData: LiveData<List<CocktailWithIngredient>>
         get() = _cocktailRefLiveData
 
     private val _currentIngredient = MutableLiveData<Ingredient?>()
@@ -29,14 +31,12 @@ class IngredientDetailsViewModel(application: Application) : AndroidViewModel(ap
 
     fun getFromIngredient(name: String) {
         viewModelScope.launch {
-            val allIngredientRef = mutableListOf<RefItemWrapper<CocktailData>>()
+            val allIngredientRef = mutableListOf<CocktailWithIngredient>()
             val allRefFromCocktail = repository.getRefFromIngredient(name)
 
             for (ref in allRefFromCocktail) {
-                // TODO change Cocktail to CocktailWithIngredient.
-                val cocktail = repository.getCocktail(ref.cocktail_id)
-                val cocktailRef = RefItemWrapper(cocktail!!.asData(), ref)
-                allIngredientRef.add(cocktailRef)
+                val cocktailWithIngredient = repository.getCocktailWithIngredient(ref.cocktail_id)
+                allIngredientRef.add(cocktailWithIngredient)
             }
             _cocktailRefLiveData.value = allIngredientRef
         }
@@ -55,7 +55,7 @@ class IngredientDetailsViewModel(application: Application) : AndroidViewModel(ap
         }
     }
 
-    fun changeInStock(){
+    fun changeInStock() {
         viewModelScope.launch {
             val mIngredient = _currentIngredient.value!!
             mIngredient.inStock = !mIngredient.inStock

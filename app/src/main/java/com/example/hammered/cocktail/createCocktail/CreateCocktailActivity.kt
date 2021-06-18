@@ -2,6 +2,8 @@ package com.example.hammered.cocktail.createCocktail
 
 import android.animation.ArgbEvaluator
 import android.animation.ObjectAnimator
+import android.app.Activity
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -11,27 +13,34 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.get
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.example.hammered.Constants
 import com.example.hammered.R
 import com.example.hammered.databinding.ActivityCreateCocktailBinding
+import com.example.hammered.dialog.CancelAlertDialog
 import timber.log.Timber
 
 
 // TODO improve the layout of this activity
-class CreateCocktailActivity : AppCompatActivity() {
+class CreateCocktailActivity : AppCompatActivity(), CancelAlertDialog.NoticeDialogListener {
 
     private lateinit var binding: ActivityCreateCocktailBinding
 
     private var imageUrl = ""
 
-    private val result = registerForActivityResult(ActivityResultContracts.GetContent()) {
-        imageUrl = it.toString()
-        val newCocktailImage = binding.addCocktailImage
-        // Display the selected image in the add image button
-        Glide.with(this).load(imageUrl).into(newCocktailImage)
-    }
+    private val resultLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            if (it.resultCode == Activity.RESULT_OK) {
+                imageUrl = it.data?.data.toString()
+                val newCocktailImage = binding.addCocktailImage
+                // Display the selected image in the add image button
+                Glide.with(this).load(imageUrl).into(newCocktailImage)
+            }
+        }
+
+
 
     private val viewModel: CreateCocktailViewModel by lazy {
         ViewModelProvider(this).get(CreateCocktailViewModel::class.java)
@@ -43,6 +52,7 @@ class CreateCocktailActivity : AppCompatActivity() {
 
         binding =
             DataBindingUtil.setContentView(this, R.layout.activity_create_cocktail)
+
 
         val nestedScrollView = binding.nestedScrollView
         val ingredientRecycler = binding.ingRefRecycler
@@ -223,6 +233,7 @@ class CreateCocktailActivity : AppCompatActivity() {
         addIngredient()
         addStep()
         saveCocktail()
+        cancelAndGoBack()
 
     }
 
@@ -261,7 +272,20 @@ class CreateCocktailActivity : AppCompatActivity() {
 
     private fun getImage() {
         binding.addCocktailImage.setOnClickListener {
-            result.launch("image/*")
+            val result = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+                addCategory(Intent.CATEGORY_OPENABLE)
+                type = "image/*"
+            }
+
+            resultLauncher.launch(result)
+        }
+    }
+
+    private fun cancelAndGoBack(){
+        binding.createCocktailBack.setOnClickListener {
+            Timber.e("Back clicked")
+            CancelAlertDialog("cocktail").show(supportFragmentManager, "CancelAlertDialog")
+
         }
     }
 
@@ -279,5 +303,9 @@ class CreateCocktailActivity : AppCompatActivity() {
         animation.repeatCount = 1
         animation.setEvaluator(ArgbEvaluator())
         animation.start()
+    }
+
+    override fun onDialogPositiveClick(dialog: DialogFragment) {
+        finish()
     }
 }

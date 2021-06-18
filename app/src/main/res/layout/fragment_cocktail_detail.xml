@@ -87,6 +87,15 @@
                 android:text="@{viewModel.currentCocktail.steps}"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 tools:text="1. Add cheese to tomato.\n\n2. Add butter to cheese" />
+            <TextView
+                android:id="@+id/ingredient_required_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:padding="8dp"
+                android:text="@string/following_ingredients_required"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                android:textColor="@color/color_black"/>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/cocktailDetailRecycler"

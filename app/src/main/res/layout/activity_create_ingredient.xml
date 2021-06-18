@@ -3,78 +3,117 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        tools:context=".ingredients.createIngredient.CreateIngredientFragment">
+        android:orientation="vertical">
 
-        <EditText
-            android:id="@+id/textIngredientName"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:ems="10"
-            android:hint="@string/ingredient_name_edit_text"
-            android:importantForAutofill="no"
-            android:inputType="textPersonName"
-            android:paddingStart="2dp"
-            android:paddingEnd="2dp"
-            app:layout_constraintEnd_toStartOf="@+id/addIngredientImage"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/createIngredientToolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:layout_marginBottom="4dp"
+            android:background="?attr/colorPrimary"
+            android:theme="@style/ToolbarTheme">
 
-        <ImageView
-            android:id="@+id/addIngredientImage"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="2dp"
-            android:contentDescription="@string/add_ingredient_image"
-            android:src="@android:drawable/ic_menu_camera"
-            app:layout_constraintBottom_toBottomOf="@+id/textIngredientName"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/textIngredientName"
-            app:layout_constraintTop_toTopOf="@+id/textIngredientName" />
+            <ImageView
+                android:id="@+id/createIngredientBack"
+                android:layout_width="@dimen/back_button_width"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="12dp"
+                android:background="?actionBarItemBackground"
+                android:clickable="true"
+                android:contentDescription="@string/cancel_creating_ingredient"
+                android:foregroundGravity="center_horizontal"
+                android:scaleType="center"
+                android:src="@drawable/ic_back" />
 
-        <EditText
-            android:id="@+id/ingredientDescriptionText"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:background="@drawable/detail_text_back"
-            android:ems="10"
-            android:gravity="start|top"
-            android:hint="@string/ingredient_description_edit_text"
-            android:importantForAutofill="no"
-            android:inputType="textMultiLine"
-            android:lines="5"
-            android:padding="4dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textIngredientName" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/create_ingredient_toolbar"
+                android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Title" />
+        </androidx.appcompat.widget.Toolbar>
 
-        <CheckBox
-            android:id="@+id/createInStock"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@string/add_ingredient_check_msg"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ingredientDescriptionText" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            tools:context=".ingredients.createIngredient.CreateIngredientFragment">
 
-        <Button
-            android:id="@+id/createSave"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@string/save"
-            android:textAllCaps="false"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/createInStock" />
+            <EditText
+                android:id="@+id/textIngredientName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:ems="10"
+                android:hint="@string/ingredient_name_edit_text"
+                android:importantForAutofill="no"
+                android:inputType="textPersonName"
+                android:paddingStart="2dp"
+                android:paddingEnd="2dp"
+                app:layout_constraintEnd_toStartOf="@+id/addIngredientImage"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/addIngredientImage"
+                android:layout_width="@dimen/circular_image_width"
+                android:layout_height="@dimen/circular_image_height"
+                android:layout_marginStart="12dp"
+                android:layout_marginTop="2dp"
+                android:contentDescription="@string/add_ingredient_image"
+                android:padding="1.8dp"
+                android:scaleType="center"
+                android:src="@android:drawable/ic_menu_camera"
+                app:layout_constraintBottom_toBottomOf="@+id/textIngredientName"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/textIngredientName"
+                app:layout_constraintTop_toTopOf="@+id/textIngredientName"
+                app:shapeAppearanceOverlay="@style/roundedImage"
+                app:strokeColor="@color/secondaryDarkColor"
+                app:strokeWidth="2dp" />
+
+            <EditText
+                android:id="@+id/ingredientDescriptionText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/detail_text_back"
+                android:ems="10"
+                android:gravity="start|top"
+                android:hint="@string/ingredient_description_edit_text"
+                android:importantForAutofill="no"
+                android:inputType="textMultiLine"
+                android:lines="5"
+                android:padding="4dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textIngredientName" />
+
+            <CheckBox
+                android:id="@+id/createInStock"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/add_ingredient_check_msg"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/ingredientDescriptionText" />
+
+            <Button
+                android:id="@+id/createSave"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/save"
+                android:textAllCaps="false"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/createInStock" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
 </layout>

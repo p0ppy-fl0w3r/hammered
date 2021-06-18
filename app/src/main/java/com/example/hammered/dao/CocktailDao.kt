@@ -61,7 +61,7 @@ interface CocktailDao {
 
     @Transaction
     @Query("SELECT * FROM cocktail WHERE cocktail_id = :cocktail_id")
-    suspend fun getIngredientFromCocktail(cocktail_id: Long): List<CocktailWithIngredient>
+    suspend fun getIngredientFromCocktail(cocktail_id: Long): CocktailWithIngredient
 
     @Transaction
     @Query("SELECT * FROM cocktail")

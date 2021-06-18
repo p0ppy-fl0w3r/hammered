@@ -28,7 +28,7 @@
     <string name="cocktail_is_favourite">Cocktail is favourite.</string>
     <string name="edit_cocktail">Edit cocktail</string>
     <string name="used_in">%1$s is used in :</string>
-    <string name="ingredient_name_edit_text">Ingredient Name...</string>
+    <string name="ingredient_name_edit_text">Ingredient Name…</string>
     <string name="ingredient_description_edit_text">Ingredient Description</string>
     <string name="add_ingredient_check_msg">You have this ingredient in stock.</string>
     <string name="save">Save</string>
@@ -43,6 +43,14 @@
     <string name="remove">Remove</string>
     <string name="add_step">Add step.</string>
     <string name="add_ingredient">Add ingredient</string>
-    <string name="add_step_hint">Add step...</string>
+    <string name="add_step_hint">Add step…</string>
     <string name="remove_step_desc">Remove the current step.</string>
+    <string name="following_ingredients_required">The following ingredients are required:</string>
+    <string name="create_cocktail_toolbar">Create Cocktail</string>
+    <string name="create_cocktail_back">Cancel creating cocktail and go back.</string>
+    <string name="cancel_creating_ingredient">Cancel creating ingredient and go back.</string>
+    <string name="create_ingredient_toolbar">Create Ingredient</string>
+    <string name="warning">Warning!</string>
+    <string name="ingredient_name_empty">Ingredient name cannot be empty!</string>
+    <string name="ingredient_exists">An ingredient with a similar name already exists!!</string>
 </resources>

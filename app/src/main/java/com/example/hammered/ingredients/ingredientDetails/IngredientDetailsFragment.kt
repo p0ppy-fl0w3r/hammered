@@ -44,7 +44,7 @@ class IngredientDetailsFragment : Fragment() {
 
         val adapter = IngredientDetailsAdapter(IngredientDetailsClickListener {
             findNavController().navigate(
-                IngredientDetailsFragmentDirections.ingredientDetailsToCocktailDetails(it.item)
+                IngredientDetailsFragmentDirections.ingredientDetailsToCocktailDetails(it.cocktail.asData())
             )
         })
 

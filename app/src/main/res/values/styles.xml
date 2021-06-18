@@ -11,7 +11,8 @@
         <item name="colorOnSecondary">@color/secondaryTextColor</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
-        <!-- Customize your theme here. -->
+        <!-- Alert dialog theme -->
+        <item name="alertDialogTheme">@style/cancelAlertDialogStyle</item>
     </style>
 
     <style name="DrawerTheme" parent="ThemeOverlay.AppCompat.Light">
@@ -30,6 +31,19 @@
     <style name="chipStyle" parent="Widget.MaterialComponents.Chip.Choice">
         <item name="android:textColor">@color/primaryTextColor</item>
         <item name="chipBackgroundColor">@color/chip_state_color</item>
+    </style>
+
+    <style name="cancelAlertDialogStyle" parent="ThemeOverlay.MaterialComponents.Dialog.Alert">
+        <item name="buttonBarNegativeButtonStyle">@style/NegativeButtonStyle</item>
+        <item name="buttonBarPositiveButtonStyle">@style/PositiveButtonStyle</item>
+    </style>
+
+    <style name="NegativeButtonStyle" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
+        <item name="android:textColor">@color/secondaryDarkColor</item>
+    </style>
+
+    <style name="PositiveButtonStyle" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
+        <item name="android:textColor">@color/secondaryDarkColor</item>
     </style>
 
 </resources>

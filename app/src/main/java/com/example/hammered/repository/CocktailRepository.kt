@@ -3,11 +3,10 @@ package com.example.hammered.repository
 import com.example.hammered.database.CocktailDatabase
 import com.example.hammered.entities.Cocktail
 import com.example.hammered.entities.Ingredient
+import com.example.hammered.entities.relations.CocktailWithIngredient
 import com.example.hammered.entities.relations.IngredientCocktailRef
 import com.example.hammered.entities.relations.IngredientWithCocktail
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.withContext
 import timber.log.Timber
 
@@ -110,6 +109,10 @@ class CocktailRepository(private val database: CocktailDatabase) {
 
     suspend fun getCocktail(id: Long): Cocktail? {
         return database.cocktailDao.getCocktail(id)
+    }
+
+    suspend fun getCocktailWithIngredient(id: Long): CocktailWithIngredient {
+        return database.cocktailDao.getIngredientFromCocktail(id)
     }
 
     suspend fun getAllIngredient(): List<Ingredient> {

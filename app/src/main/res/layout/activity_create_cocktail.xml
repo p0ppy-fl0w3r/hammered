@@ -3,138 +3,171 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <androidx.core.widget.NestedScrollView
-        android:id="@+id/nestedScrollView"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/createCocktailToolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginEnd="8dp">
-
-            <LinearLayout
-                android:id="@+id/textCocktailNameContainer"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                app:layout_constraintEnd_toStartOf="@+id/addCocktailImage"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-                <EditText
-                    android:id="@+id/textCocktailName"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="8dp"
-                    android:ems="10"
-                    android:hint="@string/cocktail_name_hint"
-                    android:importantForAutofill="no"
-                    android:inputType="textPersonName"
-                    android:paddingStart="2dp"
-                    android:paddingEnd="2dp" />
-            </LinearLayout>
-
-
-            <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/addCocktailImage"
-                android:layout_width="@dimen/circular_image_width"
-                android:layout_height="@dimen/circular_image_height"
-                android:layout_marginStart="12dp"
-                android:layout_marginTop="2dp"
-                android:contentDescription="@string/add_ingredient_image"
-                android:padding="1.8dp"
-                android:scaleType="center"
-                android:src="@android:drawable/ic_menu_camera"
-                app:layout_constraintBottom_toBottomOf="@+id/textCocktailNameContainer"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.5"
-                app:layout_constraintStart_toEndOf="@+id/textCocktailNameContainer"
-                app:layout_constraintTop_toTopOf="@+id/textCocktailNameContainer"
-                app:shapeAppearanceOverlay="@style/roundedImage"
-                app:strokeColor="@color/secondaryDarkColor"
-                app:strokeWidth="2dp" />
-
-            <EditText
-                android:id="@+id/cocktailDescriptionText"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:background="@drawable/detail_text_back"
-                android:ems="10"
-                android:gravity="start|top"
-                android:hint="@string/cocktail_description"
-                android:importantForAutofill="no"
-                android:inputType="textMultiLine"
-                android:lines="5"
-                android:padding="4dp"
-                app:layout_constraintBottom_toTopOf="@id/textContainerLayout"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textCocktailNameContainer" />
-
-            <LinearLayout
-                android:id="@+id/textContainerLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                app:layout_constraintBottom_toTopOf="@id/addStep"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/cocktailDescriptionText">
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/stepsRecycler"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    tools:itemCount="1"
-                    tools:listitem="@layout/cocktail_steps_item" />
-            </LinearLayout>
-
+            android:layout_height="?attr/actionBarSize"
+            android:layout_marginBottom="4dp"
+            android:background="?attr/colorPrimary"
+            android:theme="@style/ToolbarTheme">
 
             <ImageView
-                android:id="@+id/addStep"
+                android:id="@+id/createCocktailBack"
+                android:layout_width="@dimen/back_button_width"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="4dp"
+                android:background="?actionBarItemBackground"
+                android:clickable="true"
+                android:contentDescription="@string/create_cocktail_back"
+                android:foregroundGravity="center_horizontal"
+                android:scaleType="center"
+                android:src="@drawable/ic_back" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/create_cocktail_toolbar"
+                android:textAppearance="@style/TextAppearance.AppCompat.Widget.ActionBar.Title" />
+        </androidx.appcompat.widget.Toolbar>
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/nestedScrollView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:contentDescription="@string/add_step"
-                android:src="@drawable/ic_add"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textContainerLayout" />
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp">
 
-            <LinearLayout
-                android:id="@+id/recyclerContainer"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/addStep">
+                <LinearLayout
+                    android:id="@+id/textCocktailNameContainer"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintEnd_toStartOf="@+id/addCocktailImage"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/ingRefRecycler"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    tools:itemCount="1"
-                    tools:listitem="@layout/create_cocktail_ingredient_item" />
+                    <EditText
+                        android:id="@+id/textCocktailName"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="8dp"
+                        android:ems="10"
+                        android:hint="@string/cocktail_name_hint"
+                        android:importantForAutofill="no"
+                        android:inputType="textPersonName"
+                        android:paddingStart="2dp"
+                        android:paddingEnd="2dp" />
+                </LinearLayout>
 
-                <ImageView
-                    android:id="@+id/addIngredient"
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/addCocktailImage"
+                    android:layout_width="@dimen/circular_image_width"
+                    android:layout_height="@dimen/circular_image_height"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginTop="2dp"
+                    android:contentDescription="@string/add_ingredient_image"
+                    android:padding="1.8dp"
+                    android:scaleType="center"
+                    android:src="@android:drawable/ic_menu_camera"
+                    app:layout_constraintBottom_toBottomOf="@+id/textCocktailNameContainer"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toEndOf="@+id/textCocktailNameContainer"
+                    app:layout_constraintTop_toTopOf="@+id/textCocktailNameContainer"
+                    app:shapeAppearanceOverlay="@style/roundedImage"
+                    app:strokeColor="@color/secondaryDarkColor"
+                    app:strokeWidth="2dp" />
+
+                <EditText
+                    android:id="@+id/cocktailDescriptionText"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:background="@drawable/detail_text_back"
+                    android:ems="10"
+                    android:gravity="start|top"
+                    android:hint="@string/cocktail_description"
+                    android:importantForAutofill="no"
+                    android:inputType="textMultiLine"
+                    android:lines="5"
+                    android:padding="4dp"
+                    app:layout_constraintBottom_toTopOf="@id/textContainerLayout"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textCocktailNameContainer" />
+
+                <LinearLayout
+                    android:id="@+id/textContainerLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:contentDescription="@string/add_ingredient"
-                    android:src="@drawable/ic_add" />
+                    android:orientation="vertical"
+                    app:layout_constraintBottom_toTopOf="@id/addStep"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/cocktailDescriptionText">
 
-                <Button
-                    android:id="@+id/saveCocktail"
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/stepsRecycler"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        tools:itemCount="1"
+                        tools:listitem="@layout/cocktail_steps_item" />
+                </LinearLayout>
+
+
+                <ImageView
+                    android:id="@+id/addStep"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/add_step"
+                    android:src="@drawable/ic_add"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textContainerLayout" />
+
+                <LinearLayout
+                    android:id="@+id/recyclerContainer"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:text="@string/save" />
-            </LinearLayout>
+                    android:orientation="vertical"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/addStep">
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.core.widget.NestedScrollView>
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/ingRefRecycler"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        tools:itemCount="1"
+                        tools:listitem="@layout/create_cocktail_ingredient_item" />
+
+                    <ImageView
+                        android:id="@+id/addIngredient"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:contentDescription="@string/add_ingredient"
+                        android:src="@drawable/ic_add" />
+
+                    <Button
+                        android:id="@+id/saveCocktail"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text="@string/save" />
+                </LinearLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.core.widget.NestedScrollView>
+    </LinearLayout>
 </layout>
