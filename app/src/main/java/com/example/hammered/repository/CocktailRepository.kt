@@ -107,6 +107,14 @@ class CocktailRepository(private val database: CocktailDatabase) {
         return database.cocktailDao.getIngredient(name)
     }
 
+    suspend fun getIngredientByName(name: String): List<IngredientWithCocktail>{
+        return database.cocktailDao.getIngredientFromName(name)
+    }
+
+    suspend fun getCocktailByName(name: String): List<CocktailWithIngredient>{
+        return database.cocktailDao.getCocktailFromName(name)
+    }
+
     suspend fun getCocktail(id: Long): Cocktail? {
         return database.cocktailDao.getCocktail(id)
     }

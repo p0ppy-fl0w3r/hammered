@@ -8,6 +8,8 @@ import com.example.hammered.entities.relations.CocktailWithIngredient
 import com.example.hammered.entities.relations.IngredientCocktailRef
 import com.example.hammered.entities.relations.IngredientWithCocktail
 
+// TODO check this https://medium.com/androiddevelopers/room-flow-273acffe5b57
+
 @Dao
 interface CocktailDao {
 
@@ -28,6 +30,12 @@ interface CocktailDao {
 
     @Query("SElECT cocktail_id FROM Cocktail ORDER BY cocktail_id DESC LIMIT 1")
     suspend fun getLastCocktailId(): Long
+
+    @Query("SELECT * FROM Cocktail WHERE cocktail_name LIKE :name")
+    suspend fun getCocktailFromName(name: String): List<CocktailWithIngredient>
+
+    @Query("SElECT * FROM Ingredient WHERE ingredient_name LIKE :name")
+    suspend fun getIngredientFromName(name: String): List<IngredientWithCocktail>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertIngredientCocktailRef(ingredientCocktailRef: IngredientCocktailRef)

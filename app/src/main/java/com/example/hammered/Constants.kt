@@ -29,4 +29,8 @@ object Constants {
     const val NO_INGREDIENT_IN_DATABASE = -3
     const val QUANTITY_FIELD_EMPTY = -4
     const val INGREDIENT_NAME_EMPTY = -5
+
+    // Search item ids
+    const val SEARCH_COCKTAIL = 1
+    const val SEARCH_INGREDIENT = 2
 }

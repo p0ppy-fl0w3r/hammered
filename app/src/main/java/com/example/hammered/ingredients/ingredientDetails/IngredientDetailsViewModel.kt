@@ -5,12 +5,10 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.example.hammered.cocktail.CocktailData
 import com.example.hammered.database.CocktailDatabase
 import com.example.hammered.entities.Ingredient
 import com.example.hammered.entities.relations.CocktailWithIngredient
 import com.example.hammered.repository.CocktailRepository
-import com.example.hammered.wrappers.RefItemWrapper
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -44,6 +42,10 @@ class IngredientDetailsViewModel(application: Application) : AndroidViewModel(ap
 
     fun setIngredient(ingredient: Ingredient) {
         _currentIngredient.value = ingredient
+
+        viewModelScope.launch {
+            _currentIngredient.value = repository.getIngredient(ingredient.ingredient_name)
+        }
     }
 
     fun changeInCart() {
@@ -58,7 +60,6 @@ class IngredientDetailsViewModel(application: Application) : AndroidViewModel(ap
     fun changeInStock() {
         viewModelScope.launch {
             val mIngredient = _currentIngredient.value!!
-            mIngredient.inStock = !mIngredient.inStock
             repository.updateIngredient(mIngredient)
             _currentIngredient.value = mIngredient
         }

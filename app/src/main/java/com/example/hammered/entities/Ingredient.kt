@@ -4,6 +4,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.example.hammered.ingredients.IngredientData
 
+// TODO add id to Ingredient
 @Entity
 data class Ingredient(
     @PrimaryKey(autoGenerate = false) var ingredient_name: String,

@@ -53,4 +53,5 @@
     <string name="warning">Warning!</string>
     <string name="ingredient_name_empty">Ingredient name cannot be empty!</string>
     <string name="ingredient_exists">An ingredient with a similar name already exists!!</string>
+    <string name="title_search">Search</string>
 </resources>

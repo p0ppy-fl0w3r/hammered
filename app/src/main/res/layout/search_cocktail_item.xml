@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="cocktailWithIngredient"
+            type="com.example.hammered.entities.relations.CocktailWithIngredient" />
+
+        <variable
+            name="cocktailSearchClickListener"
+            type="com.example.hammered.search.SearchItemClickListener" />
+    </data>
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/my_item_margin"
+        android:clickable="true"
+        android:elevation="4dp"
+        android:onClick="@{()-> cocktailSearchClickListener.onClick(cocktailWithIngredient)}"
+        app:cardCornerRadius="8dp"
+        app:rippleColor="@color/secondaryLightColor">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="4dp">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/search_cocktail_image"
+                android:layout_width="@dimen/circular_image_width"
+                android:layout_height="@dimen/circular_image_height"
+                android:padding="1.8dp"
+                app:imageSource="@{cocktailWithIngredient.cocktail.cocktail_image}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:shapeAppearanceOverlay="@style/roundedImage"
+                app:strokeColor="@color/secondaryDarkColor"
+                app:strokeWidth="2dp"
+                tools:srcCompat="@drawable/summer_food" />
+
+            <LinearLayout
+                android:id="@+id/linearLayout"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_margin="8dp"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/search_cocktail_image"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/search_cocktail_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{cocktailWithIngredient.cocktail.cocktail_name}"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                    tools:text="Hamburger" />
+
+                <TextView
+                    android:id="@+id/cocktail_drinks"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    app:ingredientList="@{cocktailWithIngredient.ingredients}"
+                    tools:text="Make pizza out of it" />
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </com.google.android.material.card.MaterialCardView>
+</layout>

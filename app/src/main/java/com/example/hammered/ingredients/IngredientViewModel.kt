@@ -1,7 +1,6 @@
 package com.example.hammered.ingredients
 
 import android.app.Application
-import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -10,9 +9,8 @@ import com.example.hammered.database.CocktailDatabase
 import com.example.hammered.entities.relations.IngredientWithCocktail
 import com.example.hammered.repository.CocktailRepository
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
-class IngredientViewModel(application: Application) : AndroidViewModel(application) {
+class IngredientViewModel(application: Application, ingredient_name: String) : AndroidViewModel(application) {
 
     private val _ingredientData = MutableLiveData<List<IngredientWithCocktail>?>()
 

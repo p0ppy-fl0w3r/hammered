@@ -28,7 +28,7 @@
 
                 <CheckBox
                     android:id="@+id/detail_ingredient_stock_check"
-                    android:checked="@{viewModel.currentIngredient.inStock}"
+                    android:checked="@={viewModel.currentIngredient.inStock}"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginEnd="8dp" />

@@ -15,8 +15,14 @@ import com.example.hammered.databinding.ActivityCreateIngredientBinding
 import com.example.hammered.dialog.CancelAlertDialog
 import com.example.hammered.dialog.WarningDialog
 import com.example.hammered.entities.Ingredient
+import com.example.hammered.ingredients.IngredientData
+
+
+// TODO change the ingredient entity to have an id.
+// FIXME the edit ingredient function is incomplete
 
 class CreateIngredientActivity : AppCompatActivity(), CancelAlertDialog.NoticeDialogListener {
+
     private var imageUrl = ""
 
     private val resultLauncher =
@@ -43,6 +49,18 @@ class CreateIngredientActivity : AppCompatActivity(), CancelAlertDialog.NoticeDi
         getImage()
         saveIngredient()
         cancelAndGoBack()
+
+        if (intent?.extras?.get("ingredient") != null) {
+            val mIngredient = intent?.extras?.get("ingredient") as IngredientData
+            imageUrl = mIngredient.ingredient_image
+            binding.textIngredientName.setText(mIngredient.ingredient_name)
+            binding.ingredientDescriptionText.setText(mIngredient.ingredient_description)
+            binding.createInStock.isChecked = mIngredient.inStock
+
+            if(imageUrl.isNotBlank()){
+                Glide.with(this).load(imageUrl).into(binding.addIngredientImage)
+            }
+        }
 
         viewModel.newIngredient.observe(this) {
             if (it != null) {
