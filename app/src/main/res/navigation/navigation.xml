@@ -7,7 +7,7 @@
     <fragment
         android:id="@+id/ingredientFragment"
         android:name="com.example.hammered.ingredients.IngredientFragment"
-        android:label="ingredient_fragment"
+
         tools:layout="@layout/ingredient_fragment">
         <action
             android:id="@+id/from_ingredient_to_ingredient_details"
@@ -16,7 +16,7 @@
     <fragment
         android:id="@+id/cocktailFragment"
         android:name="com.example.hammered.cocktail.CocktailFragment"
-        android:label="CocktailFragment"
+
         tools:layout="@layout/cocktail_fragment">
         <action
             android:id="@+id/action_cocktailFragment_to_cocktailDetailFragment"
@@ -25,12 +25,11 @@
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.example.hammered.settings.SettingsFragment"
-        android:label="settings_fragment"
         tools:layout="@layout/settings_fragment" />
     <fragment
         android:id="@+id/cocktailDetailFragment"
         android:name="com.example.hammered.cocktail.cocktailDetails.CocktailDetailFragment"
-        android:label="fragment_cocktail_detail"
+
         tools:layout="@layout/fragment_cocktail_detail">
         <argument
             android:name="cocktail"
@@ -42,7 +41,7 @@
     <fragment
         android:id="@+id/ingredientDetailsFragment"
         android:name="com.example.hammered.ingredients.ingredientDetails.IngredientDetailsFragment"
-        android:label="IngredientDetailsFragment"
+
         tools:layout="@layout/fragment_ingredient_details">
         <argument
             android:name="ingredient"

@@ -18,14 +18,14 @@ class CocktailRepository(private val database: CocktailDatabase) {
             if (database.cocktailDao.getIngredientCocktailRefCount() == 0) {
                 Timber.i("Insert started")
                 val ing1 =
-                    Ingredient("Lemon", "Nice", "file:///android_asset/lemon.png", true, false)
+                    Ingredient(1,"Lemon", "Nice", "file:///android_asset/lemon.png", true, false)
                 val ing2 =
-                    Ingredient("Salt", "Very nice", "file:///android_asset/salt.png", true, false)
+                    Ingredient(2,"Salt", "Very nice", "file:///android_asset/salt.png", true, false)
                 val ing3 =
-                    Ingredient("Water", "Nice", "file:///android_asset/water.jpg", true, false)
-                val ing4 = Ingredient("Gin", "Nice", "file:///android_asset/gin.png", false, true)
+                    Ingredient(3,"Water", "Nice", "file:///android_asset/water.jpg", true, false)
+                val ing4 = Ingredient(4,"Gin", "Nice", "file:///android_asset/gin.png", false, true)
                 val ing5 =
-                    Ingredient("Vodka", "Nice", "file:///android_asset/vodka.webp", false, true)
+                    Ingredient(5,"Vodka", "Nice", "file:///android_asset/vodka.webp", false, true)
 
                 val cok1 = Cocktail(
                     1,
@@ -60,17 +60,17 @@ class CocktailRepository(private val database: CocktailDatabase) {
                     database.cocktailDao.insertCocktail(i)
                 }
 
-                val ref1 = IngredientCocktailRef(1, "Lemon", 1.0f, "oz", false, false)
-                val ref2 = IngredientCocktailRef(1, "Salt", 1f, "oz", false, false)
-                val ref3 = IngredientCocktailRef(1, "Water", 3f, "oz", false, false)
-                val ref4 = IngredientCocktailRef(2, "Gin", 1f, "oz", true, false)
-                val ref5 = IngredientCocktailRef(2, "Water", 1f, "oz", false, false)
-                val ref6 = IngredientCocktailRef(2, "Vodka", 10f, "gram", false, false)
-                val ref7 = IngredientCocktailRef(2, "Lemon", 1f, "oz", true, false)
-                val ref8 = IngredientCocktailRef(3, "Lemon", 15f, "kilo", false, false)
+                val ref1 = IngredientCocktailRef(1, 1,"Lemon", 1.0f, "oz", false, false)
+                val ref2 = IngredientCocktailRef(1, 2,"Salt", 1f, "oz", false, false)
+                val ref3 = IngredientCocktailRef(1, 3,"Water", 3f, "oz", false, false)
+                val ref4 = IngredientCocktailRef(2, 4,"Gin", 1f, "oz", true, false)
+                val ref5 = IngredientCocktailRef(2, 3,"Water", 1f, "oz", false, false)
+                val ref6 = IngredientCocktailRef(2, 5,"Vodka", 10f, "gram", false, false)
+                val ref7 = IngredientCocktailRef(2, 1,"Lemon", 1f, "oz", true, false)
+                val ref8 = IngredientCocktailRef(3, 1,"Lemon", 15f, "kilo", false, false)
                 val ref9 =
-                    IngredientCocktailRef(3, "Water", 1f, "oz", true, true)
-                val ref10 = IngredientCocktailRef(3, "Salt", 1f, "oz", false, false)
+                    IngredientCocktailRef(3, 3,"Water", 1f, "oz", true, true)
+                val ref10 = IngredientCocktailRef(3, 2,"Salt", 1f, "oz", false, false)
 
                 for (i in arrayOf(
                     ref1,
@@ -103,7 +103,11 @@ class CocktailRepository(private val database: CocktailDatabase) {
         database.cocktailDao.insertIngredientCocktailRef(ingredientCocktailRef)
     }
 
-    suspend fun getIngredient(name: String): Ingredient? {
+    suspend fun getIngredient(id: Long): Ingredient? {
+        return database.cocktailDao.getIngredient(id)
+    }
+
+    suspend fun getIngredient(name: String): Ingredient?{
         return database.cocktailDao.getIngredient(name)
     }
 
@@ -131,12 +135,20 @@ class CocktailRepository(private val database: CocktailDatabase) {
         return database.cocktailDao.getLastCocktailId()
     }
 
+    suspend fun getLastIngredientId(): Long{
+        return database.cocktailDao.getLastIngredientId()
+    }
+
     suspend fun getRefFromCocktail(id: Long): List<IngredientCocktailRef> {
         return database.cocktailDao.getRefFromCocktail(id)
     }
 
     suspend fun getRefFromIngredient(name: String): List<IngredientCocktailRef> {
         return database.cocktailDao.getRefFromIngredient(name)
+    }
+
+    suspend fun getRefFromIngredientId(id: Long): List<IngredientCocktailRef>{
+        return database.cocktailDao.getRefFromIngredientId(id)
     }
 
     suspend fun updateCocktail(cocktail: Cocktail) {

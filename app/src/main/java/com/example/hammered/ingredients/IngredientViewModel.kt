@@ -5,12 +5,13 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.example.hammered.Constants
 import com.example.hammered.database.CocktailDatabase
 import com.example.hammered.entities.relations.IngredientWithCocktail
 import com.example.hammered.repository.CocktailRepository
 import kotlinx.coroutines.launch
 
-class IngredientViewModel(application: Application, ingredient_name: String) : AndroidViewModel(application) {
+class IngredientViewModel(application: Application) : AndroidViewModel(application) {
 
     private val _ingredientData = MutableLiveData<List<IngredientWithCocktail>?>()
 
@@ -28,11 +29,11 @@ class IngredientViewModel(application: Application, ingredient_name: String) : A
 
     fun checkChanged(currVal: IngredientWithCocktail, valueFrom: Int) {
         viewModelScope.launch {
-            if (valueFrom == 1) {
+            if (valueFrom == Constants.ITEM_IN_STOCK) {
                 currVal.ingredient.inStock = !currVal.ingredient.inStock
                 repository.updateIngredient(currVal.ingredient)
             }
-            else if (valueFrom == 3) {
+            else if (valueFrom == Constants.ITEM_IN_CART) {
                 currVal.ingredient.inCart = !currVal.ingredient.inCart
                 repository.updateIngredient(currVal.ingredient)
             }

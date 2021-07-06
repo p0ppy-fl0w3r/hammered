@@ -1,24 +1,23 @@
 package com.example.hammered.ingredients
 
-import com.example.hammered.cocktail.CocktailItem
 import com.example.hammered.entities.relations.IngredientWithCocktail
 
 sealed class IngredientItem {
     data class NormalIngredientItem(val ingredient: IngredientWithCocktail) : IngredientItem() {
-        override val id = ingredient.ingredient.ingredient_name
+        override val id = ingredient.ingredient.ingredient_id
     }
 
     data class IngredientInStock(val ingredient: IngredientWithCocktail) : IngredientItem() {
-        override val id = ingredient.ingredient.ingredient_name
+        override val id = ingredient.ingredient.ingredient_id
     }
 
     data class IngredientInCart(val ingredient: IngredientWithCocktail) : IngredientItem() {
-        override val id = ingredient.ingredient.ingredient_name
+        override val id = ingredient.ingredient.ingredient_id
     }
 
     class EmptyListItem() : IngredientItem() {
-        override val id = "b00164b3dd0bfb5f71135d8abodedEmptyList"
+        override val id = Long.MIN_VALUE
     }
 
-    abstract val id: String
+    abstract val id: Long
 }

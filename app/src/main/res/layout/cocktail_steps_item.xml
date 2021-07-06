@@ -29,6 +29,7 @@
             android:paddingEnd="2dp"
             android:textAlignment="center"
             android:layout_gravity="center"
+            android:gravity="center_horizontal"
             android:textColor="@color/color_black"
             android:textSize="12sp"
             tools:text="1" />

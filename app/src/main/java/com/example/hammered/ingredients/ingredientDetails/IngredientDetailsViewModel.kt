@@ -10,7 +10,6 @@ import com.example.hammered.entities.Ingredient
 import com.example.hammered.entities.relations.CocktailWithIngredient
 import com.example.hammered.repository.CocktailRepository
 import kotlinx.coroutines.launch
-import timber.log.Timber
 
 class IngredientDetailsViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -26,11 +25,10 @@ class IngredientDetailsViewModel(application: Application) : AndroidViewModel(ap
     val currentIngredient: LiveData<Ingredient?>
         get() = _currentIngredient
 
-
-    fun getFromIngredient(name: String) {
+    fun getFromIngredient(id: Long) {
         viewModelScope.launch {
             val allIngredientRef = mutableListOf<CocktailWithIngredient>()
-            val allRefFromCocktail = repository.getRefFromIngredient(name)
+            val allRefFromCocktail = repository.getRefFromIngredientId(id)
 
             for (ref in allRefFromCocktail) {
                 val cocktailWithIngredient = repository.getCocktailWithIngredient(ref.cocktail_id)
@@ -44,7 +42,7 @@ class IngredientDetailsViewModel(application: Application) : AndroidViewModel(ap
         _currentIngredient.value = ingredient
 
         viewModelScope.launch {
-            _currentIngredient.value = repository.getIngredient(ingredient.ingredient_name)
+            _currentIngredient.value = repository.getIngredient(ingredient.ingredient_id)
         }
     }
 
@@ -64,6 +62,4 @@ class IngredientDetailsViewModel(application: Application) : AndroidViewModel(ap
             _currentIngredient.value = mIngredient
         }
     }
-
-
 }

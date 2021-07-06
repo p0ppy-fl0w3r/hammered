@@ -17,7 +17,7 @@ class CocktailDetailsAdapter(private val clickListener: CocktailDetailsClickList
             oldItem: RefItemWrapper<IngredientData>,
             newItem: RefItemWrapper<IngredientData>
         ): Boolean {
-            return oldItem.item.ingredient_name == newItem.item.ingredient_name
+            return oldItem.item.ingredient_id == newItem.item.ingredient_id
         }
 
         override fun areContentsTheSame(

@@ -26,15 +26,13 @@ class CocktailDetailsViewModel(application: Application) : AndroidViewModel(appl
     val currentCocktail: LiveData<Cocktail?>
         get() = _currentCocktail
 
-
-
     fun getFromCocktail(id: Long) {
         viewModelScope.launch {
             val allIngredientRef = mutableListOf<RefItemWrapper<IngredientData>>()
             val allRefFromCocktail = repository.getRefFromCocktail(id)
 
             for (ref in allRefFromCocktail) {
-                val ingredient = repository.getIngredient(ref.ingredient_name)
+                val ingredient = repository.getIngredient(ref.ingredient_id)
                 val ingredientRef = RefItemWrapper(ingredient!!.asIngredientData(), ref)
                 allIngredientRef.add(ingredientRef)
             }

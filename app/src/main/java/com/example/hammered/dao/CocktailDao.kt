@@ -31,6 +31,9 @@ interface CocktailDao {
     @Query("SElECT cocktail_id FROM Cocktail ORDER BY cocktail_id DESC LIMIT 1")
     suspend fun getLastCocktailId(): Long
 
+    @Query("SElECT ingredient_id FROM Ingredient ORDER BY ingredient_id DESC LIMIT 1")
+    suspend fun getLastIngredientId(): Long
+
     @Query("SELECT * FROM Cocktail WHERE cocktail_name LIKE :name")
     suspend fun getCocktailFromName(name: String): List<CocktailWithIngredient>
 
@@ -40,20 +43,17 @@ interface CocktailDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertIngredientCocktailRef(ingredientCocktailRef: IngredientCocktailRef)
 
-    @Query("SELECT * FROM Cocktail")
-    suspend fun getAllCocktails(): List<Cocktail>
-
     @Query("SELECT * FROM Ingredient")
     suspend fun getAllIngredient(): List<Ingredient>
-
-    @Query("SELECT * FROM Cocktail WHERE isFavorite=1")
-    suspend fun getFavouriteCocktails(): List<Cocktail>
 
     @Query("SELECT COUNT(*) FROM IngredientCocktailRef")
     suspend fun getIngredientCocktailRefCount(): Int
 
-    @Query("SELECT * FROM Ingredient WHERE ingredient_name=:ingredient_name")
-    suspend fun getIngredient(ingredient_name: String): Ingredient?
+    @Query("SELECT * FROM Ingredient WHERE ingredient_id=:id")
+    suspend fun getIngredient(id: Long): Ingredient?
+
+    @Query("SELECT * FROM Ingredient WHERE ingredient_name=:name")
+    suspend fun getIngredient(name: String): Ingredient?
 
     @Transaction
     @Query("SELECT * FROM IngredientCocktailRef WHERE cocktail_id=:cocktail_id")
@@ -64,8 +64,8 @@ interface CocktailDao {
     suspend fun getRefFromIngredient(name: String): List<IngredientCocktailRef>
 
     @Transaction
-    @Query("SELECT * FROM IngredientCocktailRef")
-    suspend fun getAllIngredientCocktailDetails(): List<IngredientCocktailRef>
+    @Query("SELECT * FROM IngredientCocktailRef WHERE ingredient_id=:id")
+    suspend fun getRefFromIngredientId(id: Long): List<IngredientCocktailRef>
 
     @Transaction
     @Query("SELECT * FROM cocktail WHERE cocktail_id = :cocktail_id")
@@ -82,10 +82,6 @@ interface CocktailDao {
     @Transaction
     @Query("SELECT * FROM cocktail where isFavorite=1")
     suspend fun getFavouriteIngredientFromCocktail(): List<CocktailWithIngredient>
-
-    @Transaction
-    @Query("SELECT * FROM ingredient WHERE ingredient_name = :ingredient_name")
-    suspend fun getCocktailsFromIngredient(ingredient_name: String): List<IngredientWithCocktail>
 
     @Transaction
     @Query("SELECT * FROM ingredient")

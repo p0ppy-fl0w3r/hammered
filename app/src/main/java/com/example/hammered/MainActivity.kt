@@ -30,7 +30,6 @@ import timber.log.Timber
 
 
 // FIXME pressing back on settings navigates to ingredient when setting was navigated from cocktail
-// TODO implement search
 class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener,
     View.OnFocusChangeListener {
 
@@ -57,7 +56,6 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener,
         // Setting up cocktailFragment as top level destination so that it shows the hamburger button-
         // instead of the back button.
 
-        // TODO may no longer require this
         appBarConfiguration = AppBarConfiguration(
             topLevelDestinationIds = setOf(R.id.cocktailFragment, R.id.ingredientFragment),
             drawerLayout = drawerLayout
@@ -65,9 +63,10 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener,
 
 
         setSupportActionBar(toolbar)
-        supportActionBar!!.setDisplayShowTitleEnabled(false)
-        supportActionBar!!.setDisplayUseLogoEnabled(true)
-        supportActionBar!!.setLogo(R.drawable.hammered)
+        supportActionBar!!.setDisplayShowTitleEnabled(true)
+
+//        supportActionBar!!.setDisplayUseLogoEnabled(true)
+//        supportActionBar!!.setLogo(R.drawable.hammered)
 
         setupActionBarWithNavController(this, navController, appBarConfiguration)
         binding.navigationView.setupWithNavController(navController)
@@ -89,7 +88,7 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener,
                     navController.navigate(R.id.cocktailDetailFragment, mBundle)
                 }
                 else -> {
-                    throw IllegalArgumentException("The select item is invalid :$selectedItem")
+                    throw IllegalArgumentException("The selected item is invalid :$selectedItem")
                 }
             }
         })

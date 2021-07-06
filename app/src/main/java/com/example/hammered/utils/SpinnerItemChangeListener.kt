@@ -11,6 +11,5 @@ class SpinnerItemChangeListener(private val inverseBindingListener: InverseBindi
     }
 
     override fun onNothingSelected(parent: AdapterView<*>?) {
-        TODO("Not yet implemented")
     }
 }

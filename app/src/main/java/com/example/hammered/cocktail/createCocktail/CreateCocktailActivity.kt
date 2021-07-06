@@ -23,7 +23,7 @@ import com.example.hammered.dialog.CancelAlertDialog
 import timber.log.Timber
 
 
-// TODO improve the layout of this activity
+// TODO check out the focus when a new ingredient is added.
 class CreateCocktailActivity : AppCompatActivity(), CancelAlertDialog.NoticeDialogListener {
 
     private lateinit var binding: ActivityCreateCocktailBinding

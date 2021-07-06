@@ -6,6 +6,7 @@ import kotlinx.android.parcel.Parcelize
 
 @Parcelize
 data class IngredientData(
+    var ingredient_id: Long,
     var ingredient_name: String,
     var ingredient_description: String,
     var ingredient_image: String,
@@ -14,6 +15,7 @@ data class IngredientData(
 ) : Parcelable {
     fun asIngredient(): Ingredient {
         return Ingredient(
+            ingredient_id,
             ingredient_name,
             ingredient_description,
             ingredient_image,

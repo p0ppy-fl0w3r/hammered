@@ -9,7 +9,7 @@ import com.example.hammered.entities.Ingredient
 data class IngredientWithCocktail(
     @Embedded val ingredient: Ingredient,
     @Relation(
-        parentColumn = "ingredient_name",
+        parentColumn = "ingredient_id",
         entityColumn = "cocktail_id",
         associateBy = Junction(IngredientCocktailRef::class)
     ) val cocktails: List<Cocktail>

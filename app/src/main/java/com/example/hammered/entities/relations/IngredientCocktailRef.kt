@@ -3,9 +3,10 @@ package com.example.hammered.entities.relations
 import androidx.room.Entity
 
 
-@Entity(primaryKeys = ["cocktail_id", "ingredient_name"])
+@Entity(primaryKeys = ["cocktail_id", "ingredient_id"])
 data class IngredientCocktailRef(
     var cocktail_id: Long,
+    var ingredient_id: Long,
     var ingredient_name: String,
     var quantity:Float,
     var quantityUnit: String,

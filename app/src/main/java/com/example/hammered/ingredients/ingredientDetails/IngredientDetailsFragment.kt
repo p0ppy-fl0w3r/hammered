@@ -12,22 +12,18 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.hammered.R
-import com.example.hammered.cocktail.createCocktail.CreateCocktailActivity
 import com.example.hammered.databinding.FragmentIngredientDetailsBinding
-import com.example.hammered.entities.Ingredient
 import com.example.hammered.ingredients.createIngredient.CreateIngredientActivity
-import timber.log.Timber
+import com.example.hammered.utils.UiUtils
 
 class IngredientDetailsFragment : Fragment() {
     private lateinit var viewModel: IngredientDetailsViewModel
     private lateinit var binding: FragmentIngredientDetailsBinding
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
 
         val selectedIngredient = IngredientDetailsFragmentArgs.fromBundle(
             requireArguments()
@@ -60,12 +56,10 @@ class IngredientDetailsFragment : Fragment() {
             )
         })
 
-
-
         binding.ingredientDetailRecycler.adapter = adapter
         viewModel.currentIngredient.observe(viewLifecycleOwner) {
             if (it != null) {
-                viewModel.getFromIngredient(selectedIngredient.ingredient_name)
+                viewModel.getFromIngredient(selectedIngredient.ingredient_id)
             }
         }
 
@@ -80,6 +74,7 @@ class IngredientDetailsFragment : Fragment() {
         // Inflate the layout for this fragment
         return binding.root
     }
+
 
     private fun onClickCartIcon() {
         binding.detailIngredientCart.setOnClickListener {
@@ -120,11 +115,26 @@ class IngredientDetailsFragment : Fragment() {
     override fun onPrepareOptionsMenu(menu: Menu) {
         super.onPrepareOptionsMenu(menu)
         menu.findItem(R.id.searchItem).isVisible = false
+
+        UiUtils.hideKeyboard(requireContext(), this.requireView())
+
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
     }
-}
 
+    // OnCreate/ OnCreateView is not called when a new ingredient is created or edited
+    // overriding onResume so that the edited information is updated.
+    override fun onResume() {
+        super.onResume()
+
+        val selectedIngredient = IngredientDetailsFragmentArgs.fromBundle(
+            requireArguments()
+        ).ingredient
+
+        viewModel.setIngredient(selectedIngredient.asIngredient())
+    }
+
+}

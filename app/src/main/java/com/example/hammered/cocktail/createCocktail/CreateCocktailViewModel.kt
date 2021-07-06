@@ -240,7 +240,9 @@ class CreateCocktailViewModel(application: Application) : AndroidViewModel(appli
 
             for (ingredients in _ingredientList.value!!) {
                 if (newCocktail != null) {
-                    listCocktailIngredientRef.add(ingredients.toIngredientCocktailRef(newCocktail.cocktail_id))
+                    ingredients.ingredient_id =
+                        repository.getIngredient(ingredients.ingredient_name)!!.ingredient_id
+                    listCocktailIngredientRef.add(ingredients.toIngredientCocktailRef(newCocktail.cocktail_id) )
                 }
             }
 

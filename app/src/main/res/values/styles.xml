@@ -28,6 +28,11 @@
         <item name="cornerSize">50%</item>
     </style>
 
+    <style name="ToolbarTitleStyle" parent="TextAppearance.AppCompat.Headline">
+        <item name="android:fontFamily">@font/cherry_swash</item>
+
+    </style>
+
     <style name="chipStyle" parent="Widget.MaterialComponents.Chip.Choice">
         <item name="android:textColor">@color/primaryTextColor</item>
         <item name="chipBackgroundColor">@color/chip_state_color</item>

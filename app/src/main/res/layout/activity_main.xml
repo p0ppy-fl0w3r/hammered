@@ -15,26 +15,17 @@
             android:orientation="vertical"
             tools:context=".MainActivity">
 
-
             <androidx.appcompat.widget.Toolbar
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:background="?attr/colorPrimary"
-                app:menu="@menu/option_menu"
-                app:contentInsetStart="0dp"
+                android:theme="@style/ToolbarTheme"
                 app:contentInsetEnd="0dp"
-                android:theme="@style/ToolbarTheme">
-
-<!--                <ImageView-->
-<!--                    android:id="@+id/logo_image"-->
-<!--                    android:layout_width="wrap_content"-->
-<!--                    android:layout_height="match_parent"-->
-<!--                    android:adjustViewBounds="true"-->
-<!--                    android:contentDescription="@string/logo_image"-->
-<!--                    app:srcCompat="@drawable/hammered" />-->
-
-            </androidx.appcompat.widget.Toolbar>
+                app:contentInsetStart="0dp"
+                app:menu="@menu/option_menu"
+                app:title="@string/app_name"
+                app:titleTextAppearance="@style/ToolbarTitleStyle" />
 
             <FrameLayout
                 android:layout_width="match_parent"
@@ -55,9 +46,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="64dp"
                     android:layout_marginEnd="64dp"
-                    tools:listitem="@layout/search_cocktail_item"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     tools:itemCount="2"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+                    tools:listitem="@layout/search_cocktail_item" />
             </FrameLayout>
 
         </LinearLayout>
