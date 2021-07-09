@@ -7,7 +7,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import com.example.hammered.R
 
-class CancelAlertDialog(val item: String) : DialogFragment() {
+class CancelAlertDialog(val message: String) : DialogFragment() {
 
     internal lateinit var listener: NoticeDialogListener
 
@@ -35,7 +35,7 @@ class CancelAlertDialog(val item: String) : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.let {
             val builder = AlertDialog.Builder(it)
-                .setMessage("Cancel creating new $item?")
+                .setMessage(message)
                 .setPositiveButton("Yes") { _, _ ->
                     listener.onDialogPositiveClick(this)
                 }.setNegativeButton("No") { dialog, _ ->

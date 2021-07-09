@@ -43,6 +43,10 @@ class CreateCocktailViewModel(application: Application) : AndroidViewModel(appli
     val saveCocktail: LiveData<Boolean?>
         get() = _saveCocktail
 
+    private val _editIngredientList = MutableLiveData<List<IngredientCocktailRef>>()
+    val editIngredientList: LiveData<List<IngredientCocktailRef>>
+        get() = _editIngredientList
+
     private val repository = CocktailRepository(CocktailDatabase.getDatabase(application))
 
     private val _cocktailId = MutableLiveData<Long>()
@@ -52,6 +56,11 @@ class CreateCocktailViewModel(application: Application) : AndroidViewModel(appli
     val allIngredientList: LiveData<List<Ingredient>>
         get() = _allIngredientList
 
+    private val _finishActivity = MutableLiveData<Boolean?>()
+
+    val finishActivity: LiveData<Boolean?>
+        get() = _finishActivity
+
     init {
         getAllIngredientFromDatabase()
 
@@ -59,6 +68,23 @@ class CreateCocktailViewModel(application: Application) : AndroidViewModel(appli
         _stepsList.value = mutableListOf(StepsWrapper())
 
         getLastCocktailId()
+    }
+
+    fun getDataToPopulateFields(id: Long) {
+        viewModelScope.launch {
+            _editIngredientList.value = repository.getRefFromCocktail(id)
+        }
+    }
+
+    fun setIngredientList(list: List<NewCocktailRef>) {
+        _ingredientList.value = list.toMutableList()
+    }
+
+    fun setStepsFromRawString(steps: String) {
+        val editStepsList = steps.split("\n").mapIndexed { index, text ->
+            StepsWrapper(index, text)
+        }
+        _stepsList.value = editStepsList.toMutableList()
     }
 
     private fun getAllIngredientFromDatabase() {
@@ -141,7 +167,7 @@ class CreateCocktailViewModel(application: Application) : AndroidViewModel(appli
 
         // Only check the ingredient if the steps are valid
         // Otherwise the animation will play for both steps and ingredient.
-        if(_stepsValid.value == Constants.VALUE_OK){
+        if (_stepsValid.value == Constants.VALUE_OK) {
             checkIngredient()
         }
     }
@@ -170,7 +196,7 @@ class CreateCocktailViewModel(application: Application) : AndroidViewModel(appli
                 for (ingredients in allIngredient.withIndex()) {
                     // Get the value form the quantity editText
                     var quantity = 0f
-                    if(ingredients.value.quantity.isNotBlank()){
+                    if (ingredients.value.quantity.isNotBlank()) {
                         quantity = ingredients.value.quantity.toFloat()
                     }
 
@@ -207,7 +233,8 @@ class CreateCocktailViewModel(application: Application) : AndroidViewModel(appli
 
     fun setCocktailChecked() {
         if (_ingredientValid.value == listOf(Constants.VALUE_OK, 0)
-            && _stepsValid.value == Constants.VALUE_OK) {
+            && _stepsValid.value == Constants.VALUE_OK
+        ) {
             _saveCocktail.value = true
         }
         else {
@@ -217,6 +244,7 @@ class CreateCocktailViewModel(application: Application) : AndroidViewModel(appli
 
     private fun doneChecking() {
         _saveCocktail.value = null
+        _finishActivity.value = true
     }
 
     fun saveCocktail(name: String, description: String, imageUrl: String) {
@@ -242,7 +270,7 @@ class CreateCocktailViewModel(application: Application) : AndroidViewModel(appli
                 if (newCocktail != null) {
                     ingredients.ingredient_id =
                         repository.getIngredient(ingredients.ingredient_name)!!.ingredient_id
-                    listCocktailIngredientRef.add(ingredients.toIngredientCocktailRef(newCocktail.cocktail_id) )
+                    listCocktailIngredientRef.add(ingredients.toIngredientCocktailRef(newCocktail.cocktail_id))
                 }
             }
 
@@ -252,6 +280,42 @@ class CreateCocktailViewModel(application: Application) : AndroidViewModel(appli
             doneChecking()
         }
 
+    }
+
+    fun editCocktail(id: Long, name: String, description: String, imageUrl: String) {
+        viewModelScope.launch {
+            val newCocktail =
+                Cocktail(
+                    cocktail_id = id,
+                    cocktail_name = name,
+                    cocktail_description = description,
+                    cocktail_image = imageUrl,
+                    isFavorite = false,
+                    steps = _stepsList.value!!.joinToString(separator = "\n") { value ->
+                        value.steps
+                    }
+                )
+
+            repository.updateCocktail(newCocktail)
+
+            // Delete the previous IngredientCocktailRef referencing to edited cocktail.
+            // This will ensure that the ingredients are removed from the database if the user removes
+            // ingredient when editing.
+            repository.deleteAllRefOfCocktail(newCocktail.cocktail_id)
+
+            val listCocktailIngredientRef = mutableListOf<IngredientCocktailRef>()
+
+            for (ingredients in _ingredientList.value!!) {
+                ingredients.ingredient_id =
+                    repository.getIngredient(ingredients.ingredient_name)!!.ingredient_id
+                listCocktailIngredientRef.add(ingredients.toIngredientCocktailRef(newCocktail.cocktail_id))
+            }
+
+            for (ingredientRef in listCocktailIngredientRef) {
+                repository.insertIngredientCocktailRef(ingredientRef)
+            }
+            doneChecking()
+        }
     }
 
     private fun getLastCocktailId() {

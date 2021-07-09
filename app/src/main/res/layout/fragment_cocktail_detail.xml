@@ -10,7 +10,7 @@
             type="com.example.hammered.cocktail.cocktailDetails.CocktailDetailsViewModel" />
     </data>
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -87,6 +87,7 @@
                 android:text="@{viewModel.currentCocktail.steps}"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 tools:text="1. Add cheese to tomato.\n\n2. Add butter to cheese" />
+
             <TextView
                 android:id="@+id/ingredient_required_info"
                 android:layout_width="match_parent"
@@ -95,14 +96,20 @@
                 android:padding="8dp"
                 android:text="@string/following_ingredients_required"
                 android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                android:textColor="@color/color_black"/>
+                android:textColor="@color/color_black" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/cocktailDetailRecycler"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:listitem="@layout/details_ingredient_item" />
+                android:layout_height="wrap_content">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/cocktailDetailRecycler"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:listitem="@layout/details_ingredient_item" />
+            </LinearLayout>
+
         </LinearLayout>
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 </layout>

@@ -61,12 +61,8 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener,
             drawerLayout = drawerLayout
         )
 
-
         setSupportActionBar(toolbar)
         supportActionBar!!.setDisplayShowTitleEnabled(true)
-
-//        supportActionBar!!.setDisplayUseLogoEnabled(true)
-//        supportActionBar!!.setLogo(R.drawable.hammered)
 
         setupActionBarWithNavController(this, navController, appBarConfiguration)
         binding.navigationView.setupWithNavController(navController)
@@ -128,9 +124,8 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener,
             }
 
             else -> {
-                Timber.e("Options item selected: ${item.title}")
+                Timber.i("Options item selected: ${item.title}")
             }
-
         }
 
         return super.onOptionsItemSelected(item)

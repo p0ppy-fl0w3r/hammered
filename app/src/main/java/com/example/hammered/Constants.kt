@@ -30,6 +30,9 @@ object Constants {
     const val QUANTITY_FIELD_EMPTY = -4
     const val INGREDIENT_NAME_EMPTY = -5
 
+    // Create cocktail extra key
+    const val EDIT_COCKTAIL = "cocktail"
+
     // Search item ids
     const val SEARCH_COCKTAIL = 1
     const val SEARCH_INGREDIENT = 2

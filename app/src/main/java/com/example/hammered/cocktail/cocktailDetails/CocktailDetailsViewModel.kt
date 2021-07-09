@@ -11,6 +11,7 @@ import com.example.hammered.ingredients.IngredientData
 import com.example.hammered.repository.CocktailRepository
 import com.example.hammered.wrappers.RefItemWrapper
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 class CocktailDetailsViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -26,7 +27,17 @@ class CocktailDetailsViewModel(application: Application) : AndroidViewModel(appl
     val currentCocktail: LiveData<Cocktail?>
         get() = _currentCocktail
 
-    fun getFromCocktail(id: Long) {
+
+    fun setCocktail(cocktail: Cocktail) {
+
+        _currentCocktail.value = cocktail
+
+        viewModelScope.launch {
+            _currentCocktail.value = repository.getCocktail(cocktail.cocktail_id)
+        }
+    }
+
+    fun setIngredient(id:Long){
         viewModelScope.launch {
             val allIngredientRef = mutableListOf<RefItemWrapper<IngredientData>>()
             val allRefFromCocktail = repository.getRefFromCocktail(id)
@@ -38,10 +49,6 @@ class CocktailDetailsViewModel(application: Application) : AndroidViewModel(appl
             }
             _ingredientRefLiveData.value = allIngredientRef
         }
-    }
-
-    fun setCocktail(cocktail: Cocktail){
-        _currentCocktail.value = cocktail
     }
 
     fun changeFavourite() {

@@ -60,17 +60,17 @@ class CocktailRepository(private val database: CocktailDatabase) {
                     database.cocktailDao.insertCocktail(i)
                 }
 
-                val ref1 = IngredientCocktailRef(1, 1,"Lemon", 1.0f, "oz", false, false)
-                val ref2 = IngredientCocktailRef(1, 2,"Salt", 1f, "oz", false, false)
-                val ref3 = IngredientCocktailRef(1, 3,"Water", 3f, "oz", false, false)
-                val ref4 = IngredientCocktailRef(2, 4,"Gin", 1f, "oz", true, false)
-                val ref5 = IngredientCocktailRef(2, 3,"Water", 1f, "oz", false, false)
-                val ref6 = IngredientCocktailRef(2, 5,"Vodka", 10f, "gram", false, false)
-                val ref7 = IngredientCocktailRef(2, 1,"Lemon", 1f, "oz", true, false)
-                val ref8 = IngredientCocktailRef(3, 1,"Lemon", 15f, "kilo", false, false)
+                val ref1 = IngredientCocktailRef(1, 1,"Lemon", 1.0f, "Oz", false, false)
+                val ref2 = IngredientCocktailRef(1, 2,"Salt", 1f, "Oz", false, false)
+                val ref3 = IngredientCocktailRef(1, 3,"Water", 3f, "Oz", false, false)
+                val ref4 = IngredientCocktailRef(2, 4,"Gin", 1f, "Oz", true, false)
+                val ref5 = IngredientCocktailRef(2, 3,"Water", 1f, "Oz", false, false)
+                val ref6 = IngredientCocktailRef(2, 5,"Vodka", 10f, "Gm", false, false)
+                val ref7 = IngredientCocktailRef(2, 1,"Lemon", 1f, "Oz", true, false)
+                val ref8 = IngredientCocktailRef(3, 1,"Lemon", 15f, "Gm", false, false)
                 val ref9 =
-                    IngredientCocktailRef(3, 3,"Water", 1f, "oz", true, true)
-                val ref10 = IngredientCocktailRef(3, 2,"Salt", 1f, "oz", false, false)
+                    IngredientCocktailRef(3, 3,"Water", 1f, "Oz", true, true)
+                val ref10 = IngredientCocktailRef(3, 2,"Salt", 1f, "Oz", false, false)
 
                 for (i in arrayOf(
                     ref1,
@@ -169,6 +169,10 @@ class CocktailRepository(private val database: CocktailDatabase) {
 
     suspend fun getInCartCocktailsFromIngredient(): List<IngredientWithCocktail> {
         return database.cocktailDao.getInCartCocktailsFromIngredient()
+    }
+
+    suspend fun deleteAllRefOfCocktail(id: Long){
+        database.cocktailDao.deleteAllRefOfCocktail(id)
     }
 
 }

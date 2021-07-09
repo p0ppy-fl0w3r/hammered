@@ -1,12 +1,9 @@
 package com.example.hammered.cocktail.createCocktail
 
-import android.animation.ArgbEvaluator
-import android.animation.ObjectAnimator
 import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.LinearLayout
 import android.widget.Toast
@@ -18,17 +15,22 @@ import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.example.hammered.Constants
 import com.example.hammered.R
+import com.example.hammered.cocktail.CocktailData
 import com.example.hammered.databinding.ActivityCreateCocktailBinding
 import com.example.hammered.dialog.CancelAlertDialog
+import com.example.hammered.utils.UiUtils.animateError
+import com.example.hammered.wrappers.NewCocktailRef
 import timber.log.Timber
 
 
-// TODO check out the focus when a new ingredient is added.
+// FIXME check out the focus when a new ingredient is added.
 class CreateCocktailActivity : AppCompatActivity(), CancelAlertDialog.NoticeDialogListener {
 
     private lateinit var binding: ActivityCreateCocktailBinding
 
     private var imageUrl = ""
+
+    private var isEdit = false
 
     private val resultLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
@@ -40,8 +42,6 @@ class CreateCocktailActivity : AppCompatActivity(), CancelAlertDialog.NoticeDial
             }
         }
 
-
-
     private val viewModel: CreateCocktailViewModel by lazy {
         ViewModelProvider(this).get(CreateCocktailViewModel::class.java)
     }
@@ -49,10 +49,28 @@ class CreateCocktailActivity : AppCompatActivity(), CancelAlertDialog.NoticeDial
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-
         binding =
             DataBindingUtil.setContentView(this, R.layout.activity_create_cocktail)
 
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = this
+
+        val selectedCocktail = intent.getParcelableExtra<CocktailData>(Constants.EDIT_COCKTAIL)
+
+        if (selectedCocktail != null) {
+            isEdit = true
+            viewModel.getDataToPopulateFields(selectedCocktail.cocktail_id)
+
+            binding.textCocktailName.setText(selectedCocktail.cocktail_name)
+            binding.cocktailDescriptionText.setText(selectedCocktail.cocktail_description)
+
+            if (selectedCocktail.cocktail_image.isNotBlank()) {
+                imageUrl = selectedCocktail.cocktail_image
+                Glide.with(this).load(imageUrl).into(binding.addCocktailImage)
+            }
+
+            viewModel.setStepsFromRawString(selectedCocktail.steps)
+        }
 
         val nestedScrollView = binding.nestedScrollView
         val ingredientRecycler = binding.ingRefRecycler
@@ -73,6 +91,21 @@ class CreateCocktailActivity : AppCompatActivity(), CancelAlertDialog.NoticeDial
         binding.stepsRecycler.adapter = stepsAdapter
         binding.ingRefRecycler.adapter = adapter
 
+
+        viewModel.editIngredientList.observe(this) { it ->
+            val ingredientList = it.mapIndexed { index, ref ->
+                NewCocktailRef(
+                    ref_number = index,
+                    ingredient_name = ref.ingredient_name,
+                    quantityUnitPos = Constants.UNITS.indexOf(ref.quantityUnit),
+                    quantity = ref.quantity.toString(),
+                    isGarnish = ref.isGarnish,
+                    isOptional = ref.isGarnish
+                )
+            }
+
+            viewModel.setIngredientList(ingredientList)
+        }
 
         viewModel.allIngredientList.observe(this) {
             if (it != null) {
@@ -102,7 +135,6 @@ class CreateCocktailActivity : AppCompatActivity(), CancelAlertDialog.NoticeDial
             stepsAdapter.submitList(it)
             stepsAdapter.notifyDataSetChanged()
         }
-
 
         viewModel.stepsValid.observe(this) {
             when (it) {
@@ -135,7 +167,6 @@ class CreateCocktailActivity : AppCompatActivity(), CancelAlertDialog.NoticeDial
             }
 
         }
-
 
         viewModel.ingredientValid.observe(this)
         {
@@ -221,32 +252,37 @@ class CreateCocktailActivity : AppCompatActivity(), CancelAlertDialog.NoticeDial
                 val cocktailName = binding.textCocktailName.text.toString()
                 val description = binding.cocktailDescriptionText.text.toString()
 
-                viewModel.saveCocktail(cocktailName, description, imageUrl)
-                Timber.i("Cocktail saved!")
-                Toast.makeText(this, "Cocktail added.", Toast.LENGTH_SHORT).show()
+                if (isEdit) {
+                    // If is edited is true, selectedCocktail can never be null
+                    viewModel.editCocktail(
+                        selectedCocktail!!.cocktail_id,
+                        cocktailName,
+                        description,
+                        imageUrl
+                    )
+                    Toast.makeText(this, "Edited cocktail!", Toast.LENGTH_SHORT).show()
+                }
+                else {
+                    viewModel.saveCocktail(cocktailName, description, imageUrl)
+                    Toast.makeText(this, "Cocktail added.", Toast.LENGTH_SHORT).show()
+                }
+
+            }
+        }
+
+        // Only finish the activity when all the database operations are completed.
+        // finishActivity will be set true only when new cocktail and all it's associated ingredients
+        // are inserted in the database.
+        viewModel.finishActivity.observe(this){
+            if (it == true){
                 finish()
             }
         }
 
         // Click listeners
         getImage()
-        addIngredient()
-        addStep()
         saveCocktail()
         cancelAndGoBack()
-
-    }
-
-    private fun addIngredient() {
-        binding.addIngredient.setOnClickListener {
-            viewModel.addIngredient()
-        }
-    }
-
-    private fun addStep() {
-        binding.addStep.setOnClickListener {
-            viewModel.addStep()
-        }
     }
 
     private fun saveCocktail() {
@@ -281,28 +317,15 @@ class CreateCocktailActivity : AppCompatActivity(), CancelAlertDialog.NoticeDial
         }
     }
 
-    private fun cancelAndGoBack(){
+    private fun cancelAndGoBack() {
         binding.createCocktailBack.setOnClickListener {
-            Timber.e("Back clicked")
-            CancelAlertDialog("cocktail").show(supportFragmentManager, "CancelAlertDialog")
+            val message = when(isEdit){
+                true -> "Cancel editing cocktail and go back?"
+                else -> "Cancel creating new cocktail and go back?"
+            }
 
+            CancelAlertDialog(message).show(supportFragmentManager, "CancelAlertDialog")
         }
-    }
-
-    private fun animateError(view: View) {
-        val animation = ObjectAnimator.ofInt(
-            view,
-            "backgroundColor",
-            0x00000000,
-            0x55ff0000,
-            0x00000000
-        )
-
-        animation.duration = 500
-        animation.repeatMode = ObjectAnimator.REVERSE
-        animation.repeatCount = 1
-        animation.setEvaluator(ArgbEvaluator())
-        animation.start()
     }
 
     override fun onDialogPositiveClick(dialog: DialogFragment) {

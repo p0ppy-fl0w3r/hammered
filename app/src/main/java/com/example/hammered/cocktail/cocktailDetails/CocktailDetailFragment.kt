@@ -1,5 +1,6 @@
 package com.example.hammered.cocktail.cocktailDetails
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -9,7 +10,9 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.example.hammered.Constants
 import com.example.hammered.R
+import com.example.hammered.cocktail.createCocktail.CreateCocktailActivity
 import com.example.hammered.databinding.FragmentCocktailDetailBinding
 import com.example.hammered.utils.UiUtils
 
@@ -17,7 +20,7 @@ import com.example.hammered.utils.UiUtils
 class CocktailDetailFragment : Fragment() {
 
     lateinit var binding: FragmentCocktailDetailBinding
-    lateinit var viewModel: CocktailDetailsViewModel
+    private val viewModel by lazy { ViewModelProvider(requireActivity()).get(CocktailDetailsViewModel::class.java) }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -26,8 +29,6 @@ class CocktailDetailFragment : Fragment() {
 
         binding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_cocktail_detail, container, false)
-
-        viewModel = ViewModelProvider(this).get(CocktailDetailsViewModel::class.java)
 
         val selectedCocktail = CocktailDetailFragmentArgs.fromBundle(requireArguments()).cocktail
 
@@ -48,12 +49,24 @@ class CocktailDetailFragment : Fragment() {
             viewModel.changeFavourite()
         }
 
-        binding.cocktailDetailRecycler.adapter = adapter
+        binding.detailCocktailEdit.setOnClickListener {
+            val intent = Intent(requireContext(), CreateCocktailActivity::class.java)
 
-        viewModel.getFromCocktail(selectedCocktail.cocktail_id)
+            intent.putExtra(Constants.EDIT_COCKTAIL, selectedCocktail)
+
+            startActivity(intent)
+        }
+
+        binding.cocktailDetailRecycler.adapter = adapter
 
         viewModel.ingredientRefLiveData.observe(viewLifecycleOwner) {
             adapter.submitList(it)
+        }
+
+        viewModel.currentCocktail.observe(viewLifecycleOwner){
+            if(it != null){
+                viewModel.setIngredient(it.cocktail_id)
+            }
         }
 
         return binding.root
@@ -69,6 +82,13 @@ class CocktailDetailFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        val selectedCocktail = CocktailDetailFragmentArgs.fromBundle(requireArguments()).cocktail
+        viewModel.setCocktail(selectedCocktail.asCocktail())
     }
 
 }

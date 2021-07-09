@@ -99,4 +99,7 @@ interface CocktailDao {
     @Query("SELECT * FROM ingredient")
     fun getLiveCocktailsFromIngredients(): LiveData<List<IngredientWithCocktail>>
 
+    @Query("DELETE FROM ingredientcocktailref WHERE cocktail_id = :id")
+    suspend fun deleteAllRefOfCocktail(id: Long)
+
 }

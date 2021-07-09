@@ -18,7 +18,6 @@ import com.example.hammered.entities.Ingredient
 import com.example.hammered.ingredients.IngredientData
 
 
-
 class CreateIngredientActivity : AppCompatActivity(), CancelAlertDialog.NoticeDialogListener {
 
     private var imageUrl = ""
@@ -135,12 +134,17 @@ class CreateIngredientActivity : AppCompatActivity(), CancelAlertDialog.NoticeDi
 
     private fun cancelAndGoBack() {
         binding.createIngredientBack.setOnClickListener {
-            CancelAlertDialog("ingredient").show(supportFragmentManager, "CancelAlertDialog")
+
+            val message = when (isEdit) {
+                true -> "Cancel editing ingredient and go back?"
+                else -> "Cancel creating new ingredient and go back?"
+            }
+
+            CancelAlertDialog(message).show(supportFragmentManager, "CancelAlertDialog")
         }
     }
 
     override fun onDialogPositiveClick(dialog: DialogFragment) {
         finish()
     }
-
 }
