@@ -25,6 +25,11 @@ class IngredientDetailsViewModel(application: Application) : AndroidViewModel(ap
     val currentIngredient: LiveData<Ingredient?>
         get() = _currentIngredient
 
+    private val _ingredientDeleted = MutableLiveData<Boolean?>()
+
+    val ingredientDeleted : LiveData<Boolean?>
+        get() = _ingredientDeleted
+
     fun getFromIngredient(id: Long) {
         viewModelScope.launch {
             val allIngredientRef = mutableListOf<CocktailWithIngredient>()
@@ -62,4 +67,22 @@ class IngredientDetailsViewModel(application: Application) : AndroidViewModel(ap
             _currentIngredient.value = mIngredient
         }
     }
+
+    fun deleteCurrentIngredient(){
+        viewModelScope.launch {
+            currentIngredient.value?.let {
+
+                repository.deleteIngredient(it)
+                repository.deleteAllRefOfIngredient(it.ingredient_id)
+
+                _ingredientDeleted.value = true
+            }
+        }
+    }
+
+    fun doneDeleting(){
+        _ingredientDeleted.value = null
+    }
+
+    fun copyAndEditIngredient(){}
 }

@@ -25,6 +25,12 @@ interface CocktailDao {
     @Update
     suspend fun updateCocktail(cocktail: Cocktail)
 
+    @Delete
+    suspend fun deleteCocktail(cocktail: Cocktail)
+
+    @Delete
+    suspend fun deleteIngredient(ingredient: Ingredient)
+
     @Query("SELECT * FROM Cocktail WHERE cocktail_id=:id")
     suspend fun getCocktail(id: Long): Cocktail?
 
@@ -101,5 +107,8 @@ interface CocktailDao {
 
     @Query("DELETE FROM ingredientcocktailref WHERE cocktail_id = :id")
     suspend fun deleteAllRefOfCocktail(id: Long)
+
+    @Query("DELETE FROM ingredientcocktailref WHERE ingredient_id = :id")
+    suspend fun deleteAllRefOfIngredient(id: Long)
 
 }

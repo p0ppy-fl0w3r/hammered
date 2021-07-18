@@ -18,10 +18,11 @@
     </group>
     <group android:id="@+id/optionSettingsGroup">
         <item
-            android:id="@+id/settingsFragment"
+            android:id="@+id/settingsOption"
             android:title="@string/settings" />
         <item
-            android:id="@+id/aboutFragment"
-            android:title="@string/about" />
+            android:id="@+id/aboutOption"
+            android:title="@string/about"
+            android:orderInCategory="10"/>
     </group>
 </menu>

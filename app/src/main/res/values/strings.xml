@@ -54,4 +54,9 @@
     <string name="ingredient_name_empty">Ingredient name cannot be empty!</string>
     <string name="ingredient_exists">An ingredient with a similar name already exists!!</string>
     <string name="title_search">Search</string>
+    <string name="delete_cocktail">Delete Cocktail</string>
+    <string name="copy_and_edit">Copy and edit</string>
+    <string name="delete_ingredient">Delete Ingredient</string>
+    <string name="delete_ingredient_message">Doing this will remove this ingredient and all the references to it. Do you still want to delete this ingredient?</string>
+    <string name="delete_cocktail_message">Doing this will remove this cocktail and all the references to it. Do you still want to continue?</string>
 </resources>

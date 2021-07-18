@@ -37,6 +37,11 @@
         <action
             android:id="@+id/cocktail_detail_to_ingredient_detail"
             app:destination="@id/ingredientDetailsFragment" />
+        <action
+            android:id="@+id/detailsToCocktail"
+            app:destination="@id/cocktailFragment"
+            app:popUpTo="@id/navigation"
+            app:popUpToInclusive="true" />
     </fragment>
     <fragment
         android:id="@+id/ingredientDetailsFragment"
@@ -49,5 +54,10 @@
         <action
             android:id="@+id/ingredient_details_to_cocktail_details"
             app:destination="@id/cocktailDetailFragment" />
+        <action
+            android:id="@+id/detailsToIngredient"
+            app:destination="@id/ingredientFragment"
+            app:popUpTo="@id/navigation"
+            app:popUpToInclusive="true" />
     </fragment>
 </navigation>

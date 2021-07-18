@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.view.inputmethod.InputMethodInfo
 import android.widget.SearchView
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
@@ -19,7 +18,6 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupWithNavController
 import com.example.hammered.cocktail.createCocktail.CreateCocktailActivity
 import com.example.hammered.databinding.ActivityMainBinding
-import com.example.hammered.entities.Ingredient
 import com.example.hammered.entities.relations.CocktailWithIngredient
 import com.example.hammered.entities.relations.IngredientWithCocktail
 import com.example.hammered.ingredients.createIngredient.CreateIngredientActivity
@@ -29,9 +27,8 @@ import com.example.hammered.search.SearchViewModel
 import timber.log.Timber
 
 
-// FIXME pressing back on settings navigates to ingredient when setting was navigated from cocktail
 class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener,
-    View.OnFocusChangeListener {
+    View.OnFocusChangeListener{
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController

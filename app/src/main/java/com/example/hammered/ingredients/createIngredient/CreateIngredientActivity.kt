@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.example.hammered.R
@@ -18,7 +17,7 @@ import com.example.hammered.entities.Ingredient
 import com.example.hammered.ingredients.IngredientData
 
 
-class CreateIngredientActivity : AppCompatActivity(), CancelAlertDialog.NoticeDialogListener {
+class CreateIngredientActivity : AppCompatActivity() {
 
     private var imageUrl = ""
     private var isEdit = false
@@ -140,11 +139,7 @@ class CreateIngredientActivity : AppCompatActivity(), CancelAlertDialog.NoticeDi
                 else -> "Cancel creating new ingredient and go back?"
             }
 
-            CancelAlertDialog(message).show(supportFragmentManager, "CancelAlertDialog")
+            CancelAlertDialog(message){finish()}.show(supportFragmentManager, "CancelAlertDialog")
         }
-    }
-
-    override fun onDialogPositiveClick(dialog: DialogFragment) {
-        finish()
     }
 }

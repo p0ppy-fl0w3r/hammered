@@ -22,6 +22,7 @@
             android:layout_height="wrap_content"
             android:text="@string/drink_empty_msg"
             android:textAlignment="center"
+            android:gravity="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Display1"
             android:textColor="#feb1b1b1"
             android:textSize="20sp" />

@@ -3,13 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <data>
-
-        <variable
-            name="viewModel"
-            type="com.example.hammered.cocktail.createCocktail.CreateCocktailViewModel" />
-    </data>
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -137,7 +130,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/add_step"
-                    android:onClick="@{() -> viewModel.addStep()}"
                     android:src="@drawable/ic_add"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -166,7 +158,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:contentDescription="@string/add_ingredient"
-                        android:onClick="@{()-> viewModel.addIngredient()}"
                         android:src="@drawable/ic_add" />
 
                     <Button

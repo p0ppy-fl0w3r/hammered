@@ -4,13 +4,10 @@ import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.ArrayAdapter
-import android.widget.LinearLayout
-import android.widget.Toast
+import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.get
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.example.hammered.Constants
@@ -19,12 +16,12 @@ import com.example.hammered.cocktail.CocktailData
 import com.example.hammered.databinding.ActivityCreateCocktailBinding
 import com.example.hammered.dialog.CancelAlertDialog
 import com.example.hammered.utils.UiUtils.animateError
+import com.example.hammered.utils.UiUtils.hideKeyboard
 import com.example.hammered.wrappers.NewCocktailRef
 import timber.log.Timber
 
 
-// FIXME check out the focus when a new ingredient is added.
-class CreateCocktailActivity : AppCompatActivity(), CancelAlertDialog.NoticeDialogListener {
+class CreateCocktailActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityCreateCocktailBinding
 
@@ -52,8 +49,6 @@ class CreateCocktailActivity : AppCompatActivity(), CancelAlertDialog.NoticeDial
         binding =
             DataBindingUtil.setContentView(this, R.layout.activity_create_cocktail)
 
-        binding.viewModel = viewModel
-        binding.lifecycleOwner = this
 
         val selectedCocktail = intent.getParcelableExtra<CocktailData>(Constants.EDIT_COCKTAIL)
 
@@ -76,7 +71,7 @@ class CreateCocktailActivity : AppCompatActivity(), CancelAlertDialog.NoticeDial
         val ingredientRecycler = binding.ingRefRecycler
         val stepsRecycler = binding.stepsRecycler
 
-        // Array adapter for autoCompleteTextView
+        // Array adapter for ingredient name autoCompleteTextView
         val arrayAdapter =
             ArrayAdapter(this, android.R.layout.select_dialog_item, mutableListOf(""))
 
@@ -90,7 +85,6 @@ class CreateCocktailActivity : AppCompatActivity(), CancelAlertDialog.NoticeDial
 
         binding.stepsRecycler.adapter = stepsAdapter
         binding.ingRefRecycler.adapter = adapter
-
 
         viewModel.editIngredientList.observe(this) { it ->
             val ingredientList = it.mapIndexed { index, ref ->
@@ -162,10 +156,8 @@ class CreateCocktailActivity : AppCompatActivity(), CancelAlertDialog.NoticeDial
                         "Looks like a step is blank!",
                         Toast.LENGTH_SHORT
                     ).show()
-
                 }
             }
-
         }
 
         viewModel.ingredientValid.observe(this)
@@ -273,14 +265,16 @@ class CreateCocktailActivity : AppCompatActivity(), CancelAlertDialog.NoticeDial
         // Only finish the activity when all the database operations are completed.
         // finishActivity will be set true only when new cocktail and all it's associated ingredients
         // are inserted in the database.
-        viewModel.finishActivity.observe(this){
-            if (it == true){
+        viewModel.finishActivity.observe(this) {
+            if (it == true) {
                 finish()
             }
         }
 
         // Click listeners
         getImage()
+        addIngredient()
+        addStep()
         saveCocktail()
         cancelAndGoBack()
     }
@@ -319,16 +313,27 @@ class CreateCocktailActivity : AppCompatActivity(), CancelAlertDialog.NoticeDial
 
     private fun cancelAndGoBack() {
         binding.createCocktailBack.setOnClickListener {
-            val message = when(isEdit){
+            val message = when (isEdit) {
                 true -> "Cancel editing cocktail and go back?"
                 else -> "Cancel creating new cocktail and go back?"
             }
 
-            CancelAlertDialog(message).show(supportFragmentManager, "CancelAlertDialog")
+            CancelAlertDialog(message){finish()}.show(supportFragmentManager, "CancelAlertDialog")
         }
     }
 
-    override fun onDialogPositiveClick(dialog: DialogFragment) {
-        finish()
+    private fun addIngredient() {
+        binding.addIngredient.setOnClickListener {
+            viewModel.addIngredient()
+            hideKeyboard(this, binding.root)
+        }
     }
+
+    private fun addStep() {
+        binding.addStep.setOnClickListener {
+            viewModel.addStep()
+            hideKeyboard(this, binding.root)
+        }
+    }
+
 }

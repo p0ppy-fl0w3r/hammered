@@ -2,17 +2,16 @@ package com.example.hammered.ingredients.ingredientDetails
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.Menu
-import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.hammered.R
 import com.example.hammered.databinding.FragmentIngredientDetailsBinding
+import com.example.hammered.dialog.CancelAlertDialog
 import com.example.hammered.ingredients.createIngredient.CreateIngredientActivity
 import com.example.hammered.utils.UiUtils
 
@@ -67,6 +66,15 @@ class IngredientDetailsFragment : Fragment() {
             adapter.submitList(it)
         }
 
+        viewModel.ingredientDeleted.observe(viewLifecycleOwner) {
+            if (it == true) {
+
+                viewModel.doneDeleting()
+                findNavController().navigate(IngredientDetailsFragmentDirections.detailsToIngredient())
+
+            }
+        }
+
         binding.detailIngredientEdit.setOnClickListener {
             onClickEdit()
         }
@@ -115,9 +123,27 @@ class IngredientDetailsFragment : Fragment() {
     override fun onPrepareOptionsMenu(menu: Menu) {
         super.onPrepareOptionsMenu(menu)
         menu.findItem(R.id.searchItem).isVisible = false
+        menu.findItem(R.id.settingsOption).isVisible = false
+    }
 
-        UiUtils.hideKeyboard(requireContext(), this.requireView())
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
 
+        inflater.inflate(R.menu.ingredient_detail_menu, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+
+        when (item.itemId) {
+            R.id.delete_ingredient -> CancelAlertDialog(getString(R.string.delete_ingredient_message)
+            ) { viewModel.deleteCurrentIngredient() }.show(
+                requireActivity().supportFragmentManager,
+                "CancelAlertDialog"
+            )
+            R.id.copy_and_edit_ingredient -> viewModel.copyAndEditIngredient()
+        }
+
+        return super.onOptionsItemSelected(item)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -125,10 +151,12 @@ class IngredientDetailsFragment : Fragment() {
         setHasOptionsMenu(true)
     }
 
-    // OnCreate/ OnCreateView is not called when a new ingredient is created or edited
-    // overriding onResume so that the edited information is updated.
-    override fun onResume() {
-        super.onResume()
+    // OnCreate/OnCreateView is not called when a new ingredient is created or edited
+    // overriding onStart so that the edited information is updated.
+    override fun onStart() {
+        super.onStart()
+
+        UiUtils.hideKeyboard(requireContext(), this.requireView())
 
         val selectedIngredient = IngredientDetailsFragmentArgs.fromBundle(
             requireArguments()

@@ -27,6 +27,11 @@ class CocktailDetailsViewModel(application: Application) : AndroidViewModel(appl
     val currentCocktail: LiveData<Cocktail?>
         get() = _currentCocktail
 
+    private val _cocktailDeleted = MutableLiveData<Boolean?>()
+
+    val cocktailDeleted : LiveData<Boolean?>
+        get() = _cocktailDeleted
+
 
     fun setCocktail(cocktail: Cocktail) {
 
@@ -59,4 +64,22 @@ class CocktailDetailsViewModel(application: Application) : AndroidViewModel(appl
             _currentCocktail.value = cocktail
         }
     }
+
+    fun deleteCurrentCocktail(){
+
+        viewModelScope.launch {
+            currentCocktail.value?.let {
+                repository.deleteCocktail(it)
+                repository.deleteAllRefOfCocktail(it.cocktail_id)
+                _cocktailDeleted.value = true
+            }
+        }
+
+    }
+
+    fun doneDeleting(){
+        _cocktailDeleted.value = null
+    }
+
+    fun copyAndEdit(){}
 }
