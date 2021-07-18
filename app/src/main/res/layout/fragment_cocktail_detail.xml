@@ -84,8 +84,8 @@
                 android:layout_marginTop="4dp"
                 android:background="@drawable/detail_text_back"
                 android:padding="8dp"
-                android:text="@{viewModel.currentCocktail.steps}"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                app:setSteps="@{viewModel.currentCocktail.steps}"
                 tools:text="1. Add cheese to tomato.\n\n2. Add butter to cheese" />
 
             <TextView

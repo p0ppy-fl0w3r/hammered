@@ -6,7 +6,6 @@ import android.view.*
 import androidx.fragment.app.Fragment
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.hammered.R
@@ -135,12 +134,12 @@ class IngredientDetailsFragment : Fragment() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
         when (item.itemId) {
-            R.id.delete_ingredient -> CancelAlertDialog(getString(R.string.delete_ingredient_message)
+            R.id.delete_ingredient -> CancelAlertDialog(
+                getString(R.string.delete_ingredient_message)
             ) { viewModel.deleteCurrentIngredient() }.show(
                 requireActivity().supportFragmentManager,
                 "CancelAlertDialog"
             )
-            R.id.copy_and_edit_ingredient -> viewModel.copyAndEditIngredient()
         }
 
         return super.onOptionsItemSelected(item)
@@ -164,5 +163,4 @@ class IngredientDetailsFragment : Fragment() {
 
         viewModel.setIngredient(selectedIngredient.asIngredient())
     }
-
 }

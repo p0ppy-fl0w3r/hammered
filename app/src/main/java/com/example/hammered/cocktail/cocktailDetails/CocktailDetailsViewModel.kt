@@ -29,9 +29,19 @@ class CocktailDetailsViewModel(application: Application) : AndroidViewModel(appl
 
     private val _cocktailDeleted = MutableLiveData<Boolean?>()
 
-    val cocktailDeleted : LiveData<Boolean?>
+    val cocktailDeleted: LiveData<Boolean?>
         get() = _cocktailDeleted
 
+    private val _copyCocktail = MutableLiveData<Cocktail?>()
+
+    val copyCocktail: LiveData<Cocktail?>
+        get() = _copyCocktail
+
+
+    private val _editCocktail = MutableLiveData<Cocktail?>()
+
+    val editCocktail: LiveData<Cocktail?>
+        get() = _editCocktail
 
     fun setCocktail(cocktail: Cocktail) {
 
@@ -42,7 +52,7 @@ class CocktailDetailsViewModel(application: Application) : AndroidViewModel(appl
         }
     }
 
-    fun setIngredient(id:Long){
+    fun setIngredient(id: Long) {
         viewModelScope.launch {
             val allIngredientRef = mutableListOf<RefItemWrapper<IngredientData>>()
             val allRefFromCocktail = repository.getRefFromCocktail(id)
@@ -65,7 +75,7 @@ class CocktailDetailsViewModel(application: Application) : AndroidViewModel(appl
         }
     }
 
-    fun deleteCurrentCocktail(){
+    fun deleteCurrentCocktail() {
 
         viewModelScope.launch {
             currentCocktail.value?.let {
@@ -77,9 +87,29 @@ class CocktailDetailsViewModel(application: Application) : AndroidViewModel(appl
 
     }
 
-    fun doneDeleting(){
+    fun doneDeleting() {
         _cocktailDeleted.value = null
     }
 
-    fun copyAndEdit(){}
+    fun copyAndEdit(id: Long) {
+        viewModelScope.launch {
+            // The value might have been edited/changed by now, it's best if the latest value from the
+            // database is used as a copy rather than using the value from _currentCocktail.
+            _copyCocktail.value = repository.getCocktail(id)
+        }
+    }
+
+    fun editCurrent(id:Long){
+        viewModelScope.launch {
+            _editCocktail.value  = repository.getCocktail(id)
+        }
+    }
+
+    fun doneEdit(){
+        _editCocktail.value = null
+    }
+
+    fun doneCopy() {
+        _copyCocktail.value = null
+    }
 }

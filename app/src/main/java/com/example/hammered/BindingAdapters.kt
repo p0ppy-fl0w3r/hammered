@@ -202,3 +202,15 @@ fun getPos(spinner: Spinner): Int {
 fun setListeners(spinner: Spinner, attrChange: InverseBindingListener) {
     spinner.onItemSelectedListener = SpinnerItemChangeListener(attrChange)
 }
+
+@BindingAdapter("setSteps")
+fun setSteps(textView: TextView, steps: String){
+    val numberedSteps = steps.split("\n").mapIndexed{index, step ->
+        "${index + 1}. ${step.trimStart()}"
+    }
+    numberedSteps.toMutableList().removeLast()
+
+    val finalSteps = numberedSteps.joinToString(separator = "\n\n") { it }
+
+    textView.text = finalSteps
+}

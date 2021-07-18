@@ -36,4 +36,7 @@ object Constants {
     // Search item ids
     const val SEARCH_COCKTAIL = 1
     const val SEARCH_INGREDIENT = 2
+
+    // Copy and edit cocktail.
+    const val COPY_AND_EDIT = "copy_and_edit_cocktail"
 }

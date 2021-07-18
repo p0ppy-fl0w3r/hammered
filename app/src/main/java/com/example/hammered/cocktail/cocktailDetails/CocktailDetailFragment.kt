@@ -3,14 +3,13 @@ package com.example.hammered.cocktail.cocktailDetails
 import android.content.Intent
 import android.os.Bundle
 import android.view.*
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.hammered.Constants
-import com.example.hammered.MainActivity
 import com.example.hammered.R
+import com.example.hammered.cocktail.CocktailData
 import com.example.hammered.cocktail.createCocktail.CreateCocktailActivity
 import com.example.hammered.databinding.FragmentCocktailDetailBinding
 import com.example.hammered.dialog.CancelAlertDialog
@@ -20,6 +19,8 @@ import com.example.hammered.utils.UiUtils
 class CocktailDetailFragment : Fragment() {
 
     lateinit var binding: FragmentCocktailDetailBinding
+    lateinit var selectedCocktail: CocktailData
+
     private val viewModel by lazy {
         ViewModelProvider(requireActivity()).get(
             CocktailDetailsViewModel::class.java
@@ -34,7 +35,7 @@ class CocktailDetailFragment : Fragment() {
         binding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_cocktail_detail, container, false)
 
-        val selectedCocktail = CocktailDetailFragmentArgs.fromBundle(requireArguments()).cocktail
+        selectedCocktail = CocktailDetailFragmentArgs.fromBundle(requireArguments()).cocktail
 
         viewModel.setCocktail(selectedCocktail.asCocktail())
 
@@ -54,17 +55,24 @@ class CocktailDetailFragment : Fragment() {
         }
 
         binding.detailCocktailEdit.setOnClickListener {
-            val intent = Intent(requireContext(), CreateCocktailActivity::class.java)
-
-            intent.putExtra(Constants.EDIT_COCKTAIL, selectedCocktail)
-
-            startActivity(intent)
+            viewModel.editCurrent(selectedCocktail.cocktail_id)
         }
 
         binding.cocktailDetailRecycler.adapter = adapter
 
         viewModel.ingredientRefLiveData.observe(viewLifecycleOwner) {
             adapter.submitList(it)
+        }
+
+        viewModel.editCocktail.observe(viewLifecycleOwner){
+            if (it != null){
+                viewModel.doneEdit()
+                val intent = Intent(requireContext(), CreateCocktailActivity::class.java)
+
+                intent.putExtra(Constants.EDIT_COCKTAIL, it.asData())
+
+                startActivity(intent)
+            }
         }
 
         viewModel.currentCocktail.observe(viewLifecycleOwner) {
@@ -79,6 +87,17 @@ class CocktailDetailFragment : Fragment() {
 
                 // Navigate to cocktail fragment after deleting the cocktail.
                 findNavController().navigate(CocktailDetailFragmentDirections.detailsToCocktail())
+            }
+        }
+
+        viewModel.copyCocktail.observe(viewLifecycleOwner) {
+            if (it != null) {
+                viewModel.doneCopy()
+
+                val intent = Intent(requireContext(), CreateCocktailActivity::class.java)
+                intent.putExtra(Constants.COPY_AND_EDIT, it.asData())
+
+                startActivity(intent)
             }
         }
 
@@ -101,12 +120,13 @@ class CocktailDetailFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.delete_cocktail -> CancelAlertDialog(getString(R.string.delete_cocktail_message)
+            R.id.delete_cocktail -> CancelAlertDialog(
+                getString(R.string.delete_cocktail_message)
             ) { viewModel.deleteCurrentCocktail() }.show(
                 requireActivity().supportFragmentManager,
                 "CancelAlertDialog"
             )
-            R.id.copy_and_edit -> viewModel.copyAndEdit()
+            R.id.copy_and_edit -> viewModel.copyAndEdit(selectedCocktail.cocktail_id)
         }
 
         return super.onOptionsItemSelected(item)
@@ -126,5 +146,4 @@ class CocktailDetailFragment : Fragment() {
         val selectedCocktail = CocktailDetailFragmentArgs.fromBundle(requireArguments()).cocktail
         viewModel.setCocktail(selectedCocktail.asCocktail())
     }
-
 }

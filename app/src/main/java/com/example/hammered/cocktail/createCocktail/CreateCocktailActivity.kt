@@ -51,20 +51,15 @@ class CreateCocktailActivity : AppCompatActivity() {
 
 
         val selectedCocktail = intent.getParcelableExtra<CocktailData>(Constants.EDIT_COCKTAIL)
+        val selectedCocktailForCopy = intent.getParcelableExtra<CocktailData>(Constants.COPY_AND_EDIT)
 
         if (selectedCocktail != null) {
             isEdit = true
-            viewModel.getDataToPopulateFields(selectedCocktail.cocktail_id)
+            populateFields(selectedCocktail)
+        }
 
-            binding.textCocktailName.setText(selectedCocktail.cocktail_name)
-            binding.cocktailDescriptionText.setText(selectedCocktail.cocktail_description)
-
-            if (selectedCocktail.cocktail_image.isNotBlank()) {
-                imageUrl = selectedCocktail.cocktail_image
-                Glide.with(this).load(imageUrl).into(binding.addCocktailImage)
-            }
-
-            viewModel.setStepsFromRawString(selectedCocktail.steps)
+        if (selectedCocktailForCopy != null){
+            populateFields(selectedCocktailForCopy)
         }
 
         val nestedScrollView = binding.nestedScrollView
@@ -86,7 +81,7 @@ class CreateCocktailActivity : AppCompatActivity() {
         binding.stepsRecycler.adapter = stepsAdapter
         binding.ingRefRecycler.adapter = adapter
 
-        viewModel.editIngredientList.observe(this) { it ->
+        viewModel.editIngredientList.observe(this) {
             val ingredientList = it.mapIndexed { index, ref ->
                 NewCocktailRef(
                     ref_number = index,
@@ -298,6 +293,20 @@ class CreateCocktailActivity : AppCompatActivity() {
                 animateError(cocktailNameContainer)
             }
         }
+    }
+
+    private fun populateFields(selectedCocktail: CocktailData){
+        viewModel.getDataToPopulateFields(selectedCocktail.cocktail_id)
+
+        binding.textCocktailName.setText(selectedCocktail.cocktail_name)
+        binding.cocktailDescriptionText.setText(selectedCocktail.cocktail_description)
+
+        if (selectedCocktail.cocktail_image.isNotBlank()) {
+            imageUrl = selectedCocktail.cocktail_image
+            Glide.with(this).load(imageUrl).into(binding.addCocktailImage)
+        }
+
+        viewModel.setStepsFromRawString(selectedCocktail.steps)
     }
 
     private fun getImage() {
