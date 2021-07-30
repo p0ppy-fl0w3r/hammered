@@ -5,14 +5,23 @@ object Constants {
     const val EMPTY_ITEM = -1
 
     // Ingredient, Ingredient Adaptors and Layouts
-    const val NORMAL_ITEM = 1
-    const val ITEM_IN_STOCK = 2
-    const val ITEM_IN_CART = 3
+    const val NORMAL_ITEM = 3
+    const val ITEM_IN_STOCK = 4
+    const val ITEM_IN_CART = 5
 
     // Cocktail
-    const val NORMAL_COCKTAIL_ITEM = 1
-    const val AVAILABLE_COCKTAIL_ITEM = 2
-    const val FAVORITE_COCKTAIL_ITEM = 3
+    const val NORMAL_COCKTAIL_ITEM = 0
+    const val AVAILABLE_COCKTAIL_ITEM = 1
+    const val FAVORITE_COCKTAIL_ITEM = 2
+
+    val ALL_ITEM_LIST = listOf<String>(
+        "All Drinks",
+        "My Drinks",
+        "Favorite Drinks",
+        "All ingredients",
+        "My Stock",
+        "Shopping Cart"
+    )
 
     // Quantity units list
     val UNITS = listOf(
@@ -39,4 +48,8 @@ object Constants {
 
     // Copy and edit cocktail.
     const val COPY_AND_EDIT = "copy_and_edit_cocktail"
+
+    // Splash startup screen
+    const val STARTUP_SCREEN_ID = "startup_screen_id"
+    const val BUNDLE_STARTUP_INT = "bundle_startup_int"
 }

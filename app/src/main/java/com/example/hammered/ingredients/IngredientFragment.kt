@@ -30,6 +30,8 @@ class IngredientFragment : Fragment() {
 
         binding = DataBindingUtil.inflate(inflater, R.layout.ingredient_fragment, container, false)
 
+        msg = (arguments?.getInt(Constants.BUNDLE_STARTUP_INT) ?: Constants.NORMAL_ITEM)
+
         val adapter = IngredientAdapter(IngredientClickListener {
             findNavController().navigate(
                 IngredientFragmentDirections.fromIngredientToIngredientDetails(
@@ -54,6 +56,9 @@ class IngredientFragment : Fragment() {
         }
 
         binding.ingredientRecycler.adapter = adapter
+
+        setSelectedChip(msg)
+
         return binding.root
     }
 
@@ -65,5 +70,13 @@ class IngredientFragment : Fragment() {
         }
 
         viewModel.checkedData(msg)
+    }
+
+    private fun setSelectedChip(id: Int){
+        when(id){
+            Constants.NORMAL_ITEM -> binding.chipAllIngredient.isChecked = true
+            Constants.ITEM_IN_STOCK -> binding.chipMyStock.isChecked = true
+            else -> binding.chipShoppingCart.isChecked = true
+        }
     }
 }

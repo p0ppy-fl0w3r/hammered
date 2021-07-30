@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="choice_array">
+        <item name="all_drinks">All Drinks</item>
+        <item name="my_drinks">My Drinks</item>
+        <item name="favorite_drinks">Favorite Drinks</item>
+        <item name="all_ingredients">All ingredients</item>
+        <item name="my_stock">My Stock</item>
+        <item name="shopping_cart">Shopping Cart</item>
+    </string-array>
+</resources>

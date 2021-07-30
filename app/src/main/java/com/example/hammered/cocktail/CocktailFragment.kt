@@ -19,7 +19,7 @@ class CocktailFragment : Fragment() {
 
 
     private lateinit var binding: CocktailFragmentBinding
-    private var msg = 1
+    private var msg = Constants.NORMAL_COCKTAIL_ITEM
 
     private val viewModel: CocktailViewModel by lazy {
         ViewModelProvider(this).get(CocktailViewModel::class.java)
@@ -31,6 +31,7 @@ class CocktailFragment : Fragment() {
     ): View {
 
         binding = DataBindingUtil.inflate(inflater, R.layout.cocktail_fragment, container, false)
+        msg = arguments?.getInt(Constants.BUNDLE_STARTUP_INT) ?: Constants.NORMAL_COCKTAIL_ITEM
 
         // Change the data set when a different chip is selected
         binding.cocktailChipGroup.setOnCheckedChangeListener { _, checkedId ->
@@ -58,6 +59,8 @@ class CocktailFragment : Fragment() {
 
         binding.cocktailRecycler.adapter = adapter
 
+        setSelectedChip(msg)
+
         return binding.root
     }
 
@@ -69,5 +72,13 @@ class CocktailFragment : Fragment() {
         }
 
         viewModel.checkedData(msg)
+    }
+
+    private fun setSelectedChip(id: Int) {
+        when (id) {
+            Constants.NORMAL_COCKTAIL_ITEM -> binding.chipAllDrinks.isChecked = true
+            Constants.AVAILABLE_COCKTAIL_ITEM -> binding.chipMyDrinks.isChecked = true
+            else -> binding.chipFavoriteDrinks.isChecked = true
+        }
     }
 }

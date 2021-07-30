@@ -16,6 +16,10 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI.setupActionBarWithNavController
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupWithNavController
+import com.example.hammered.Constants.AVAILABLE_COCKTAIL_ITEM
+import com.example.hammered.Constants.BUNDLE_STARTUP_INT
+import com.example.hammered.Constants.FAVORITE_COCKTAIL_ITEM
+import com.example.hammered.Constants.NORMAL_COCKTAIL_ITEM
 import com.example.hammered.cocktail.createCocktail.CreateCocktailActivity
 import com.example.hammered.databinding.ActivityMainBinding
 import com.example.hammered.entities.relations.CocktailWithIngredient
@@ -28,7 +32,7 @@ import timber.log.Timber
 
 
 class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener,
-    View.OnFocusChangeListener{
+    View.OnFocusChangeListener {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
@@ -44,11 +48,14 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener,
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        val startUpScreenId = intent.getIntExtra(Constants.STARTUP_SCREEN_ID, 0)
+
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         navController = findNavController(R.id.navHostFragment)
         drawerLayout = binding.mainDrawer
 
         val toolbar = binding.toolbar
+
 
         // Setting up cocktailFragment as top level destination so that it shows the hamburger button-
         // instead of the back button.
@@ -90,6 +97,8 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener,
         viewModel.foundItems.observe(this) {
             searchAdapter.addFilterAndSubmitList(it)
         }
+
+        navigateToStartup(startUpScreenId)
 
     }
 
@@ -147,6 +156,22 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener,
             searchAdapter.submitList(null)
             v.setQuery("", false)
         }
+    }
+
+    private fun navigateToStartup(id: Int) {
+
+        val mBundle = Bundle()
+        mBundle.putInt(BUNDLE_STARTUP_INT, id)
+
+        navController.navigate(
+            when (id) {
+                NORMAL_COCKTAIL_ITEM,
+                AVAILABLE_COCKTAIL_ITEM,
+                FAVORITE_COCKTAIL_ITEM -> R.id.cocktailFragment
+
+                else -> R.id.ingredientFragment
+            }, mBundle
+        )
     }
 
 }

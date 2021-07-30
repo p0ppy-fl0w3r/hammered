@@ -59,4 +59,7 @@
     <string name="delete_ingredient">Delete Ingredient</string>
     <string name="delete_ingredient_message">Doing this will remove this ingredient and all the references to it. Do you still want to delete this ingredient?</string>
     <string name="delete_cocktail_message">Doing this will remove this cocktail and all the references to it. Do you still want to continue?</string>
+    <string name="startup_screen">Startup Screen.</string>
+    <string name="default_startup_screen">All drinks</string>
+    <string name="startup_dialog_title">Choose what will appear at startup.</string>
 </resources>

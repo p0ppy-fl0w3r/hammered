@@ -43,9 +43,12 @@ class IngredientViewModel(application: Application) : AndroidViewModel(applicati
     fun checkedData(id: Int) {
         viewModelScope.launch {
             when (id) {
-                1 -> _ingredientData.value = repository.getAllCocktailsFromIngredient()
-                2 -> _ingredientData.value = repository.getInStockCocktailsFromIngredient()
-                3 -> _ingredientData.value = repository.getInCartCocktailsFromIngredient()
+                Constants.NORMAL_ITEM -> _ingredientData.value =
+                    repository.getAllCocktailsFromIngredient()
+                Constants.ITEM_IN_STOCK -> _ingredientData.value =
+                    repository.getInStockCocktailsFromIngredient()
+                Constants.ITEM_IN_CART -> _ingredientData.value =
+                    repository.getInCartCocktailsFromIngredient()
             }
         }
 

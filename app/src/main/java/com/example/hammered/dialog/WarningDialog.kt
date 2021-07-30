@@ -7,7 +7,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import com.example.hammered.R
 
-class WarningDialog(val dialogLayout: Int) : DialogFragment() {
+class WarningDialog(private val dialogLayout: Int) : DialogFragment() {
 
     @SuppressLint("InflateParams")
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {

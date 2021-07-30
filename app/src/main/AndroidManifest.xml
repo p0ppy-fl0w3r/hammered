@@ -14,16 +14,23 @@
         android:supportsRtl="false"
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup">
-        <activity android:name=".ingredients.createIngredient.CreateIngredientActivity" />
-        <activity android:name=".cocktail.createCocktail.CreateCocktailActivity" />
-        <activity android:name=".splashscreen.SplashActivity">
+        <activity
+            android:name=".ingredients.createIngredient.CreateIngredientActivity"
+            android:screenOrientation="nosensor" />
+        <activity
+            android:name=".cocktail.createCocktail.CreateCocktailActivity"
+            android:screenOrientation="nosensor" />
+        <activity
+            android:name=".splashscreen.SplashActivity"
+            android:screenOrientation="nosensor">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity"/>
+        <activity
+            android:name=".MainActivity"
+            android:screenOrientation="nosensor" />
 
 
         <meta-data
