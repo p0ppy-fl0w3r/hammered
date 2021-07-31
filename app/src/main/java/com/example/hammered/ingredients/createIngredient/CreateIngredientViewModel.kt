@@ -83,7 +83,6 @@ class CreateIngredientViewModel(application: Application) : AndroidViewModel(app
         _newIngredient.value = null
     }
 
-
     private fun getLastIngredientId() {
         viewModelScope.launch {
             _lastIngredientId.value = repository.getLastIngredientId()

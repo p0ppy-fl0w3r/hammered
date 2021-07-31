@@ -45,6 +45,10 @@ class SettingsFragment : Fragment() {
             }.show(childFragmentManager,"Radio_choose_dialog")
         }
 
+        binding.exportToJsonCard.setOnClickListener{
+            viewModel.saveToJson()
+        }
+
         return binding.root
     }
 

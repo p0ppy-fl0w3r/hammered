@@ -34,6 +34,9 @@ interface CocktailDao {
     @Query("SELECT * FROM Cocktail WHERE cocktail_id=:id")
     suspend fun getCocktail(id: Long): Cocktail?
 
+    @Query("SELECT * FROM Cocktail")
+    suspend fun getAllCocktail(): List<Cocktail>
+
     @Query("SElECT cocktail_id FROM Cocktail ORDER BY cocktail_id DESC LIMIT 1")
     suspend fun getLastCocktailId(): Long
 
@@ -48,6 +51,9 @@ interface CocktailDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertIngredientCocktailRef(ingredientCocktailRef: IngredientCocktailRef)
+
+    @Query("SELECT * FROM IngredientCocktailRef")
+    suspend fun getAllIngredientCocktailRef(): List<IngredientCocktailRef>
 
     @Query("SELECT * FROM Ingredient")
     suspend fun getAllIngredient(): List<Ingredient>

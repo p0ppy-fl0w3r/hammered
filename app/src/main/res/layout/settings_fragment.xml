@@ -8,32 +8,71 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".settings.SettingsFragment">
-        <androidx.cardview.widget.CardView
-            android:id="@+id/startUpScreenChange"
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_margin="4dp"
-            app:cardCornerRadius="4dp"
-            android:layout_height="wrap_content">
-            <LinearLayout
-                android:layout_marginStart="16dp"
-                android:padding="4dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/startUpScreenChange"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/startup_screen"
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"/>
-                <TextView
-                    android:id="@+id/textCurrentScreen"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
-                    tools:text="@string/all_drinks"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
+                android:layout_margin="4dp"
+                app:cardCornerRadius="4dp">
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:orientation="vertical"
+                    android:padding="4dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/startup_screen"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
+
+                    <TextView
+                        android:id="@+id/textCurrentScreen"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                        tools:text="@string/all_drinks" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/exportToJsonCard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                app:cardCornerRadius="4dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:orientation="vertical"
+                    android:padding="4dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/export_all"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
+
+                    <TextView
+                        android:id="@+id/textExportInfo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                        android:text="@string/export_info_text" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+        </LinearLayout>
     </ScrollView>
 </layout>
