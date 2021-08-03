@@ -4,6 +4,7 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.144921875" />
+        <entry key="app/src/main/res/layout/progress_dialog_layout.xml" value="0.25" />
         <entry key="app/src/main/res/layout/settings_fragment.xml" value="0.33" />
       </map>
     </option>

@@ -2,18 +2,13 @@ package com.example.hammered.settings
 
 import android.app.Application
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.graphics.drawable.Drawable
-import android.net.Uri
-import android.os.Build
 import android.os.Environment
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
+import com.example.hammered.Constants
 import com.example.hammered.database.CocktailDatabase
 import com.example.hammered.datastore.SettingsPreferences
 import com.example.hammered.entities.Cocktail
@@ -25,17 +20,10 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.io.File
 import java.io.FileOutputStream
-import java.io.OutputStream
-import java.net.URI
-import java.util.*
-import kotlin.io.path.absolutePathString
-import kotlin.io.path.toPath
 
 // The app will not ask for storage permission
 // TODO make sure that the app requests for external storage permission
-// TODO add indicator to show that the file is being saved.
-// FIXME Navigating to ingredient fragment automatically selects all ingredient
-// FIXME deleting an Ingredient automatically selects the shopping cart chip
+
 
 class SettingsViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -46,6 +34,15 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
 
     val currentStartupScreen = preferences.currentStartupScreen.asLiveData()
 
+    private val _startJsonSave = MutableLiveData<Boolean?>()
+    val startJsonSave: LiveData<Boolean?>
+        get() = _startJsonSave
+
+    // See Constants.kt for status codes.
+    private val _jsonSaveStatus = MutableLiveData<Int?>()
+    val jsonSaveStatus : LiveData<Int?>
+        get() = _jsonSaveStatus
+
     fun changeStartupScreen(position: Int) {
         viewModelScope.launch(Dispatchers.IO) {
             preferences.changeStartupScreen(position)
@@ -53,6 +50,9 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
     }
 
     fun saveToJson() {
+
+        _startJsonSave.value = true
+
         viewModelScope.launch(Dispatchers.IO) {
             val allIngredients = repository.getAllIngredient()
             val allCocktail = repository.getALlCocktail()
@@ -103,7 +103,7 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
                             }
                         }
                     )
-                    i.cocktail_image = i.cocktail_name
+                    i.cocktail_image = i.cocktail_name + "-${i.cocktail_id}"
                     allCocktailAfterImage.add(i)
                 }
             }
@@ -125,9 +125,10 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
                             File(dir, "hammered_export${System.currentTimeMillis()}")
 
                         if(exportDir.mkdirs()){
-                            Timber.e("Directory creation success.")
+                            Timber.i("Directory creation success.")
                         }
                         else{
+                            _jsonSaveStatus.postValue(Constants.DIRECTORY_CREATE_FAILED)
                             Timber.e("Directory not created.")
                         }
 
@@ -167,20 +168,31 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
                             output.close()
                         }
 
-                        // TODO change to Timber.i
-                        Timber.e("File created in ${exportDir.absolutePath}")
+                        Timber.i("Data saved successfully to $exportDir.")
+                        _jsonSaveStatus.postValue(Constants.DATA_SAVE_SUCCESS)
                     }
                     catch (e: Exception) {
                         Timber.e("File creation failed ${e.message}")
+                        _jsonSaveStatus.postValue(Constants.FILE_CREATION_FAILED)
                     }
                 }
                 else {
                     Timber.e("The directory was blank.")
+                    _jsonSaveStatus.postValue(Constants.DIRECTORY_INVALID)
                 }
             }
             else {
                 Timber.e("The directory was null.")
+                _jsonSaveStatus.postValue(Constants.GET_DIR_FAILED)
             }
         }
+    }
+
+    fun doneSave(){
+        _startJsonSave.value = null
+    }
+
+    fun doneShowingMessages(){
+        _jsonSaveStatus.value = null
     }
 }

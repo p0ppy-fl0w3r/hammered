@@ -7,8 +7,8 @@ import com.squareup.moshi.Types
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 
 /**
- * TODO 1) Export data in to json file
- * TODO 2) Export images
+ * Export data in to json file
+ * Export images
  * TODO 3) Import data and images
  * TODO 4) Let the user manage the conflict strategy.
  * Either let them replace the existing data with a new one from the json file or let them ignore
@@ -17,7 +17,6 @@ import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
  **/
 
 object JsonUtils {
-    //TEST
     inline fun <reified T> getJsonFromClass(ingList: List<T>): String {
 
         val moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()

@@ -12,6 +12,7 @@ import com.example.hammered.Constants
 import com.example.hammered.R
 import com.example.hammered.database.CocktailDatabase
 import com.example.hammered.databinding.IngredientFragmentBinding
+import timber.log.Timber
 
 class IngredientFragment : Fragment() {
 
@@ -21,7 +22,7 @@ class IngredientFragment : Fragment() {
         ViewModelProvider(this).get(IngredientViewModel::class.java)
     }
 
-    private var msg = Constants.NORMAL_ITEM
+    private var chipSelection = Constants.NORMAL_ITEM
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,7 +31,18 @@ class IngredientFragment : Fragment() {
 
         binding = DataBindingUtil.inflate(inflater, R.layout.ingredient_fragment, container, false)
 
-        msg = (arguments?.getInt(Constants.BUNDLE_STARTUP_INT) ?: Constants.NORMAL_ITEM)
+        chipSelection = arguments?.getInt(Constants.BUNDLE_STARTUP_INT) ?: Constants.NORMAL_ITEM
+
+        if (chipSelection !in listOf(
+                Constants.NORMAL_ITEM,
+                Constants.ITEM_IN_CART,
+                Constants.ITEM_IN_STOCK
+            )
+        ){
+            chipSelection = Constants.NORMAL_ITEM
+        }
+
+            Timber.e("$chipSelection is the chip")
 
         val adapter = IngredientAdapter(IngredientClickListener {
             findNavController().navigate(
@@ -52,28 +64,28 @@ class IngredientFragment : Fragment() {
         }
 
         viewModel.ingredientData.observe(viewLifecycleOwner) {
-            adapter.addFilterAndSubmitList(it, msg)
+            adapter.addFilterAndSubmitList(it, chipSelection)
         }
 
         binding.ingredientRecycler.adapter = adapter
 
-        setSelectedChip(msg)
+        setSelectedChip(chipSelection)
 
         return binding.root
     }
 
     private fun filterDataFromChip(checkedId: Int) {
         when (checkedId) {
-            binding.chipAllIngredient.id -> msg = Constants.NORMAL_ITEM
-            binding.chipMyStock.id -> msg = Constants.ITEM_IN_STOCK
-            binding.chipShoppingCart.id -> msg = Constants.ITEM_IN_CART
+            binding.chipAllIngredient.id -> chipSelection = Constants.NORMAL_ITEM
+            binding.chipMyStock.id -> chipSelection = Constants.ITEM_IN_STOCK
+            binding.chipShoppingCart.id -> chipSelection = Constants.ITEM_IN_CART
         }
 
-        viewModel.checkedData(msg)
+        viewModel.checkedData(chipSelection)
     }
 
-    private fun setSelectedChip(id: Int){
-        when(id){
+    private fun setSelectedChip(id: Int) {
+        when (id) {
             Constants.NORMAL_ITEM -> binding.chipAllIngredient.isChecked = true
             Constants.ITEM_IN_STOCK -> binding.chipMyStock.isChecked = true
             else -> binding.chipShoppingCart.isChecked = true

@@ -5,4 +5,5 @@
     <dimen name="circular_image_height">55dp</dimen>
     <dimen name="default_details_image_height">150dp</dimen>
     <dimen name="back_button_width">48dp</dimen>
+    <dimen name="progress_circle_size">150dp</dimen>
 </resources>

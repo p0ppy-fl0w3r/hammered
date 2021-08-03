@@ -43,8 +43,8 @@ object Constants {
     const val EDIT_COCKTAIL = "cocktail"
 
     // Search item ids
-    const val SEARCH_COCKTAIL = 1
-    const val SEARCH_INGREDIENT = 2
+    const val SEARCH_COCKTAIL = 6
+    const val SEARCH_INGREDIENT = 7
 
     // Copy and edit cocktail.
     const val COPY_AND_EDIT = "copy_and_edit_cocktail"
@@ -52,4 +52,11 @@ object Constants {
     // Splash startup screen
     const val STARTUP_SCREEN_ID = "startup_screen_id"
     const val BUNDLE_STARTUP_INT = "bundle_startup_int"
+
+    // Export to json status codes
+    const val DATA_SAVE_SUCCESS = 8
+    const val FILE_CREATION_FAILED = 9
+    const val DIRECTORY_INVALID = 10
+    const val GET_DIR_FAILED = 11
+    const val DIRECTORY_CREATE_FAILED = 12
 }

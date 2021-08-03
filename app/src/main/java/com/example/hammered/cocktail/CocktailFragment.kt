@@ -19,7 +19,7 @@ class CocktailFragment : Fragment() {
 
 
     private lateinit var binding: CocktailFragmentBinding
-    private var msg = Constants.NORMAL_COCKTAIL_ITEM
+    private var chipSelection = Constants.NORMAL_COCKTAIL_ITEM
 
     private val viewModel: CocktailViewModel by lazy {
         ViewModelProvider(this).get(CocktailViewModel::class.java)
@@ -31,7 +31,9 @@ class CocktailFragment : Fragment() {
     ): View {
 
         binding = DataBindingUtil.inflate(inflater, R.layout.cocktail_fragment, container, false)
-        msg = arguments?.getInt(Constants.BUNDLE_STARTUP_INT) ?: Constants.NORMAL_COCKTAIL_ITEM
+        chipSelection = arguments?.getInt(Constants.BUNDLE_STARTUP_INT) ?: Constants.NORMAL_COCKTAIL_ITEM
+
+        Timber.e("The curent selection is $chipSelection")
 
         // Change the data set when a different chip is selected
         binding.cocktailChipGroup.setOnCheckedChangeListener { _, checkedId ->
@@ -54,24 +56,24 @@ class CocktailFragment : Fragment() {
         })
 
         viewModel.cocktailLiveData.observe(viewLifecycleOwner) {
-            adapter.applyFilterAndSubmitList(it, msg)
+            adapter.applyFilterAndSubmitList(it, chipSelection)
         }
 
         binding.cocktailRecycler.adapter = adapter
 
-        setSelectedChip(msg)
+        setSelectedChip(chipSelection)
 
         return binding.root
     }
 
     private fun filterDataFromChip(checkedId: Int) {
         when (checkedId) {
-            binding.chipAllDrinks.id -> msg = Constants.NORMAL_COCKTAIL_ITEM
-            binding.chipMyDrinks.id -> msg = Constants.AVAILABLE_COCKTAIL_ITEM
-            binding.chipFavoriteDrinks.id -> msg = Constants.FAVORITE_COCKTAIL_ITEM
+            binding.chipAllDrinks.id -> chipSelection = Constants.NORMAL_COCKTAIL_ITEM
+            binding.chipMyDrinks.id -> chipSelection = Constants.AVAILABLE_COCKTAIL_ITEM
+            binding.chipFavoriteDrinks.id -> chipSelection = Constants.FAVORITE_COCKTAIL_ITEM
         }
 
-        viewModel.checkedData(msg)
+        viewModel.checkedData(chipSelection)
     }
 
     private fun setSelectedChip(id: Int) {
