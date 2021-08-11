@@ -18,7 +18,9 @@ import com.example.hammered.databinding.ActivitySplashBinding
 class SplashActivity : AppCompatActivity() {
 
     private lateinit var viewModel: SplashViewModel
+
     private var defaultStartupScreen = Constants.NORMAL_COCKTAIL_ITEM
+    private var isDataInserted = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,25 +37,43 @@ class SplashActivity : AppCompatActivity() {
             // startup screen.
             defaultStartupScreen = it
 
-            // Start inserting data in database after you've gotten the startup screen.
-            viewModel.insertValuesInDatabase()
+        }
+
+        viewModel.isDataInserted.observe(this) {
+            if (it == false) {
+                // Only insert data in database after you've confirmed that the database was not populated before.
+                viewModel.insertValuesInDatabase()
+
+                viewModel.setDataInserted()
+
+                isDataInserted = false
+            }
+            else{
+                // Don't call endSplash if it has already been called in this observation.
+                if (isDataInserted){
+                    endSplash()
+                }
+            }
         }
 
         // Only start the main activity when the database is populated
-        viewModel.populateDatabase.observe(this){
-            if (it == true){
+        viewModel.populateDatabase.observe(this) {
+            if (it == true) {
 
                 viewModel.donePopulating()
-
-                Handler(Looper.getMainLooper()).postDelayed(
-                    {
-                        val intent = Intent(this, MainActivity::class.java)
-                        intent.putExtra(STARTUP_SCREEN_ID, defaultStartupScreen)
-                        startActivity(intent)
-                        finish()
-                    }, 2000
-                )
+                endSplash()
             }
         }
+    }
+
+    private fun endSplash() {
+        Handler(Looper.getMainLooper()).postDelayed(
+            {
+                val intent = Intent(this, MainActivity::class.java)
+                intent.putExtra(STARTUP_SCREEN_ID, defaultStartupScreen)
+                startActivity(intent)
+                finish()
+            }, 2000
+        )
     }
 }

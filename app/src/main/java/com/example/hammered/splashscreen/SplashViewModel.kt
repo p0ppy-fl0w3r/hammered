@@ -11,21 +11,28 @@ class SplashViewModel(application: Application) : AndroidViewModel(application) 
     private val repository = CocktailRepository(CocktailDatabase.getDatabase(application))
     private val preferences = SettingsPreferences(application)
 
+    val isDataInserted = preferences.currentDataInsertionStatus.asLiveData()
     val currentSelectedStartupScreen = preferences.currentStartupScreen.asLiveData()
 
     private val _populateDatabase = MutableLiveData<Boolean?>()
 
-    val populateDatabase : LiveData<Boolean?>
+    val populateDatabase: LiveData<Boolean?>
         get() = _populateDatabase
 
-    fun insertValuesInDatabase(){
+    fun insertValuesInDatabase() {
         viewModelScope.launch {
             repository.insertAll()
             _populateDatabase.value = true
         }
     }
 
-    fun donePopulating(){
+    fun donePopulating() {
         _populateDatabase.value = null
+    }
+
+    fun setDataInserted() {
+        viewModelScope.launch {
+            preferences.changeDataInsertStatus(true)
+        }
     }
 }

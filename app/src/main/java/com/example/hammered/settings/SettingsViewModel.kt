@@ -210,4 +210,14 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
             repository.deleteAllRef()
         }
     }
+
+    fun resetApp(){
+        viewModelScope.launch {
+            repository.deleteAllIngredient()
+            repository.deleteAllCocktail()
+            repository.deleteAllRef()
+
+            repository.insertAll()
+        }
+    }
 }

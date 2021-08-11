@@ -21,12 +21,6 @@ class IngredientViewModel(application: Application) : AndroidViewModel(applicati
     private val database = CocktailDatabase.getDatabase(application)
     private val repository = CocktailRepository(database)
 
-    init {
-        viewModelScope.launch {
-            repository.insertAll()
-        }
-    }
-
     fun checkChanged(currVal: IngredientWithCocktail, valueFrom: Int) {
         viewModelScope.launch {
             if (valueFrom == Constants.ITEM_IN_STOCK) {

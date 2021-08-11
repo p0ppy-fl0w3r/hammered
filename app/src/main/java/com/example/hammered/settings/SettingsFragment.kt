@@ -90,6 +90,11 @@ class SettingsFragment : Fragment() {
             deleteAll()
         }
 
+        binding.resetCard.setOnClickListener {
+            reset()
+        }
+
+        // LiveData observers
         viewModel.startJsonSave.observe(viewLifecycleOwner) {
             if (it == true) {
                 progressDialog.show()
@@ -146,6 +151,17 @@ class SettingsFragment : Fragment() {
         }.show(
             childFragmentManager,
             "delete_all_dialog"
+        )
+    }
+
+    private fun reset(){
+
+        CancelAlertDialog("Are you sure you want to reset the app into it's initial state?") {
+            viewModel.resetApp()
+            Toast.makeText(requireContext(), "Reset completed!!", Toast.LENGTH_SHORT).show()
+        }.show(
+            childFragmentManager,
+            "reset_app_dialog"
         )
     }
 }

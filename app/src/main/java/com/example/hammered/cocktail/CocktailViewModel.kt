@@ -42,12 +42,6 @@ class CocktailViewModel(application: Application) : AndroidViewModel(application
 
     }
 
-    init {
-        viewModelScope.launch {
-            repository.insertAll()
-        }
-    }
-
     private suspend fun filterMakableDrinks(): List<CocktailWithIngredient> {
 
         /**

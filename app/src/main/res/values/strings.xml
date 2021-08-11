@@ -72,4 +72,6 @@
     <string name="import_btn_text">Import</string>
     <string name="delete_everything">Delete everything.</string>
     <string name="delete_info_text">Delete every drinks and ingredient.</string>
+    <string name="reset">Reset</string>
+    <string name="reset_info_text">Reset the data and the app to it\'s initial state.</string>
 </resources>
