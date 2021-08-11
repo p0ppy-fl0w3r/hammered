@@ -14,7 +14,7 @@ object Constants {
     const val AVAILABLE_COCKTAIL_ITEM = 1
     const val FAVORITE_COCKTAIL_ITEM = 2
 
-    val ALL_ITEM_LIST = listOf<String>(
+    val ALL_ITEM_LIST = listOf(
         "All Drinks",
         "My Drinks",
         "Favorite Drinks",
@@ -59,4 +59,9 @@ object Constants {
     const val DIRECTORY_INVALID = 10
     const val GET_DIR_FAILED = 11
     const val DIRECTORY_CREATE_FAILED = 12
+
+    // JSON file names
+    const val INGREDIENT_JSON_FILE = "ingredient.json"
+    const val COCKTAIL_JSON_FILE = "cocktail.json"
+    const val BRIDGING_JSON_FILE = "ref.json"
 }

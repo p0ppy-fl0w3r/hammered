@@ -1,8 +1,10 @@
 package com.example.hammered.settings
 
 import android.app.Application
+import android.content.ContentUris
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
+import android.net.Uri
 import android.os.Environment
 import androidx.lifecycle.*
 import com.bumptech.glide.Glide
@@ -40,7 +42,7 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
 
     // See Constants.kt for status codes.
     private val _jsonSaveStatus = MutableLiveData<Int?>()
-    val jsonSaveStatus : LiveData<Int?>
+    val jsonSaveStatus: LiveData<Int?>
         get() = _jsonSaveStatus
 
     fun changeStartupScreen(position: Int) {
@@ -81,7 +83,7 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
                             }
                         }
                     )
-                    i.ingredient_image = i.ingredient_name
+                    i.ingredient_image = "${i.ingredient_name}-ing"
                     allIngredientAfterImage.add(i)
                 }
             }
@@ -103,7 +105,7 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
                             }
                         }
                     )
-                    i.cocktail_image = i.cocktail_name + "-${i.cocktail_id}"
+                    i.cocktail_image = i.cocktail_name + "-cocktail-${i.cocktail_id}"
                     allCocktailAfterImage.add(i)
                 }
             }
@@ -122,19 +124,19 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
                 if (dir.isNotBlank()) {
                     try {
                         val exportDir =
-                            File(dir, "hammered_export${System.currentTimeMillis()}")
+                            File(dir, "hammered_export${System.currentTimeMillis()}.zip")
 
-                        if(exportDir.mkdirs()){
+                        if (exportDir.mkdirs()) {
                             Timber.i("Directory creation success.")
                         }
-                        else{
+                        else {
                             _jsonSaveStatus.postValue(Constants.DIRECTORY_CREATE_FAILED)
                             Timber.e("Directory not created.")
                         }
 
-                        val ingredientFile = File(exportDir, "ingredient.json")
-                        val cocktailFile = File(exportDir, "cocktail.json")
-                        val refFile = File(exportDir, "ref.json")
+                        val ingredientFile = File(exportDir, Constants.INGREDIENT_JSON_FILE)
+                        val cocktailFile = File(exportDir, Constants.COCKTAIL_JSON_FILE)
+                        val refFile = File(exportDir, Constants.BRIDGING_JSON_FILE)
 
                         ingredientFile.writeText(ingredientJson)
                         cocktailFile.writeText(cocktailJson)
@@ -188,11 +190,24 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
         }
     }
 
-    fun doneSave(){
+    fun getFromJson(dataDir: String) {
+
+
+    }
+
+    fun doneSave() {
         _startJsonSave.value = null
     }
 
-    fun doneShowingMessages(){
+    fun doneShowingMessages() {
         _jsonSaveStatus.value = null
+    }
+
+    fun deleteEverything(){
+        viewModelScope.launch {
+            repository.deleteAllIngredient()
+            repository.deleteAllCocktail()
+            repository.deleteAllRef()
+        }
     }
 }

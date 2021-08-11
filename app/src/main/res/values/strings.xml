@@ -65,4 +65,11 @@
     <string name="export_all">Export all drinks and ingredients.</string>
     <string name="export_info_text">Export all the drinks and ingredient in a file that can be saved or imported later.</string>
     <string name="saving_data">Saving data…</string>
+    <string name="import_title">Import drinks and ingredients.</string>
+    <string name="import_settings_info">Import drinks and ingredients from a directory.</string>
+    <string name="import_image_text">Import images if they are available.</string>
+    <string name="replace_existing_switch_text">Replace existing drinks and ingredients.</string>
+    <string name="import_btn_text">Import</string>
+    <string name="delete_everything">Delete everything.</string>
+    <string name="delete_info_text">Delete every drinks and ingredient.</string>
 </resources>

@@ -195,4 +195,16 @@ class CocktailRepository(private val database: CocktailDatabase) {
         database.cocktailDao.deleteIngredient(ingredient)
     }
 
+    suspend fun deleteAllCocktail(){
+        database.cocktailDao.deleteAllCocktail()
+    }
+
+    suspend fun deleteAllIngredient(){
+        database.cocktailDao.deleteAllIngredient()
+    }
+
+    suspend fun deleteAllRef(){
+        database.cocktailDao.deleteAllRef()
+    }
+
 }

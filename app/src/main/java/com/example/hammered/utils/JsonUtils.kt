@@ -9,7 +9,7 @@ import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 /**
  * Export data in to json file
  * Export images
- * TODO 3) Import data and images
+ * TODO 3) Import data and images // Save the files as zip
  * TODO 4) Let the user manage the conflict strategy.
  * Either let them replace the existing data with a new one from the json file or let them ignore
  * the new one and keep the existing one. See the insert methods used on CreateIngredientViewModel
@@ -17,13 +17,23 @@ import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
  **/
 
 object JsonUtils {
-    inline fun <reified T> getJsonFromClass(ingList: List<T>): String {
+    inline fun <reified T> getJsonFromClass(itemList: List<T>): String {
 
         val moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
 
         val listType = Types.newParameterizedType(List::class.java, T::class.java)
         val adapter: JsonAdapter<List<T>> = moshi.adapter(listType)
 
-        return adapter.toJson(ingList)
+        return adapter.toJson(itemList)
+    }
+
+    inline fun <reified T> getClassFromJson(jsonString: String): List<T>? {
+
+        val moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
+
+        val listType = Types.newParameterizedType(List::class.java, T::class.java)
+        val adapter: JsonAdapter<List<T>> = moshi.adapter(listType)
+
+        return adapter.fromJson(jsonString)
     }
 }
