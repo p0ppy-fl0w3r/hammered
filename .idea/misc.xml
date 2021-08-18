@@ -4,8 +4,10 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.144921875" />
+        <entry key="app/src/main/res/layout/permission_warning_layout.xml" value="0.22" />
         <entry key="app/src/main/res/layout/progress_dialog_layout.xml" value="0.25" />
         <entry key="app/src/main/res/layout/settings_fragment.xml" value="0.33" />
+        <entry key="app/src/main/res/layout/warning_dialog_layout.xml" value="0.1" />
       </map>
     </option>
   </component>

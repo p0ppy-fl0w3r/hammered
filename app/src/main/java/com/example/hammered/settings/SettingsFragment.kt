@@ -1,8 +1,10 @@
 package com.example.hammered.settings
 
+import android.Manifest
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Color
 import android.os.Bundle
 import android.provider.MediaStore
@@ -10,6 +12,7 @@ import android.provider.OpenableColumns
 import android.view.*
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.net.toFile
 import androidx.fragment.app.Fragment
@@ -20,15 +23,30 @@ import com.example.hammered.R
 import com.example.hammered.databinding.SettingsFragmentBinding
 import com.example.hammered.dialog.CancelAlertDialog
 import com.example.hammered.dialog.StartupChooseDialog
+import com.example.hammered.dialog.WarningDialog
 import com.google.android.material.snackbar.Snackbar
 import timber.log.Timber
 import java.io.File
+
 
 class SettingsFragment : Fragment() {
 
     val viewModel: SettingsViewModel by lazy {
         ViewModelProvider(requireActivity()).get(SettingsViewModel::class.java)
     }
+
+    private val requestPermissionLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+            if (isGranted) {
+                viewModel.saveToJson()
+            }
+            else {
+                WarningDialog(R.layout.permission_warning_layout).show(
+                    childFragmentManager,
+                    "permission_denied_warning_dialog"
+                )
+            }
+        }
 
     private lateinit var binding: SettingsFragmentBinding
 
@@ -72,7 +90,36 @@ class SettingsFragment : Fragment() {
         }
 
         binding.exportToJsonCard.setOnClickListener {
-            viewModel.saveToJson()
+
+            if (ContextCompat.checkSelfPermission(
+                    requireContext(),
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+                ) == PackageManager.PERMISSION_GRANTED
+            ) {
+                viewModel.saveToJson()
+            }
+
+
+            when {
+                ContextCompat.checkSelfPermission(
+                    requireContext(),
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+                ) == PackageManager.PERMISSION_GRANTED -> {
+                    viewModel.saveToJson()
+                }
+
+                shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE) -> {
+                    CancelAlertDialog(
+                        getString(R.string.required_permission_msg)
+                    ) { requestPermissionLauncher.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE) }.show(
+                        childFragmentManager,
+                        "permission_required_dialog"
+                    )
+                }
+                else -> {
+                    requestPermissionLauncher.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                }
+            }
         }
 
         binding.importFromJson.setOnClickListener {
@@ -154,8 +201,7 @@ class SettingsFragment : Fragment() {
         )
     }
 
-    private fun reset(){
-
+    private fun reset() {
         CancelAlertDialog("Are you sure you want to reset the app into it's initial state?") {
             viewModel.resetApp()
             Toast.makeText(requireContext(), "Reset completed!!", Toast.LENGTH_SHORT).show()

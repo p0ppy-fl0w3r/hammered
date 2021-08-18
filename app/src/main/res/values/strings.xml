@@ -74,4 +74,7 @@
     <string name="delete_info_text">Delete every drinks and ingredient.</string>
     <string name="reset">Reset</string>
     <string name="reset_info_text">Reset the data and the app to it\'s initial state.</string>
+    <string name="permission_required">Permission Required!</string>
+    <string name="permission_msg_text">To use this feature, this app will require storage permissions. You have not granted this permission. If you wish to use this feature, please go to the app\'s settings and grant storage permission.</string>
+    <string name="required_permission_msg">You\'ll need to grant storage permission to use this feature. Do you wish to continue?</string>
 </resources>
