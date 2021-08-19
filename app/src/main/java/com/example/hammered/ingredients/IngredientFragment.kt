@@ -12,7 +12,6 @@ import com.example.hammered.Constants
 import com.example.hammered.R
 import com.example.hammered.database.CocktailDatabase
 import com.example.hammered.databinding.IngredientFragmentBinding
-import timber.log.Timber
 
 class IngredientFragment : Fragment() {
 
@@ -42,7 +41,6 @@ class IngredientFragment : Fragment() {
             chipSelection = Constants.NORMAL_ITEM
         }
 
-            Timber.e("$chipSelection is the chip")
 
         val adapter = IngredientAdapter(IngredientClickListener {
             findNavController().navigate(

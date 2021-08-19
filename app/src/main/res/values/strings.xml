@@ -77,4 +77,5 @@
     <string name="permission_required">Permission Required!</string>
     <string name="permission_msg_text">To use this feature, this app will require storage permissions. You have not granted this permission. If you wish to use this feature, please go to the app\'s settings and grant storage permission.</string>
     <string name="required_permission_msg">You\'ll need to grant storage permission to use this feature. Do you wish to continue?</string>
+    <string name="about_desc">An application that will help you create your favorite drinks. Enjoy Responsibly!!</string>
 </resources>

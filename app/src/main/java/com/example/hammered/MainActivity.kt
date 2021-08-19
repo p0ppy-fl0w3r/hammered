@@ -129,6 +129,14 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener,
                 startActivity(intent)
             }
 
+            R.id.settingsOption -> {
+                navController.navigate(R.id.settingsFragment)
+            }
+
+            R.id.aboutOption -> {
+                navController.navigate(R.id.aboutFragment)
+            }
+
             else -> {
                 Timber.i("Options item selected: ${item.title}")
             }

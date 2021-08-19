@@ -23,9 +23,6 @@ import timber.log.Timber
 import java.io.File
 import java.io.FileOutputStream
 
-// The app will not ask for storage permission
-// TODO make sure that the app requests for external storage permission
-
 
 class SettingsViewModel(application: Application) : AndroidViewModel(application) {
 

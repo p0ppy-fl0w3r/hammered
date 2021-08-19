@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
@@ -13,7 +12,6 @@ import com.example.hammered.Constants
 import com.example.hammered.R
 import com.example.hammered.database.CocktailDatabase
 import com.example.hammered.databinding.CocktailFragmentBinding
-import timber.log.Timber
 
 class CocktailFragment : Fragment() {
 
@@ -32,8 +30,6 @@ class CocktailFragment : Fragment() {
 
         binding = DataBindingUtil.inflate(inflater, R.layout.cocktail_fragment, container, false)
         chipSelection = arguments?.getInt(Constants.BUNDLE_STARTUP_INT) ?: Constants.NORMAL_COCKTAIL_ITEM
-
-        Timber.e("The curent selection is $chipSelection")
 
         // Change the data set when a different chip is selected
         binding.cocktailChipGroup.setOnCheckedChangeListener { _, checkedId ->

@@ -28,7 +28,7 @@ import com.google.android.material.snackbar.Snackbar
 import timber.log.Timber
 import java.io.File
 
-
+// TODO zip files while exporting
 class SettingsFragment : Fragment() {
 
     val viewModel: SettingsViewModel by lazy {
