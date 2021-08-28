@@ -12,16 +12,30 @@ import com.example.hammered.entities.Ingredient
 import com.example.hammered.entities.relations.IngredientCocktailRef
 import com.example.hammered.ingredients.IngredientData
 import com.example.hammered.utils.SpinnerItemChangeListener
+import timber.log.Timber
+import java.io.File
+import java.net.URI
 
 // TODO see this again and optimize the TextView/EditText https://medium.com/androiddevelopers/underspanding-spans-1b91008b97e4
 
 @BindingAdapter("imageSource")
 fun imageSource(imageView: ImageView, imageUrl: String?) {
+
     imageUrl?.let {
-        Glide.with(imageView.context)
-            .load(Uri.parse("$imageUrl"))
-            .apply(RequestOptions().error(R.drawable.no_drinks))
-            .into(imageView)
+        val imageFile = File(imageView.context.filesDir, "$it.png")
+        if (!imageFile.exists()) {
+            Timber.e("the file exists ${imageFile.absolutePath}")
+            Glide.with(imageView.context)
+                .load(Uri.parse(it))
+                .apply(RequestOptions().error(R.drawable.no_drinks))
+                .into(imageView)
+        } else {
+            Timber.e("the file doesnot exist")
+            Glide.with(imageView.context)
+                .load(imageFile)
+                .apply(RequestOptions().error(R.drawable.no_drinks))
+                .into(imageView)
+        }
     }
 }
 
@@ -34,8 +48,7 @@ fun ingredientList(textView: TextView, ingredients: List<Ingredient>) {
         for (i in ingredients) {
             if (i.inStock) {
                 ingredientInStock.add(i.ingredient_name)
-            }
-            else {
+            } else {
                 hasAll = false
                 ingredientNotInStock.add(i.ingredient_name)
             }
@@ -49,13 +62,11 @@ fun ingredientList(textView: TextView, ingredients: List<Ingredient>) {
                     separator = ", "
                 ) { it }
 
-            }
-            else {
+            } else {
                 inStockLast
             }
             textView.text = inStockFinalStr
-        }
-        else {
+        } else {
 
             val last = ingredientNotInStock.removeLast()
 
@@ -66,8 +77,7 @@ fun ingredientList(textView: TextView, ingredients: List<Ingredient>) {
                     separator = ", "
                 ) { it.lowercase() }
 
-            }
-            else {
+            } else {
                 last
             }
 
@@ -81,8 +91,7 @@ fun ingredientList(textView: TextView, ingredients: List<Ingredient>) {
 fun isFavourite(imageView: ImageView, visible: Boolean) {
     if (visible) {
         imageView.visibility = ImageView.VISIBLE
-    }
-    else {
+    } else {
         imageView.visibility = ImageView.INVISIBLE
     }
 }
@@ -98,8 +107,7 @@ fun isMakable(imageView: ImageView, ingredients: List<Ingredient>) {
 
     if (isMakableDrink) {
         imageView.visibility = ImageView.VISIBLE
-    }
-    else {
+    } else {
         imageView.visibility = ImageView.INVISIBLE
     }
 }
@@ -108,8 +116,7 @@ fun isMakable(imageView: ImageView, ingredients: List<Ingredient>) {
 fun isInStock(imageView: ImageView, ingredient: IngredientData) {
     if (ingredient.inStock) {
         imageView.visibility = ImageView.VISIBLE
-    }
-    else {
+    } else {
         imageView.visibility = ImageView.INVISIBLE
     }
 }
@@ -118,8 +125,7 @@ fun isInStock(imageView: ImageView, ingredient: IngredientData) {
 fun detailCocktailFavourite(imageView: ImageView, cocktail: Cocktail) {
     if (cocktail.isFavorite) {
         Glide.with(imageView.context).load(R.drawable.star).into(imageView)
-    }
-    else {
+    } else {
         Glide.with(imageView.context).load(R.drawable.star_unselect).into(imageView)
     }
 }
@@ -134,8 +140,7 @@ fun quantity(textView: TextView, ingredientRef: IngredientCocktailRef) {
             ingredientRef.quantity.toInt(),
             ingredientRef.quantityUnit
         )
-    }
-    else {
+    } else {
         textView.text = textView.context.getString(
             R.string.quantity_f,
             ingredientRef.quantity,
@@ -158,14 +163,12 @@ fun cocktailsFromIngredients(textView: TextView, cocktails: List<Cocktail>) {
                 ) {
                     it.cocktail_name
                 }
-            }
-            else {
+            } else {
                 cocktailLast.cocktail_name
             }
 
             textView.text = textView.context.getString(R.string.used_in_msg, cocktailsFinal)
-        }
-        else {
+        } else {
             textView.text = textView.context.getString(R.string.used_in_num_msg, cocktails.size)
         }
     }
@@ -175,8 +178,7 @@ fun cocktailsFromIngredients(textView: TextView, cocktails: List<Cocktail>) {
 fun detailInCart(imageView: ImageView, inCart: Boolean) {
     if (inCart) {
         Glide.with(imageView.context).load(R.drawable.ic_cart_filled).into(imageView)
-    }
-    else {
+    } else {
         Glide.with(imageView.context).load(R.drawable.ic_cart_empty).into(imageView)
     }
 }
@@ -204,8 +206,8 @@ fun setListeners(spinner: Spinner, attrChange: InverseBindingListener) {
 }
 
 @BindingAdapter("setSteps")
-fun setSteps(textView: TextView, steps: String){
-    val numberedSteps = steps.split("\n").mapIndexed{index, step ->
+fun setSteps(textView: TextView, steps: String) {
+    val numberedSteps = steps.split("\n").mapIndexed { index, step ->
         "${index + 1}. ${step.trimStart()}"
     }
     numberedSteps.toMutableList().removeLast()

@@ -18,6 +18,7 @@ import androidx.core.net.toFile
 import androidx.fragment.app.Fragment
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
+import com.bumptech.glide.Glide
 import com.example.hammered.Constants
 import com.example.hammered.R
 import com.example.hammered.databinding.SettingsFragmentBinding
@@ -28,7 +29,7 @@ import com.google.android.material.snackbar.Snackbar
 import timber.log.Timber
 import java.io.File
 
-// TODO zip files while exporting
+
 class SettingsFragment : Fragment() {
 
     val viewModel: SettingsViewModel by lazy {
@@ -39,8 +40,7 @@ class SettingsFragment : Fragment() {
         registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
             if (isGranted) {
                 viewModel.saveToJson()
-            }
-            else {
+            } else {
                 WarningDialog(R.layout.permission_warning_layout).show(
                     childFragmentManager,
                     "permission_denied_warning_dialog"
@@ -56,7 +56,7 @@ class SettingsFragment : Fragment() {
     private var activityResultLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if (it.resultCode == Activity.RESULT_OK) {
-                // TODO export file
+                it.data?.data?.let{ dirPath -> viewModel.getFromJson(dirPath) }
             }
         }
 
@@ -91,6 +91,8 @@ class SettingsFragment : Fragment() {
 
         binding.exportToJsonCard.setOnClickListener {
 
+            // FIXME the permission is causing the folder to be exported twice
+
             if (ContextCompat.checkSelfPermission(
                     requireContext(),
                     Manifest.permission.WRITE_EXTERNAL_STORAGE
@@ -121,6 +123,9 @@ class SettingsFragment : Fragment() {
                 }
             }
         }
+        // TODO remove this
+        val imageFile = File(requireContext().filesDir, "Lemon-ing.png")
+        Glide.with(binding.testImage.context).load(imageFile).into(binding.testImage)
 
         binding.importFromJson.setOnClickListener {
             binding.switchLayout.visibility = when (binding.switchLayout.visibility) {
@@ -186,8 +191,9 @@ class SettingsFragment : Fragment() {
     }
 
     private fun importFromJson() {
-        val intent = Intent(Intent.ACTION_GET_CONTENT)
-        intent.flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
+        // TODO see if there's a program to handle intent
+        val intent = Intent(Intent.ACTION_OPEN_DOCUMENT_TREE)
+
         activityResultLauncher.launch(intent)
     }
 
