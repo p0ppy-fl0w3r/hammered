@@ -12,9 +12,7 @@ import com.example.hammered.entities.Ingredient
 import com.example.hammered.entities.relations.IngredientCocktailRef
 import com.example.hammered.ingredients.IngredientData
 import com.example.hammered.utils.SpinnerItemChangeListener
-import timber.log.Timber
 import java.io.File
-import java.net.URI
 
 // TODO see this again and optimize the TextView/EditText https://medium.com/androiddevelopers/underspanding-spans-1b91008b97e4
 

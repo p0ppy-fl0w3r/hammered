@@ -9,7 +9,7 @@ import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 /**
  * Export data in to json file
  * Export images
- * TODO 3) Import data and images // Save the files as zip
+ * Import data and images
  * TODO 4) Let the user manage the conflict strategy.
  * Either let them replace the existing data with a new one from the json file or let them ignore
  * the new one and keep the existing one. See the insert methods used on CreateIngredientViewModel

@@ -30,6 +30,7 @@ class IngredientFragment : Fragment() {
 
         binding = DataBindingUtil.inflate(inflater, R.layout.ingredient_fragment, container, false)
 
+        // To make quantity of ingredient bigger than it actually is, display all ingredients instead of stock.
         chipSelection = arguments?.getInt(Constants.BUNDLE_STARTUP_INT) ?: Constants.NORMAL_ITEM
 
         if (chipSelection !in listOf(

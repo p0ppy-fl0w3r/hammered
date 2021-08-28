@@ -25,11 +25,7 @@ import timber.log.Timber
 import java.io.File
 import java.io.FileOutputStream
 
-// FIXME you can open the nav drawer from settings fragment
-// FIXME Ingredient fragment opens default to all ingredient
-// FIXME use file with glide in export image
 
-// TODO change the export name of cocktail and/or ingredient
 class SettingsViewModel(application: Application) : AndroidViewModel(application) {
 
     private val preferences = SettingsPreferences(application)

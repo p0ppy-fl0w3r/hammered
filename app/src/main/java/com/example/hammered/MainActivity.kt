@@ -12,6 +12,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
+import androidx.navigation.get
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI.setupActionBarWithNavController
 import androidx.navigation.ui.navigateUp
@@ -64,6 +65,17 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener,
             topLevelDestinationIds = setOf(R.id.cocktailFragment, R.id.ingredientFragment),
             drawerLayout = drawerLayout
         )
+
+        navController.addOnDestinationChangedListener() { controller, destination, _ ->
+            if (destination.id == controller.graph[R.id.ingredientFragment].id
+                || destination.id == controller.graph[R.id.cocktailFragment].id
+            ) {
+                drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
+            } else {
+                drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+            }
+
+        }
 
         setSupportActionBar(toolbar)
         supportActionBar!!.setDisplayShowTitleEnabled(true)
