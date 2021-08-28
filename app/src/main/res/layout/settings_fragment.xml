@@ -204,10 +204,6 @@
 
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
-            <ImageView
-                android:id="@+id/testImage"
-                android:layout_width="100dp"
-                android:layout_height="100dp"/>
 
         </LinearLayout>
     </ScrollView>

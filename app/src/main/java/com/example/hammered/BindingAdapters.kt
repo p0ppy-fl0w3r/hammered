@@ -22,15 +22,13 @@ import java.net.URI
 fun imageSource(imageView: ImageView, imageUrl: String?) {
 
     imageUrl?.let {
-        val imageFile = File(imageView.context.filesDir, "$it.png")
+        val imageFile = File(imageView.context.filesDir, it)
         if (!imageFile.exists()) {
-            Timber.e("the file exists ${imageFile.absolutePath}")
             Glide.with(imageView.context)
                 .load(Uri.parse(it))
                 .apply(RequestOptions().error(R.drawable.no_drinks))
                 .into(imageView)
         } else {
-            Timber.e("the file doesnot exist")
             Glide.with(imageView.context)
                 .load(imageFile)
                 .apply(RequestOptions().error(R.drawable.no_drinks))

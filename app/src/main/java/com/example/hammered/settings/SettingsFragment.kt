@@ -51,12 +51,11 @@ class SettingsFragment : Fragment() {
     private lateinit var binding: SettingsFragmentBinding
 
     private var currentSelected: Int = 0
-    private var importDataDir = ""
 
     private var activityResultLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if (it.resultCode == Activity.RESULT_OK) {
-                it.data?.data?.let{ dirPath -> viewModel.getFromJson(dirPath) }
+                it.data?.data?.let { dirPath -> viewModel.getFromJson(dirPath) }
             }
         }
 
@@ -91,41 +90,35 @@ class SettingsFragment : Fragment() {
 
         binding.exportToJsonCard.setOnClickListener {
 
-            // FIXME the permission is causing the folder to be exported twice
-
             if (ContextCompat.checkSelfPermission(
                     requireContext(),
                     Manifest.permission.WRITE_EXTERNAL_STORAGE
                 ) == PackageManager.PERMISSION_GRANTED
             ) {
                 viewModel.saveToJson()
-            }
+            } else {
+                when {
+                    ContextCompat.checkSelfPermission(
+                        requireContext(),
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE
+                    ) == PackageManager.PERMISSION_GRANTED -> {
+                        viewModel.saveToJson()
+                    }
 
-
-            when {
-                ContextCompat.checkSelfPermission(
-                    requireContext(),
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE
-                ) == PackageManager.PERMISSION_GRANTED -> {
-                    viewModel.saveToJson()
-                }
-
-                shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE) -> {
-                    CancelAlertDialog(
-                        getString(R.string.required_permission_msg)
-                    ) { requestPermissionLauncher.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE) }.show(
-                        childFragmentManager,
-                        "permission_required_dialog"
-                    )
-                }
-                else -> {
-                    requestPermissionLauncher.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    shouldShowRequestPermissionRationale(Manifest.permission.WRITE_EXTERNAL_STORAGE) -> {
+                        CancelAlertDialog(
+                            getString(R.string.required_permission_msg)
+                        ) { requestPermissionLauncher.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE) }.show(
+                            childFragmentManager,
+                            "permission_required_dialog"
+                        )
+                    }
+                    else -> {
+                        requestPermissionLauncher.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    }
                 }
             }
         }
-        // TODO remove this
-        val imageFile = File(requireContext().filesDir, "Lemon-ing.png")
-        Glide.with(binding.testImage.context).load(imageFile).into(binding.testImage)
 
         binding.importFromJson.setOnClickListener {
             binding.switchLayout.visibility = when (binding.switchLayout.visibility) {

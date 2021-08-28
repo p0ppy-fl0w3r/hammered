@@ -74,21 +74,15 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
 
                     val newIngredientImageName = "${i.ingredient_name}-ing"
 
-                    Glide.with(mApplication).asBitmap().load(i.ingredient_image).into(
-                        object : CustomTarget<Bitmap>() {
-                            override fun onResourceReady(
-                                resource: Bitmap,
-                                transition: Transition<in Bitmap>?
-                            ) {
-                                ingredientImageBitmaps.add(listOf(newIngredientImageName, resource))
-                            }
+                    val imageFile = File(mApplication.filesDir, i.ingredient_image)
 
-                            override fun onLoadCleared(placeholder: Drawable?) {
-                                Timber.i("The load was cleared.")
-                            }
-                        }
-                    )
-                    i.ingredient_image = newIngredientImageName
+                    if (imageFile.exists()) {
+                        getImageBitmap(imageFile, newIngredientImageName, ingredientImageBitmaps)
+                    }
+                    else{
+                        getImageBitmap(i.ingredient_image, newIngredientImageName, ingredientImageBitmaps)
+                    }
+                    i.ingredient_image = "$newIngredientImageName.png"
                     allIngredientAfterImage.add(i)
                 }
             }
@@ -98,21 +92,17 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
 
                     val newCocktailImageName = i.cocktail_name + "-cocktail-${i.cocktail_id}"
 
-                    Glide.with(mApplication).asBitmap().load(i.cocktail_image).into(
-                        object : CustomTarget<Bitmap>() {
-                            override fun onResourceReady(
-                                resource: Bitmap,
-                                transition: Transition<in Bitmap>?
-                            ) {
-                                cocktailImageBitmap.add(listOf(newCocktailImageName, resource))
-                            }
+                    val cocktailImageFile = File(mApplication.filesDir, i.cocktail_image)
 
-                            override fun onLoadCleared(placeholder: Drawable?) {
-                                Timber.i("The cocktail image load was cleared.")
-                            }
-                        }
-                    )
-                    i.cocktail_image = newCocktailImageName
+
+                    if (cocktailImageFile.exists()) {
+                        getImageBitmap(cocktailImageFile, newCocktailImageName, cocktailImageBitmap)
+                    }
+                    else{
+                        getImageBitmap(i.cocktail_image, newCocktailImageName, cocktailImageBitmap)
+                    }
+
+                    i.cocktail_image = "$newCocktailImageName.png"
                     allCocktailAfterImage.add(i)
                 }
             }
@@ -259,6 +249,40 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
                 Timber.e("Export failed ${e.message}")
             }
         }
+    }
+
+    private fun getImageBitmap(file: File, imageName: String, bitmapList: MutableList<List<Any>>) {
+        Glide.with(mApplication).asBitmap().load(file).into(
+            object : CustomTarget<Bitmap>() {
+                override fun onResourceReady(
+                    resource: Bitmap,
+                    transition: Transition<in Bitmap>?
+                ) {
+                    bitmapList.add(listOf(imageName, resource))
+                }
+
+                override fun onLoadCleared(placeholder: Drawable?) {
+                    Timber.i("The load was cleared.")
+                }
+            }
+        )
+    }
+
+    private fun getImageBitmap(imageDir: String, imageName: String, bitmapList: MutableList<List<Any>>) {
+        Glide.with(mApplication).asBitmap().load(imageDir).into(
+            object : CustomTarget<Bitmap>() {
+                override fun onResourceReady(
+                    resource: Bitmap,
+                    transition: Transition<in Bitmap>?
+                ) {
+                    bitmapList.add(listOf(imageName, resource))
+                }
+
+                override fun onLoadCleared(placeholder: Drawable?) {
+                    Timber.i("The load was cleared.")
+                }
+            }
+        )
     }
 
     private fun getJsonStringFromUri(uri: Uri): String {
