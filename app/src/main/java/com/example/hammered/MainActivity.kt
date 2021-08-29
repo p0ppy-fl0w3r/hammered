@@ -31,6 +31,7 @@ import com.example.hammered.search.SearchItemClickListener
 import com.example.hammered.search.SearchViewModel
 import timber.log.Timber
 
+// TODO write tests.
 
 class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener,
     View.OnFocusChangeListener {

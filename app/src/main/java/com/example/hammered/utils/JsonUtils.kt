@@ -1,20 +1,9 @@
 package com.example.hammered.utils
 
-import com.example.hammered.entities.Ingredient
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.Types
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
-
-/**
- * Export data in to json file
- * Export images
- * Import data and images
- * TODO 4) Let the user manage the conflict strategy.
- * Either let them replace the existing data with a new one from the json file or let them ignore
- * the new one and keep the existing one. See the insert methods used on CreateIngredientViewModel
- * class to get an idea about how the insert should be handled.
- **/
 
 object JsonUtils {
     inline fun <reified T> getJsonFromClass(itemList: List<T>): String {

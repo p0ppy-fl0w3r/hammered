@@ -48,7 +48,8 @@ class SettingsFragment : Fragment() {
     private var activityResultLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if (it.resultCode == Activity.RESULT_OK) {
-                it.data?.data?.let { dirPath -> viewModel.getFromJson(dirPath) }
+                val ignorePrevious = binding.replaceExistingSwitch.isChecked
+                it.data?.data?.let { dirPath -> viewModel.getFromJson(dirPath, ignorePrevious) }
             }
         }
 

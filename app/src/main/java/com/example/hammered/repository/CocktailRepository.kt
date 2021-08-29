@@ -99,8 +99,20 @@ class CocktailRepository(private val database: CocktailDatabase) {
         database.cocktailDao.insertCocktail(cocktail)
     }
 
+    suspend fun ignoreInsertIngredient(ingredient: Ingredient) {
+        database.cocktailDao.ignoreAndInsertIngredient(ingredient)
+    }
+
+    suspend fun ignoreInsertCocktail(cocktail: Cocktail) {
+        database.cocktailDao.ignoreAndInsertCocktail(cocktail)
+    }
+
     suspend fun insertIngredientCocktailRef(ingredientCocktailRef: IngredientCocktailRef) {
         database.cocktailDao.insertIngredientCocktailRef(ingredientCocktailRef)
+    }
+
+    suspend fun ignoreInsertIngredientCocktailRef(ingredientCocktailRef: IngredientCocktailRef) {
+        database.cocktailDao.ignoreInsertIngredientCocktailRef(ingredientCocktailRef)
     }
 
     suspend fun getIngredient(id: Long): Ingredient? {

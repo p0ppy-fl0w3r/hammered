@@ -19,6 +19,18 @@ interface CocktailDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertIngredient(ingredient: Ingredient)
 
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun ignoreAndInsertIngredient(ingredient: Ingredient)
+
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun ignoreAndInsertCocktail(cocktail: Cocktail)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertIngredientCocktailRef(ingredientCocktailRef: IngredientCocktailRef)
+
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun ignoreInsertIngredientCocktailRef(ingredientCocktailRef: IngredientCocktailRef)
+
     @Update
     suspend fun updateIngredient(ingredient: Ingredient)
 
@@ -57,9 +69,6 @@ interface CocktailDao {
 
     @Query("SElECT * FROM Ingredient WHERE ingredient_name LIKE :name")
     suspend fun getIngredientFromName(name: String): List<IngredientWithCocktail>
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertIngredientCocktailRef(ingredientCocktailRef: IngredientCocktailRef)
 
     @Query("SELECT * FROM IngredientCocktailRef")
     suspend fun getAllIngredientCocktailRef(): List<IngredientCocktailRef>

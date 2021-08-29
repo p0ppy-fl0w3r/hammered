@@ -189,7 +189,7 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
         }
     }
 
-    fun getFromJson(dataDir: Uri) {
+    fun getFromJson(dataDir: Uri, ignoreNew: Boolean) {
         viewModelScope.launch(Dispatchers.IO) {
             // Import started
             _startImport.postValue(true)
@@ -241,15 +241,27 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
                 }
 
                 ingredientDataList?.forEach {
-                    repository.insertIngredient(it)
+                    if (ignoreNew) {
+                        repository.ignoreInsertIngredient(it)
+                    } else {
+                        repository.insertIngredient(it)
+                    }
                 }
 
                 cocktailDataList?.forEach {
-                    repository.insertCocktail(it)
+                    if (ignoreNew) {
+                        repository.ignoreInsertCocktail(it)
+                    } else {
+                        repository.insertCocktail(it)
+                    }
                 }
 
                 refDataList?.forEach {
-                    repository.insertIngredientCocktailRef(it)
+                    if (ignoreNew) {
+                        repository.insertIngredientCocktailRef(it)
+                    } else {
+                        repository.insertIngredientCocktailRef(it)
+                    }
                 }
                 _importStatus.postValue(Constants.IMPORT_SUCCESS)
 
