@@ -39,10 +39,18 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
     val startJsonSave: LiveData<Boolean?>
         get() = _startJsonSave
 
+    private val _startImport = MutableLiveData<Boolean?>()
+    val startImport: LiveData<Boolean?>
+        get() = _startImport
+
     // See Constants.kt for status codes.
     private val _jsonSaveStatus = MutableLiveData<Int?>()
     val jsonSaveStatus: LiveData<Int?>
         get() = _jsonSaveStatus
+
+    private val _importStatus = MutableLiveData<Int?>()
+    val importStatus: LiveData<Int?>
+        get() = _importStatus
 
     fun changeStartupScreen(position: Int) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -74,9 +82,12 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
 
                     if (imageFile.exists()) {
                         getImageBitmap(imageFile, newIngredientImageName, ingredientImageBitmaps)
-                    }
-                    else{
-                        getImageBitmap(i.ingredient_image, newIngredientImageName, ingredientImageBitmaps)
+                    } else {
+                        getImageBitmap(
+                            i.ingredient_image,
+                            newIngredientImageName,
+                            ingredientImageBitmaps
+                        )
                     }
                     i.ingredient_image = "$newIngredientImageName.png"
                     allIngredientAfterImage.add(i)
@@ -93,8 +104,7 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
 
                     if (cocktailImageFile.exists()) {
                         getImageBitmap(cocktailImageFile, newCocktailImageName, cocktailImageBitmap)
-                    }
-                    else{
+                    } else {
                         getImageBitmap(i.cocktail_image, newCocktailImageName, cocktailImageBitmap)
                     }
 
@@ -180,8 +190,10 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
     }
 
     fun getFromJson(dataDir: Uri) {
-        // TRIAL
         viewModelScope.launch(Dispatchers.IO) {
+            // Import started
+            _startImport.postValue(true)
+
             val exportTree = DocumentFile.fromTreeUri(getApplication(), dataDir) ?: return@launch
             val fileList = exportTree.listFiles().toMutableList()
 
@@ -202,7 +214,8 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
 
             if (jCocktailFile == null || jIngredientFile == null || jRefFile == null) {
                 // Not a valid export folder
-                // TODO show an error message
+                Timber.e("The import folder is invalid.")
+                _importStatus.postValue(Constants.FOLDER_INVALID)
                 return@launch
             }
 
@@ -238,11 +251,11 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
                 refDataList?.forEach {
                     repository.insertIngredientCocktailRef(it)
                 }
-                // TODO show completion message
+                _importStatus.postValue(Constants.IMPORT_SUCCESS)
 
             } catch (e: Exception) {
-                // TODO show error message
                 Timber.e("Export failed ${e.message}")
+                _importStatus.postValue(Constants.IMPORT_FAILED)
             }
         }
     }
@@ -264,7 +277,11 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
         )
     }
 
-    private fun getImageBitmap(imageDir: String, imageName: String, bitmapList: MutableList<List<Any>>) {
+    private fun getImageBitmap(
+        imageDir: String,
+        imageName: String,
+        bitmapList: MutableList<List<Any>>
+    ) {
         Glide.with(mApplication).asBitmap().load(imageDir).into(
             object : CustomTarget<Bitmap>() {
                 override fun onResourceReady(
@@ -291,8 +308,16 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
         _startJsonSave.value = null
     }
 
+    fun doneImport() {
+        _startImport.value = null
+    }
+
     fun doneShowingMessages() {
         _jsonSaveStatus.value = null
+    }
+
+    fun doneImportMessages() {
+        _importStatus.value = null
     }
 
     fun deleteEverything() {

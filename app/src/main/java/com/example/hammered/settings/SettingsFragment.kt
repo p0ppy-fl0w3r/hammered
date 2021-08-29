@@ -7,18 +7,13 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.os.Bundle
-import android.provider.MediaStore
-import android.provider.OpenableColumns
 import android.view.*
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.core.net.toFile
 import androidx.fragment.app.Fragment
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
-import com.bumptech.glide.Glide
 import com.example.hammered.Constants
 import com.example.hammered.R
 import com.example.hammered.databinding.SettingsFragmentBinding
@@ -26,8 +21,6 @@ import com.example.hammered.dialog.CancelAlertDialog
 import com.example.hammered.dialog.StartupChooseDialog
 import com.example.hammered.dialog.WarningDialog
 import com.google.android.material.snackbar.Snackbar
-import timber.log.Timber
-import java.io.File
 
 
 class SettingsFragment : Fragment() {
@@ -73,6 +66,9 @@ class SettingsFragment : Fragment() {
 
         val progressDialog =
             AlertDialog.Builder(requireActivity()).setView(R.layout.progress_dialog_layout).create()
+
+        val importProgressDialog =
+            AlertDialog.Builder(requireActivity()).setView(R.layout.import_progress_dialog).create()
 
         viewModel.currentStartupScreen.observe(viewLifecycleOwner) {
             binding.textCurrentScreen.text = Constants.ALL_ITEM_LIST[it]
@@ -152,20 +148,32 @@ class SettingsFragment : Fragment() {
                 viewModel.doneShowingMessages()
                 progressDialog.cancel()
 
-                val toastMessage = when (it) {
+                val snackMessage = when (it) {
                     Constants.DATA_SAVE_SUCCESS -> "Success! Saved data in downloads folder."
                     else -> "Failed to save data!"
                 }
+                showSnack(snackMessage)
+            }
+        }
 
-                Snackbar.make(binding.exportToJsonCard, toastMessage, Snackbar.LENGTH_SHORT)
-                    .setBackgroundTint(
-                        ContextCompat.getColor(
-                            requireContext(),
-                            R.color.secondaryLightColor
-                        )
-                    )
-                    .setTextColor(Color.BLACK)
-                    .show()
+        viewModel.startImport.observe(viewLifecycleOwner) {
+            if (it == true) {
+                importProgressDialog.show()
+            }
+        }
+
+        viewModel.importStatus.observe(viewLifecycleOwner) {
+            if (it != null) {
+                viewModel.doneImport()
+                viewModel.doneImportMessages()
+                importProgressDialog.cancel()
+
+                val snackMessage = when (it) {
+                    Constants.IMPORT_SUCCESS -> "Success! Imported everything."
+                    Constants.FOLDER_INVALID -> "Looks like the import data was invalid!"
+                    else -> "Failed to import data!"
+                }
+                showSnack(snackMessage)
             }
         }
 
@@ -184,10 +192,25 @@ class SettingsFragment : Fragment() {
     }
 
     private fun importFromJson() {
-        // TODO see if there's a program to handle intent
         val intent = Intent(Intent.ACTION_OPEN_DOCUMENT_TREE)
+        if(intent.resolveActivity(requireContext().packageManager) != null){
+            activityResultLauncher.launch(intent)
+        }
+        else{
+            showSnack("Look like this feature is unavailable in your device!")
+        }
+    }
 
-        activityResultLauncher.launch(intent)
+    private fun showSnack(msg: String){
+        Snackbar.make(requireContext(), binding.root, msg, Snackbar.LENGTH_SHORT)
+            .setBackgroundTint(
+                ContextCompat.getColor(
+                    requireContext(),
+                    R.color.secondaryLightColor
+                )
+            )
+            .setTextColor(Color.BLACK)
+            .show()
     }
 
     private fun deleteAll() {

@@ -32,7 +32,7 @@ object Constants {
         "Drops"
     )
 
-    // Error handlers for create cocktail
+    // Status code for create cocktail
     const val VALUE_OK = -2
     const val NO_VALUES = -1
     const val NO_INGREDIENT_IN_DATABASE = -3
@@ -64,4 +64,9 @@ object Constants {
     const val INGREDIENT_JSON_FILE = "ingredient.json"
     const val COCKTAIL_JSON_FILE = "cocktail.json"
     const val BRIDGING_JSON_FILE = "ref.json"
+
+    // Import from json status code
+    const val FOLDER_INVALID = 13
+    const val IMPORT_FAILED = 14
+    const val IMPORT_SUCCESS = 15
 }
