@@ -1,5 +1,6 @@
 package com.example.hammered.cocktail.createCocktail
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -19,6 +20,7 @@ import com.example.hammered.utils.UiUtils.animateError
 import com.example.hammered.utils.UiUtils.hideKeyboard
 import com.example.hammered.wrappers.NewCocktailRef
 import timber.log.Timber
+import java.io.File
 
 
 class CreateCocktailActivity : AppCompatActivity() {
@@ -43,6 +45,8 @@ class CreateCocktailActivity : AppCompatActivity() {
         ViewModelProvider(this).get(CreateCocktailViewModel::class.java)
     }
 
+    // Using specific index of changed set will not work for some reason.
+    @SuppressLint("NotifyDataSetChanged")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -51,14 +55,15 @@ class CreateCocktailActivity : AppCompatActivity() {
 
 
         val selectedCocktail = intent.getParcelableExtra<CocktailData>(Constants.EDIT_COCKTAIL)
-        val selectedCocktailForCopy = intent.getParcelableExtra<CocktailData>(Constants.COPY_AND_EDIT)
+        val selectedCocktailForCopy =
+            intent.getParcelableExtra<CocktailData>(Constants.COPY_AND_EDIT)
 
         if (selectedCocktail != null) {
             isEdit = true
             populateFields(selectedCocktail)
         }
 
-        if (selectedCocktailForCopy != null){
+        if (selectedCocktailForCopy != null) {
             populateFields(selectedCocktailForCopy)
         }
 
@@ -248,8 +253,7 @@ class CreateCocktailActivity : AppCompatActivity() {
                         imageUrl
                     )
                     Toast.makeText(this, "Edited cocktail!", Toast.LENGTH_SHORT).show()
-                }
-                else {
+                } else {
                     viewModel.saveCocktail(cocktailName, description, imageUrl)
                     Toast.makeText(this, "Cocktail added.", Toast.LENGTH_SHORT).show()
                 }
@@ -282,8 +286,7 @@ class CreateCocktailActivity : AppCompatActivity() {
             val cocktailName = cocktailNameView.text
             if (cocktailName.isNotBlank()) {
                 viewModel.validate()
-            }
-            else {
+            } else {
                 Toast.makeText(
                     this,
                     "You must give the cocktail a name!",
@@ -295,7 +298,7 @@ class CreateCocktailActivity : AppCompatActivity() {
         }
     }
 
-    private fun populateFields(selectedCocktail: CocktailData){
+    private fun populateFields(selectedCocktail: CocktailData) {
         viewModel.getDataToPopulateFields(selectedCocktail.cocktail_id)
 
         binding.textCocktailName.setText(selectedCocktail.cocktail_name)
@@ -303,7 +306,14 @@ class CreateCocktailActivity : AppCompatActivity() {
 
         if (selectedCocktail.cocktail_image.isNotBlank()) {
             imageUrl = selectedCocktail.cocktail_image
-            Glide.with(this).load(imageUrl).into(binding.addCocktailImage)
+            if (imageUrl.isNotBlank()) {
+                val mFile = File(this.filesDir, imageUrl)
+                if (mFile.exists()) {
+                    Glide.with(this).load(mFile).into(binding.addCocktailImage)
+                } else {
+                    Glide.with(this).load(imageUrl).into(binding.addCocktailImage)
+                }
+            }
         }
 
         viewModel.setStepsFromRawString(selectedCocktail.steps)
@@ -327,7 +337,10 @@ class CreateCocktailActivity : AppCompatActivity() {
                 else -> "Cancel creating new cocktail and go back?"
             }
 
-            CancelAlertDialog(message){finish()}.show(supportFragmentManager, "CancelAlertDialog")
+            CancelAlertDialog(message) { finish() }.show(
+                supportFragmentManager,
+                "CancelAlertDialog"
+            )
         }
     }
 

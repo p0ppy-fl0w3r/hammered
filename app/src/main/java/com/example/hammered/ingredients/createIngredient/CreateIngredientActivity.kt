@@ -15,6 +15,7 @@ import com.example.hammered.dialog.CancelAlertDialog
 import com.example.hammered.dialog.WarningDialog
 import com.example.hammered.entities.Ingredient
 import com.example.hammered.ingredients.IngredientData
+import java.io.File
 
 
 class CreateIngredientActivity : AppCompatActivity() {
@@ -61,7 +62,12 @@ class CreateIngredientActivity : AppCompatActivity() {
             initialName = mIngredient.ingredient_name
 
             if (imageUrl.isNotBlank()) {
-                Glide.with(this).load(imageUrl).into(binding.addIngredientImage)
+                val mFile = File(this.filesDir, imageUrl)
+                if (mFile.exists()) {
+                    Glide.with(this).load(mFile).into(binding.addIngredientImage)
+                } else {
+                    Glide.with(this).load(imageUrl).into(binding.addIngredientImage)
+                }
             }
         }
 
@@ -113,15 +119,13 @@ class CreateIngredientActivity : AppCompatActivity() {
                     )
 
                     viewModel.checkIngredient(mIngredient)
-                }
-                else {
+                } else {
                     WarningDialog(R.layout.warning_dialog_layout).show(
                         supportFragmentManager,
                         "WarningDialog"
                     )
                 }
-            }
-            else {
+            } else {
                 mIngredient.ingredient_name = ingredientName
                 mIngredient.ingredient_description = ingredientDescription
                 mIngredient.inStock = isInStock
@@ -139,7 +143,10 @@ class CreateIngredientActivity : AppCompatActivity() {
                 else -> "Cancel creating new ingredient and go back?"
             }
 
-            CancelAlertDialog(message){finish()}.show(supportFragmentManager, "CancelAlertDialog")
+            CancelAlertDialog(message) { finish() }.show(
+                supportFragmentManager,
+                "CancelAlertDialog"
+            )
         }
     }
 }
