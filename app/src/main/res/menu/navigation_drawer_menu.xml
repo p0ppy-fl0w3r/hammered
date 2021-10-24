@@ -9,6 +9,9 @@
         <item
             android:id="@+id/ingredientFragment"
             android:title="@string/ingredients" />
+        <item
+            android:id="@+id/mixerFragment"
+            android:title="@string/mixer" />
     </group>
 
     <group android:id="@+id/settings_group">

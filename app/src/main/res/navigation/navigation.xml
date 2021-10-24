@@ -64,4 +64,8 @@
         android:id="@+id/aboutFragment"
         android:name="com.example.hammered.about.AboutFragment"
         tools:layout="@layout/fragment_about" />
+    <fragment
+        android:id="@+id/mixerFragment"
+        android:name="com.example.hammered.mixer.MixerFragment"
+        tools:layout="@layout/fragment_mixer" />
 </navigation>
