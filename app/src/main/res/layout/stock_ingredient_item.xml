@@ -7,11 +7,11 @@
 
         <variable
             name="clickListener"
-            type="com.example.hammered.ingredients.IngredientClickListener" />
+            type="com.fl0w3r.hammered.ingredients.IngredientClickListener" />
 
         <variable
             name="ingredientWithCocktail"
-            type="com.example.hammered.entities.relations.IngredientWithCocktail" />
+            type="com.fl0w3r.hammered.entities.relations.IngredientWithCocktail" />
     </data>
 
     <com.google.android.material.card.MaterialCardView

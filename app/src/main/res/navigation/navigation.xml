@@ -6,7 +6,7 @@
     app:startDestination="@id/cocktailFragment">
     <fragment
         android:id="@+id/ingredientFragment"
-        android:name="com.example.hammered.ingredients.IngredientFragment"
+        android:name="com.fl0w3r.hammered.ingredients.IngredientFragment"
 
         tools:layout="@layout/ingredient_fragment">
         <action
@@ -15,7 +15,7 @@
     </fragment>
     <fragment
         android:id="@+id/cocktailFragment"
-        android:name="com.example.hammered.cocktail.CocktailFragment"
+        android:name="com.fl0w3r.hammered.cocktail.CocktailFragment"
 
         tools:layout="@layout/cocktail_fragment">
         <action
@@ -24,16 +24,16 @@
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
-        android:name="com.example.hammered.settings.SettingsFragment"
+        android:name="com.fl0w3r.hammered.settings.SettingsFragment"
         tools:layout="@layout/settings_fragment" />
     <fragment
         android:id="@+id/cocktailDetailFragment"
-        android:name="com.example.hammered.cocktail.cocktailDetails.CocktailDetailFragment"
+        android:name="com.fl0w3r.hammered.cocktail.cocktailDetails.CocktailDetailFragment"
 
         tools:layout="@layout/fragment_cocktail_detail">
         <argument
             android:name="cocktail"
-            app:argType="com.example.hammered.cocktail.CocktailData" />
+            app:argType="com.fl0w3r.hammered.cocktail.CocktailData" />
         <action
             android:id="@+id/cocktail_detail_to_ingredient_detail"
             app:destination="@id/ingredientDetailsFragment" />
@@ -45,12 +45,12 @@
     </fragment>
     <fragment
         android:id="@+id/ingredientDetailsFragment"
-        android:name="com.example.hammered.ingredients.ingredientDetails.IngredientDetailsFragment"
+        android:name="com.fl0w3r.hammered.ingredients.ingredientDetails.IngredientDetailsFragment"
 
         tools:layout="@layout/fragment_ingredient_details">
         <argument
             android:name="ingredient"
-            app:argType="com.example.hammered.ingredients.IngredientData" />
+            app:argType="com.fl0w3r.hammered.ingredients.IngredientData" />
         <action
             android:id="@+id/ingredient_details_to_cocktail_details"
             app:destination="@id/cocktailDetailFragment" />
@@ -62,10 +62,10 @@
     </fragment>
     <fragment
         android:id="@+id/aboutFragment"
-        android:name="com.example.hammered.about.AboutFragment"
+        android:name="com.fl0w3r.hammered.about.AboutFragment"
         tools:layout="@layout/fragment_about" />
     <fragment
         android:id="@+id/mixerFragment"
-        android:name="com.example.hammered.mixer.MixerFragment"
+        android:name="com.fl0w3r.hammered.mixer.MixerFragment"
         tools:layout="@layout/fragment_mixer" />
 </navigation>

@@ -7,7 +7,7 @@
 
         <variable
             name="viewModel"
-            type="com.example.hammered.cocktail.cocktailDetails.CocktailDetailsViewModel" />
+            type="com.fl0w3r.hammered.cocktail.cocktailDetails.CocktailDetailsViewModel" />
     </data>
 
     <androidx.core.widget.NestedScrollView

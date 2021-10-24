@@ -5,16 +5,16 @@
 
     <data>
 
-        <import type="com.example.hammered.cocktail.CocktailData" />
+        <import type="com.fl0w3r.hammered.cocktail.CocktailData" />
 
         <variable
             name="refCocktail"
-            type="com.example.hammered.entities.relations.CocktailWithIngredient" />
+            type="com.fl0w3r.hammered.entities.relations.CocktailWithIngredient" />
 
 
         <variable
             name="clickListener"
-            type="com.example.hammered.ingredients.ingredientDetails.IngredientDetailsClickListener" />
+            type="com.fl0w3r.hammered.ingredients.ingredientDetails.IngredientDetailsClickListener" />
     </data>
 
     <com.google.android.material.card.MaterialCardView

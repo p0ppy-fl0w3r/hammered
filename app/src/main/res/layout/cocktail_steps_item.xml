@@ -6,11 +6,11 @@
 
         <variable
             name="value"
-            type="com.example.hammered.wrappers.StepsWrapper" />
+            type="com.fl0w3r.hammered.wrappers.StepsWrapper" />
 
         <variable
             name="clickListener"
-            type="com.example.hammered.cocktail.createCocktail.ClickListener" />
+            type="com.fl0w3r.hammered.cocktail.createCocktail.ClickListener" />
     </data>
 
     <LinearLayout

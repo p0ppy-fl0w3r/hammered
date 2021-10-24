@@ -7,19 +7,19 @@
 
         <variable
             name="clickListener"
-            type="com.example.hammered.ingredients.IngredientClickListener" />
+            type="com.fl0w3r.hammered.ingredients.IngredientClickListener" />
 
         <variable
             name="ingredientWithCocktail"
-            type="com.example.hammered.entities.relations.IngredientWithCocktail" />
+            type="com.fl0w3r.hammered.entities.relations.IngredientWithCocktail" />
 
         <variable
             name="itemStockChangeListener"
-            type="com.example.hammered.ingredients.ItemStatusChangeListener" />
+            type="com.fl0w3r.hammered.ingredients.ItemStatusChangeListener" />
 
         <variable
             name="constants"
-            type="com.example.hammered.Constants" />
+            type="com.fl0w3r.hammered.Constants" />
     </data>
 
     <com.google.android.material.card.MaterialCardView

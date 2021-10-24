@@ -6,15 +6,15 @@
 
         <variable
             name="ingredientItem"
-            type="com.example.hammered.wrappers.NewCocktailRef" />
+            type="com.fl0w3r.hammered.wrappers.NewCocktailRef" />
 
         <variable
             name="clickListener"
-            type="com.example.hammered.cocktail.createCocktail.ItemOnClickListener" />
+            type="com.fl0w3r.hammered.cocktail.createCocktail.ItemOnClickListener" />
 
         <variable
             name="viewModel"
-            type="com.example.hammered.cocktail.createCocktail.CreateCocktailViewModel" />
+            type="com.fl0w3r.hammered.cocktail.createCocktail.CreateCocktailViewModel" />
 
     </data>
 

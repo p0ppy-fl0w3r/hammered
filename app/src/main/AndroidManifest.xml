@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.example.hammered">
+    package="com.fl0w3r.hammered">
 
     <queries>
         <intent>
@@ -14,7 +14,7 @@
         tools:ignore="ScopedStorage" />
 
     <application
-        android:name=".HammeredApplication"
+        android:name="com.fl0w3r.hammered.HammeredApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -24,13 +24,13 @@
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup">
         <activity
-            android:name=".ingredients.createIngredient.CreateIngredientActivity"
+            android:name="com.fl0w3r.hammered.ingredients.createIngredient.CreateIngredientActivity"
             android:screenOrientation="nosensor" />
         <activity
-            android:name=".cocktail.createCocktail.CreateCocktailActivity"
+            android:name="com.fl0w3r.hammered.cocktail.createCocktail.CreateCocktailActivity"
             android:screenOrientation="nosensor" />
         <activity
-            android:name=".splashscreen.SplashActivity"
+            android:name="com.fl0w3r.hammered.splashscreen.SplashActivity"
             android:screenOrientation="nosensor"
             android:exported="true">
             <intent-filter>
@@ -39,7 +39,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name="com.fl0w3r.hammered.MainActivity"
             android:screenOrientation="nosensor" />
 
 
