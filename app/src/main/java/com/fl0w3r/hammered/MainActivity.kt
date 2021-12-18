@@ -1,5 +1,6 @@
 package com.fl0w3r.hammered
 
+import android.Manifest
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -50,6 +51,8 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener,
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        requestPermissions(arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE), 1)
 
         val startUpScreenId = intent.getIntExtra(Constants.STARTUP_SCREEN_ID, 0)
 

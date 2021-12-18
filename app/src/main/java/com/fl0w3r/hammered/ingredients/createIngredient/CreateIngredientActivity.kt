@@ -15,6 +15,7 @@ import com.fl0w3r.hammered.dialog.CancelAlertDialog
 import com.fl0w3r.hammered.dialog.WarningDialog
 import com.fl0w3r.hammered.entities.Ingredient
 import com.fl0w3r.hammered.ingredients.IngredientData
+import timber.log.Timber
 import java.io.File
 
 
@@ -64,8 +65,10 @@ class CreateIngredientActivity : AppCompatActivity() {
             if (imageUrl.isNotBlank()) {
                 val mFile = File(this.filesDir, imageUrl)
                 if (mFile.exists()) {
+                    Timber.e("Got from file")
                     Glide.with(this).load(mFile).into(binding.addIngredientImage)
                 } else {
+                    Timber.e("Got from URI")
                     Glide.with(this).load(imageUrl).into(binding.addIngredientImage)
                 }
             }

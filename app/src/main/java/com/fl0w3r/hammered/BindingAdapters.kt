@@ -23,7 +23,7 @@ fun imageSource(imageView: ImageView, imageUrl: String?) {
         val imageFile = File(imageView.context.filesDir, it)
         if (!imageFile.exists()) {
             Glide.with(imageView.context)
-                .load(Uri.parse(it))
+                .load(it)
                 .apply(RequestOptions().error(R.drawable.no_drinks))
                 .into(imageView)
         } else {

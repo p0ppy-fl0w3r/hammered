@@ -161,7 +161,8 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
                         for (cocktailBitmap in cocktailImageBitmap) {
 
                             val imgDir = File(exportDir, "${cocktailBitmap[0]}.png")
-
+                            // TRIAL
+                            Timber.e("The bitmap for ${cocktailBitmap[0]} is ${cocktailBitmap[1]}")
                             val output = FileOutputStream(imgDir)
                             (cocktailBitmap[1] as Bitmap).compress(
                                 Bitmap.CompressFormat.PNG,

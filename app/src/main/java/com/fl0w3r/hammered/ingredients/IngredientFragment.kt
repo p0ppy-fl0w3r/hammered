@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.fl0w3r.hammered.Constants
 import com.fl0w3r.hammered.R
 import com.fl0w3r.hammered.database.CocktailDatabase
@@ -66,6 +67,9 @@ class IngredientFragment : Fragment() {
             adapter.addFilterAndSubmitList(it, chipSelection)
         }
 
+        val staggeredGridLayoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+
+        binding.ingredientRecycler.layoutManager = staggeredGridLayoutManager
         binding.ingredientRecycler.adapter = adapter
 
         setSelectedChip(chipSelection)

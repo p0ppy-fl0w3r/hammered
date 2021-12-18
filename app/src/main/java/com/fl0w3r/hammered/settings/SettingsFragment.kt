@@ -22,7 +22,8 @@ import com.fl0w3r.hammered.dialog.StartupChooseDialog
 import com.fl0w3r.hammered.dialog.WarningDialog
 import com.google.android.material.snackbar.Snackbar
 
-
+// TODO redo the export code. Perhaps save the image in database as a blob?
+// TODO store the imported image as an asset
 class SettingsFragment : Fragment() {
 
     val viewModel: SettingsViewModel by lazy {

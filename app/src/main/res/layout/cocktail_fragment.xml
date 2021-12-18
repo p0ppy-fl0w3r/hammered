@@ -45,7 +45,6 @@
             android:id="@+id/cocktail_recycler"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/all_cocktail_item" />
     </LinearLayout>
 </layout>

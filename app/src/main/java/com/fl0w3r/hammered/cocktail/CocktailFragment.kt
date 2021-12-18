@@ -8,11 +8,13 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.fl0w3r.hammered.Constants
 import com.fl0w3r.hammered.R
 import com.fl0w3r.hammered.database.CocktailDatabase
 import com.fl0w3r.hammered.databinding.CocktailFragmentBinding
 
+// TODO Keep the cocktail in a staggered grid layout
 class CocktailFragment : Fragment() {
 
 
@@ -29,7 +31,8 @@ class CocktailFragment : Fragment() {
     ): View {
 
         binding = DataBindingUtil.inflate(inflater, R.layout.cocktail_fragment, container, false)
-        chipSelection = arguments?.getInt(Constants.BUNDLE_STARTUP_INT) ?: Constants.NORMAL_COCKTAIL_ITEM
+        chipSelection =
+            arguments?.getInt(Constants.BUNDLE_STARTUP_INT) ?: Constants.NORMAL_COCKTAIL_ITEM
 
         // Change the data set when a different chip is selected
         binding.cocktailChipGroup.setOnCheckedChangeListener { _, checkedId ->
@@ -54,6 +57,10 @@ class CocktailFragment : Fragment() {
         viewModel.cocktailLiveData.observe(viewLifecycleOwner) {
             adapter.applyFilterAndSubmitList(it, chipSelection)
         }
+
+        val staggeredGridLayoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+
+        binding.cocktailRecycler.layoutManager = staggeredGridLayoutManager
 
         binding.cocktailRecycler.adapter = adapter
 

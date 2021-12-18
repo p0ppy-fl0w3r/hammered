@@ -19,7 +19,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/my_item_margin"
         android:clickable="true"
-        android:elevation="4dp"
+        android:elevation="10dp"
         android:onClick="@{() -> clickListener.onClick(cocktailWithIngredient)}"
         app:cardCornerRadius="8dp"
         app:rippleColor="@color/secondaryLightColor">
