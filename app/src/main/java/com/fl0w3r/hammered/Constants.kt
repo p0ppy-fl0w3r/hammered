@@ -69,4 +69,8 @@ object Constants {
     const val FOLDER_INVALID = 13
     const val IMPORT_FAILED = 14
     const val IMPORT_SUCCESS = 15
+
+    // Mixer settings
+    const val SELECT_ALL = "select_all_ingredients"
+    const val SELECT_COMBINATION = "select_combination"
 }

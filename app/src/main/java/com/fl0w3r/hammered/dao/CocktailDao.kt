@@ -114,8 +114,12 @@ interface CocktailDao {
     fun getLiveIngredientFromCocktail(): LiveData<List<CocktailWithIngredient>?>
 
     @Transaction
+    @Query("SELECT * FROM cocktail")
+    suspend fun getIngredientFromCocktail(): List<CocktailWithIngredient>
+
+    @Transaction
     @Query("SELECT * FROM cocktail where isFavorite=1")
-    suspend fun getFavouriteIngredientFromCocktail(): List<CocktailWithIngredient>
+    suspend fun getFavouriteIngredientWithCocktail(): List<CocktailWithIngredient>
 
     @Transaction
     @Query("SELECT * FROM ingredient")

@@ -110,10 +110,10 @@
                     <LinearLayout
                         android:id="@+id/switchLayout"
                         android:layout_width="match_parent"
-                        android:visibility="gone"
-                        android:orientation="vertical"
                         android:layout_height="match_parent"
-                        android:layout_marginTop="2dp">
+                        android:layout_marginTop="2dp"
+                        android:orientation="vertical"
+                        android:visibility="gone">
 
                         <com.google.android.material.switchmaterial.SwitchMaterial
                             android:id="@+id/replaceExistingSwitch"
@@ -127,8 +127,7 @@
                             android:layout_height="wrap_content"
                             android:gravity="center_horizontal"
                             android:text="@string/import_btn_text"
-                            android:textAllCaps="false"
-                         />
+                            android:textAllCaps="false" />
 
                     </LinearLayout>
                 </LinearLayout>
@@ -158,8 +157,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                        android:text="@string/delete_info_text" />
+                        android:text="@string/delete_info_text"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
 
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
@@ -188,8 +187,62 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="2dp"
-                        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
-                        android:text="@string/reset_info_text" />
+                        android:text="@string/reset_info_text"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/mixerSetting"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                app:cardCornerRadius="4dp">
+
+                <LinearLayout
+                    android:id="@+id/mixerSettingLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:orientation="vertical"
+                    android:padding="4dp">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/mixer_settings"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
+
+                    <TextView
+                        android:id="@+id/textMixerInfo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:text="@string/mixer_setting_info"
+                        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+
+
+                    <RadioGroup
+                        android:id="@+id/mixerOptionsRadio"
+                        android:layout_width="match_parent"
+                        android:layout_marginTop="8dp"
+                        android:visibility="gone"
+                        android:layout_height="wrap_content">
+
+                        <RadioButton
+                            android:id="@+id/showAllRadio"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/show_all_text" />
+
+                        <RadioButton
+                            android:id="@+id/showCombinationRadio"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/show_combination_text" />
+                    </RadioGroup>
+
 
                 </LinearLayout>
             </androidx.cardview.widget.CardView>

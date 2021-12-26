@@ -5,14 +5,18 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.fl0w3r.hammered.Constants
 import com.fl0w3r.hammered.cocktail.CocktailData
 import com.fl0w3r.hammered.database.CocktailDatabase
+import com.fl0w3r.hammered.datastore.SettingsPreferences
 import com.fl0w3r.hammered.repository.CocktailRepository
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class MixerViewModel(application: Application) : AndroidViewModel(application) {
 
     private val repository = CocktailRepository(CocktailDatabase.getDatabase(application))
+    private val preference = SettingsPreferences(application)
 
     private val _ingredientList = MutableLiveData<List<IngredientMixerItem>>()
     val ingredientList: LiveData<List<IngredientMixerItem>>
@@ -23,8 +27,10 @@ class MixerViewModel(application: Application) : AndroidViewModel(application) {
         get() = _cocktailList
 
     private val _selectedIngredientList = MutableLiveData<List<Long>>()
-    val selectedIngredientList : LiveData<List<Long>>
+    val selectedIngredientList: LiveData<List<Long>>
         get() = _selectedIngredientList
+
+    private val _currentMixerOption = preference.currentMixerOptionSelection
 
     init {
         getIngredients()
@@ -43,10 +49,31 @@ class MixerViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    fun getCocktails(selectedIngredients: List<Long>){
+    fun getCocktails(selectedIngredients: List<Long>) {
         viewModelScope.launch {
-            _cocktailList.value = repository.getRefFromIngredientId(selectedIngredients).map {
-                repository.getCocktail(it.cocktail_id)!!.asData()
+            _currentMixerOption.collect {
+                when (it) {
+                    Constants.SELECT_ALL -> {
+                        _cocktailList.value =
+                            repository.getRefFromIngredientId(selectedIngredients).map { ref ->
+                                repository.getCocktail(ref.cocktail_id)!!.asData()
+                            }
+                    }
+                    else -> {
+                        val cocktailIngList = repository.getAllCocktailWithIngredient()
+                        val collectionCocktailList = mutableListOf<CocktailData>()
+                        for (cocktailWithIngredient in cocktailIngList) {
+                            val idList =
+                                cocktailWithIngredient.ingredients.map { mIngredients -> mIngredients.ingredient_id }
+                            if (selectedIngredients.isNotEmpty()) {
+                                if (idList.containsAll(selectedIngredients)) {
+                                    collectionCocktailList.add(cocktailWithIngredient.cocktail.asData())
+                                }
+                            }
+                        }
+                        _cocktailList.value = collectionCocktailList
+                    }
+                }
             }
         }
     }
@@ -66,16 +93,15 @@ class MixerViewModel(application: Application) : AndroidViewModel(application) {
             val mList = _selectedIngredientList.value?.toMutableList()
 
 
-            if (ingredient.isSelected){
+            if (ingredient.isSelected) {
 
-                if (mList != null){
+                if (mList != null) {
                     mList.remove(ingredient.id)
                     _selectedIngredientList.value = mList!!
                 }
-            }
-            else{
+            } else {
                 mList?.add(ingredient.id)
-                if (mList != null){
+                if (mList != null) {
                     _selectedIngredientList.value = mList!!
                 }
             }

@@ -31,7 +31,7 @@ class CocktailViewModel(application: Application) : AndroidViewModel(application
                     database.cocktailDao.getAllIngredientFromCocktail()
                 Constants.AVAILABLE_COCKTAIL_ITEM -> _cocktailLiveData.value = filterMakableDrinks()
                 Constants.FAVORITE_COCKTAIL_ITEM -> _cocktailLiveData.value =
-                    database.cocktailDao.getFavouriteIngredientFromCocktail()
+                    database.cocktailDao.getFavouriteIngredientWithCocktail()
 
             }
             Timber.i("Databases updated form $id")

@@ -20,6 +20,7 @@ import com.fl0w3r.hammered.entities.relations.IngredientCocktailRef
 import com.fl0w3r.hammered.repository.CocktailRepository
 import com.fl0w3r.hammered.utils.JsonUtils
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.io.File
@@ -34,6 +35,8 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
     private val mApplication = application
 
     val currentStartupScreen = preferences.currentStartupScreen.asLiveData()
+
+    val currentMixerOption = preferences.currentMixerOptionSelection.asLiveData()
 
     private val _startJsonSave = MutableLiveData<Boolean?>()
     val startJsonSave: LiveData<Boolean?>
@@ -55,6 +58,12 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
     fun changeStartupScreen(position: Int) {
         viewModelScope.launch(Dispatchers.IO) {
             preferences.changeStartupScreen(position)
+        }
+    }
+
+    fun changeMixerOption(option: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            preferences.changeMixerOption(option)
         }
     }
 

@@ -2,11 +2,9 @@ package com.fl0w3r.hammered.datastore
 
 import android.content.Context
 import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.core.booleanPreferencesKey
-import androidx.datastore.preferences.core.edit
-import androidx.datastore.preferences.core.intPreferencesKey
+import androidx.datastore.preferences.core.*
 import androidx.datastore.preferences.preferencesDataStore
+import com.fl0w3r.hammered.Constants
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
@@ -21,6 +19,7 @@ class SettingsPreferences(private val context: Context) {
 
         val CURRENT_STARTUP_SCREEN = intPreferencesKey(name = "current_startup_screen")
         val DATA_ADDED_TO_APP = booleanPreferencesKey(name = "data_inserted_to_database")
+        val MIXER_SELECTION = stringPreferencesKey(name = "mixer_selection")
     }
 
     suspend fun changeStartupScreen(position: Int){
@@ -41,5 +40,15 @@ class SettingsPreferences(private val context: Context) {
 
     val currentDataInsertionStatus: Flow<Boolean> = context.dataStore.data.map { preferences ->
         preferences[DATA_ADDED_TO_APP] ?: false
+    }
+
+    suspend fun changeMixerOption(option: String){
+        context.dataStore.edit { preferences ->
+            preferences[MIXER_SELECTION] = option
+        }
+    }
+
+    val currentMixerOptionSelection: Flow<String> = context.dataStore.data.map { preferences ->
+        preferences[MIXER_SELECTION] ?: Constants.SELECT_ALL
     }
 }

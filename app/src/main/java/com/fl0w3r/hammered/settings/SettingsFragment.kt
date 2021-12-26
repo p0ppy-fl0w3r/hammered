@@ -21,6 +21,8 @@ import com.fl0w3r.hammered.dialog.CancelAlertDialog
 import com.fl0w3r.hammered.dialog.StartupChooseDialog
 import com.fl0w3r.hammered.dialog.WarningDialog
 import com.google.android.material.snackbar.Snackbar
+import kotlinx.android.synthetic.main.settings_fragment.*
+import timber.log.Timber
 
 // TODO redo the export code. Perhaps save the image in database as a blob?
 // TODO store the imported image as an asset
@@ -72,10 +74,6 @@ class SettingsFragment : Fragment() {
         val importProgressDialog =
             AlertDialog.Builder(requireActivity()).setView(R.layout.import_progress_dialog).create()
 
-        viewModel.currentStartupScreen.observe(viewLifecycleOwner) {
-            binding.textCurrentScreen.text = Constants.ALL_ITEM_LIST[it]
-            currentSelected = it
-        }
 
         // Click listeners
         binding.startUpScreenChange.setOnClickListener {
@@ -137,7 +135,34 @@ class SettingsFragment : Fragment() {
             reset()
         }
 
+        binding.mixerSettingLayout.setOnClickListener {
+            binding.mixerOptionsRadio.visibility = when (binding.mixerOptionsRadio.visibility) {
+                View.GONE -> View.VISIBLE
+                else -> View.GONE
+            }
+        }
+
+        binding.mixerOptionsRadio.setOnCheckedChangeListener { _, i ->
+            when(i){
+                binding.showCombinationRadio.id -> viewModel.changeMixerOption(Constants.SELECT_COMBINATION)
+                else -> viewModel.changeMixerOption(Constants.SELECT_ALL)
+            }
+        }
+
         // LiveData observers
+
+        viewModel.currentStartupScreen.observe(viewLifecycleOwner) {
+            binding.textCurrentScreen.text = Constants.ALL_ITEM_LIST[it]
+            currentSelected = it
+        }
+
+        viewModel.currentMixerOption.observe(viewLifecycleOwner){
+            when(it){
+                Constants.SELECT_ALL -> showAllRadio.isChecked = true
+                else -> showCombinationRadio.isChecked = true
+            }
+        }
+
         viewModel.startJsonSave.observe(viewLifecycleOwner) {
             if (it == true) {
                 progressDialog.show()

@@ -18,7 +18,6 @@ class MixerFragment : Fragment() {
 
     private val viewModel: MixerViewModel by lazy { ViewModelProvider(this)[MixerViewModel::class.java] }
 
-    // TODO add a option settings where users can select if the cocktails should have a combination or individual ingredients.
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -57,14 +56,9 @@ class MixerFragment : Fragment() {
         viewModel.selectedIngredientList.observe(viewLifecycleOwner) {
             if (it != null) {
                 viewModel.getCocktails(it)
-                Timber.e("The length is ${it.size}")
+            }
 
-            }
-            else{
-                Timber.e("Null")
-            }
         }
-
 
         return binding.root
     }

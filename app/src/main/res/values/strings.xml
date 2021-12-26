@@ -83,4 +83,8 @@
     <string name="selected_desc">An ingredient was selected</string>
     <string name="select_ingredients">Select Ingredients:</string>
     <string name="selected_cocktail_text">You can create the following cocktails:</string>
+    <string name="mixer_settings">Mixer Settings</string>
+    <string name="mixer_setting_info">Select what happens when you click on an ingredient on the mixer.</string>
+    <string name="show_all_text">Show the all the cocktails that contain selected ingredients.</string>
+    <string name="show_combination_text">Only show the cocktails that contain the combination of all selected ingredients.</string>
 </resources>
