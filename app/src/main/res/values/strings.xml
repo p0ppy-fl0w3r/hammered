@@ -80,4 +80,5 @@
     <string name="about_desc">An application that will help you create your favorite drinks. Enjoy Responsibly!!</string>
     <string name="importing_data">Importing data…</string>
     <string name="mixer">Mixer</string>
+    <string name="selected_desc">An ingredient was selected</string>
 </resources>

@@ -42,7 +42,6 @@
             android:name="com.fl0w3r.hammered.MainActivity"
             android:screenOrientation="nosensor" />
 
-
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
