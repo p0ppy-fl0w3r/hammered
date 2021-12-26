@@ -10,6 +10,10 @@
     android:layout_width="match_parent"
     android:orientation="vertical"
     android:layout_height="match_parent">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/select_ingredients"/>
     <androidx.recyclerview.widget.RecyclerView
         android:padding="4dp"
         android:layout_width="match_parent"
@@ -19,8 +23,11 @@
         tools:itemCount="4"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:spanCount="4"
-
         android:id="@+id/ingredient_select_recycler"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/selected_cocktail_text"/>
     <androidx.recyclerview.widget.RecyclerView
         android:padding="4dp"
         android:layout_width="match_parent"
@@ -29,7 +36,7 @@
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:spanCount="3"
         tools:itemCount="5"
-        tools:listitem="@layout/all_cocktail_item"
+        tools:listitem="@layout/mixer_cocktail_item"
         android:id="@+id/cocktail_recycler"/>
 </LinearLayout>
 </layout>

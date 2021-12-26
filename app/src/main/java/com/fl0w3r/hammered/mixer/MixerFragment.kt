@@ -9,6 +9,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.fl0w3r.hammered.R
 import com.fl0w3r.hammered.databinding.FragmentMixerBinding
+import timber.log.Timber
 
 
 class MixerFragment : Fragment() {
@@ -17,6 +18,7 @@ class MixerFragment : Fragment() {
 
     private val viewModel: MixerViewModel by lazy { ViewModelProvider(this)[MixerViewModel::class.java] }
 
+    // TODO add a option settings where users can select if the cocktails should have a combination or individual ingredients.
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -26,18 +28,42 @@ class MixerFragment : Fragment() {
 
         val ingredientAdapter = MixerIngredientAdapter(
             MixerIngredientClickListener {
-               viewModel.setIngredientState(it)
+                viewModel.setIngredientState(it)
+            }
+        )
+
+        val cocktailAdapter = MixerCocktailAdapter(
+            MixerCocktailClickListener {
+
             }
         )
 
         binding.ingredientSelectRecycler.adapter = ingredientAdapter
+        binding.cocktailRecycler.adapter = cocktailAdapter
 
-        viewModel.ingredientList.observe(viewLifecycleOwner){
-            if (it != null){
+        viewModel.ingredientList.observe(viewLifecycleOwner) {
+            if (it != null) {
                 ingredientAdapter.submitList(it)
             }
         }
 
+
+        viewModel.cocktailList.observe(viewLifecycleOwner) {
+            if (it != null) {
+                cocktailAdapter.submitList(it)
+            }
+        }
+
+        viewModel.selectedIngredientList.observe(viewLifecycleOwner) {
+            if (it != null) {
+                viewModel.getCocktails(it)
+                Timber.e("The length is ${it.size}")
+
+            }
+            else{
+                Timber.e("Null")
+            }
+        }
 
 
         return binding.root

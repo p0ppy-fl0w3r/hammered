@@ -6,8 +6,6 @@ import com.fl0w3r.hammered.entities.Ingredient
 import com.fl0w3r.hammered.entities.relations.CocktailWithIngredient
 import com.fl0w3r.hammered.entities.relations.IngredientCocktailRef
 import com.fl0w3r.hammered.entities.relations.IngredientWithCocktail
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 import timber.log.Timber
 
 class CocktailRepository(private val database: CocktailDatabase) {
@@ -853,6 +851,10 @@ class CocktailRepository(private val database: CocktailDatabase) {
 
     suspend fun getRefFromIngredientId(id: Long): List<IngredientCocktailRef> {
         return database.cocktailDao.getRefFromIngredientId(id)
+    }
+
+    suspend fun getRefFromIngredientId(ids: List<Long>): List<IngredientCocktailRef> {
+        return database.cocktailDao.getRefFromIngredientId(ids)
     }
 
     suspend fun updateCocktail(cocktail: Cocktail) {

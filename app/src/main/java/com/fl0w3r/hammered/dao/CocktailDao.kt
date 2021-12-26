@@ -98,6 +98,10 @@ interface CocktailDao {
     suspend fun getRefFromIngredientId(id: Long): List<IngredientCocktailRef>
 
     @Transaction
+    @Query("SELECT * FROM IngredientCocktailRef WHERE ingredient_id IN (:id)")
+    suspend fun getRefFromIngredientId(id: List<Long>): List<IngredientCocktailRef>
+
+    @Transaction
     @Query("SELECT * FROM cocktail WHERE cocktail_id = :cocktail_id")
     suspend fun getIngredientFromCocktail(cocktail_id: Long): CocktailWithIngredient
 

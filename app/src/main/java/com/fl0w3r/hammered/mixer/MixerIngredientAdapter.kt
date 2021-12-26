@@ -44,7 +44,8 @@ class MixerIngredientAdapter(private val clickListener: MixerIngredientClickList
             binding.root.setOnClickListener { clickListener.onClick(ingredient = ingredient) }
 
             binding.ingredientName.text = ingredient.ingredientName
-            binding.checkedImage.visibility = if(ingredient.isSelected) View.VISIBLE else View.INVISIBLE
+            binding.checkedImage.visibility =
+                if(ingredient.isSelected) View.VISIBLE else View.INVISIBLE
 
             Glide.with(binding.ingredientImage).load(ingredient.ingredientImage).apply(
                 RequestOptions().error(R.drawable.no_drinks)

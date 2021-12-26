@@ -51,7 +51,6 @@
                 android:id="@+id/ingredient_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:bottom="@id/ingredient_image"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Body2"
                 android:ellipsize="end"
                 android:maxLines="1"

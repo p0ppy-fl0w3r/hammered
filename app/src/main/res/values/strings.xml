@@ -81,4 +81,6 @@
     <string name="importing_data">Importing data…</string>
     <string name="mixer">Mixer</string>
     <string name="selected_desc">An ingredient was selected</string>
+    <string name="select_ingredients">Select Ingredients:</string>
+    <string name="selected_cocktail_text">You can create the following cocktails:</string>
 </resources>
