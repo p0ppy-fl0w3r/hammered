@@ -1,6 +1,5 @@
 package com.fl0w3r.hammered
 
-import android.net.Uri
 import android.widget.*
 import androidx.databinding.BindingAdapter
 import androidx.databinding.InverseBindingAdapter
@@ -12,27 +11,13 @@ import com.fl0w3r.hammered.entities.Ingredient
 import com.fl0w3r.hammered.entities.relations.IngredientCocktailRef
 import com.fl0w3r.hammered.ingredients.IngredientData
 import com.fl0w3r.hammered.utils.SpinnerItemChangeListener
-import java.io.File
-
-// TODO see this again and optimize the TextView/EditText https://medium.com/androiddevelopers/underspanding-spans-1b91008b97e4
 
 @BindingAdapter("imageSource")
-fun imageSource(imageView: ImageView, imageUrl: String?) {
-
-    imageUrl?.let {
-        val imageFile = File(imageView.context.filesDir, it)
-        if (!imageFile.exists()) {
-            Glide.with(imageView.context)
-                .load(it)
-                .apply(RequestOptions().error(R.drawable.no_drinks))
-                .into(imageView)
-        } else {
-            Glide.with(imageView.context)
-                .load(imageFile)
-                .apply(RequestOptions().error(R.drawable.no_drinks))
-                .into(imageView)
-        }
-    }
+fun imageSource(imageView: ImageView, imageData: String?) {
+    Glide.with(imageView.context)
+        .load(imageData)
+        .apply(RequestOptions().error(R.drawable.no_drinks))
+        .into(imageView)
 }
 
 @BindingAdapter("ingredientList")

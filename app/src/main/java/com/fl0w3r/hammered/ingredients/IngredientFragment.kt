@@ -14,6 +14,7 @@ import com.fl0w3r.hammered.R
 import com.fl0w3r.hammered.database.CocktailDatabase
 import com.fl0w3r.hammered.databinding.IngredientFragmentBinding
 
+// FIXME Cocktail and Ingredient 'Missing' icon is not aligned properly.
 class IngredientFragment : Fragment() {
 
     private lateinit var binding: IngredientFragmentBinding

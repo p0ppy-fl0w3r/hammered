@@ -4,8 +4,14 @@ import android.animation.ArgbEvaluator
 import android.animation.ObjectAnimator
 import android.app.Activity
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.util.Base64
+import android.util.Base64.encodeToString
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import java.io.ByteArrayOutputStream
+
 
 object UiUtils {
 
@@ -29,6 +35,15 @@ object UiUtils {
         animation.repeatCount = 1
         animation.setEvaluator(ArgbEvaluator())
         animation.start()
+    }
+
+    fun encodeToBase64(bitmap: Bitmap): String {
+
+        val byteStream = ByteArrayOutputStream();
+        // Any image format will be converted to jpeg
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteStream)
+
+        return encodeToString(byteStream.toByteArray(), Base64.DEFAULT);
     }
 
 }

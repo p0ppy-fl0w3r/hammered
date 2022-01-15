@@ -20,12 +20,15 @@ import com.fl0w3r.hammered.databinding.SettingsFragmentBinding
 import com.fl0w3r.hammered.dialog.CancelAlertDialog
 import com.fl0w3r.hammered.dialog.StartupChooseDialog
 import com.fl0w3r.hammered.dialog.WarningDialog
+import com.fl0w3r.hammered.entities.Cocktail
+import com.fl0w3r.hammered.entities.Ingredient
+import com.fl0w3r.hammered.entities.relations.IngredientCocktailRef
+import com.fl0w3r.hammered.utils.JsonUtils
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.settings_fragment.*
+import org.apache.commons.io.IOUtils
 import timber.log.Timber
 
-// TODO redo the export code. Perhaps save the image in database as a blob?
-// TODO store the imported image as an asset
 class SettingsFragment : Fragment() {
 
     val viewModel: SettingsViewModel by lazy {
@@ -132,6 +135,8 @@ class SettingsFragment : Fragment() {
         }
 
         binding.resetCard.setOnClickListener {
+
+
             reset()
         }
 
@@ -252,8 +257,26 @@ class SettingsFragment : Fragment() {
 
     private fun reset() {
         CancelAlertDialog("Are you sure you want to reset the app into it's initial state?") {
-            viewModel.resetApp()
-            Toast.makeText(requireContext(), "Reset completed!!", Toast.LENGTH_SHORT).show()
+
+            val ingredientList = resources.openRawResource(R.raw.ingredient).use { ingRaw ->
+                JsonUtils.getClassFromJson<Ingredient>(IOUtils.toString(ingRaw))
+            }
+            val cocktailList = resources.openRawResource(R.raw.cocktail).use { cocktailRaw ->
+                JsonUtils.getClassFromJson<Cocktail>(IOUtils.toString(cocktailRaw))
+            }
+            val referenceList = resources.openRawResource(R.raw.ref).use { refRaw ->
+                JsonUtils.getClassFromJson<IngredientCocktailRef>(IOUtils.toString(refRaw))
+            }
+
+            if (ingredientList != null && cocktailList != null && referenceList != null) {
+                viewModel.resetApp(ingredientList, cocktailList,referenceList )
+                Toast.makeText(requireContext(), "Reset completed!!", Toast.LENGTH_SHORT).show()
+            }
+            else{
+                Toast.makeText(requireContext(), "Something went wrong. Please re-install the app to use this feature.", Toast.LENGTH_SHORT).show()
+                Timber.e("Some of the values were null. Check the deserializer or Json files.")
+            }
+
         }.show(
             childFragmentManager,
             "reset_app_dialog"

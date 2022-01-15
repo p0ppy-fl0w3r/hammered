@@ -1,17 +1,22 @@
 package com.fl0w3r.hammered.settings
 
 import android.app.Application
+import android.content.ContentValues
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
+import android.icu.text.SimpleDateFormat
 import android.net.Uri
+import android.os.Build
 import android.os.Environment
+import android.provider.MediaStore
 import androidx.documentfile.provider.DocumentFile
 import androidx.lifecycle.*
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.fl0w3r.hammered.Constants
+import com.fl0w3r.hammered.R
 import com.fl0w3r.hammered.database.CocktailDatabase
 import com.fl0w3r.hammered.datastore.SettingsPreferences
 import com.fl0w3r.hammered.entities.Cocktail
@@ -22,9 +27,13 @@ import com.fl0w3r.hammered.utils.JsonUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import org.apache.commons.io.IOUtils
 import timber.log.Timber
 import java.io.File
 import java.io.FileOutputStream
+import java.time.Instant
+import java.util.*
+import kotlin.io.path.Path
 
 
 class SettingsViewModel(application: Application) : AndroidViewModel(application) {
@@ -76,134 +85,143 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
             val allCocktail = repository.getALlCocktail()
             val allRef = repository.getAllIngredientCocktailRef()
 
-            val ingredientImageBitmaps = mutableListOf<List<Any>>()
-            val cocktailImageBitmap = mutableListOf<List<Any>>()
-
-            val allIngredientAfterImage = mutableListOf<Ingredient>()
-            val allCocktailAfterImage = mutableListOf<Cocktail>()
-
-            for (i in allIngredients) {
-                if (i.ingredient_image.isNotBlank()) {
-
-                    val newIngredientImageName = "${i.ingredient_name}-ing"
-
-                    val imageFile = File(mApplication.filesDir, i.ingredient_image)
-
-                    if (imageFile.exists()) {
-                        getImageBitmap(imageFile, newIngredientImageName, ingredientImageBitmaps)
-                    } else {
-                        getImageBitmap(
-                            i.ingredient_image,
-                            newIngredientImageName,
-                            ingredientImageBitmaps
-                        )
-                    }
-                    i.ingredient_image = "$newIngredientImageName.png"
-                    allIngredientAfterImage.add(i)
-                }
-            }
-
-            for (i in allCocktail) {
-                if (i.cocktail_image.isNotBlank()) {
-
-                    val newCocktailImageName = i.cocktail_name + "-cocktail-${i.cocktail_id}"
-
-                    val cocktailImageFile = File(mApplication.filesDir, i.cocktail_image)
-
-
-                    if (cocktailImageFile.exists()) {
-                        getImageBitmap(cocktailImageFile, newCocktailImageName, cocktailImageBitmap)
-                    } else {
-                        getImageBitmap(i.cocktail_image, newCocktailImageName, cocktailImageBitmap)
-                    }
-
-                    i.cocktail_image = "$newCocktailImageName.png"
-                    allCocktailAfterImage.add(i)
-                }
-            }
-
-
-            val ingredientJson = JsonUtils.getJsonFromClass(allIngredientAfterImage)
-            val cocktailJson = JsonUtils.getJsonFromClass(allCocktailAfterImage)
+            val ingredientJson = JsonUtils.getJsonFromClass(allIngredients)
+            val cocktailJson = JsonUtils.getJsonFromClass(allCocktail)
             val refJson = JsonUtils.getJsonFromClass(allRef)
 
-            // Deprecated but still works for android 11
-            val dir = Environment
-                .getExternalStoragePublicDirectory(
-                    Environment.DIRECTORY_DOWNLOADS
-                )?.absolutePath
-            if (dir != null) {
-                if (dir.isNotBlank()) {
-                    try {
-                        val exportDir =
-                            File(dir, "hammered_export${System.currentTimeMillis()}")
 
-                        if (exportDir.mkdirs()) {
-                            Timber.i("Directory creation success.")
-                        } else {
-                            _jsonSaveStatus.postValue(Constants.DIRECTORY_CREATE_FAILED)
-                            Timber.e("Directory not created.")
+            if (Build.VERSION.SDK_INT < 29) {
+
+                val dir = Environment
+                    .getExternalStoragePublicDirectory(
+                        Environment.DIRECTORY_DOWNLOADS
+                    )?.absolutePath
+                if (dir != null) {
+                    if (dir.isNotBlank()) {
+                        try {
+                            val exportDir =
+                                File(
+                                    dir,
+                                    "hammered_export ${
+                                        SimpleDateFormat(
+                                            "HH:mm-yyyy-mm-dd",
+                                            Locale.US
+                                        ).format(System.currentTimeMillis())
+                                    }"
+                                )
+
+                            if (exportDir.mkdirs()) {
+                                Timber.i("Directory creation success.")
+                            } else {
+                                _jsonSaveStatus.postValue(Constants.DIRECTORY_CREATE_FAILED)
+                                Timber.e("Directory not created.")
+                            }
+
+                            val ingredientFile = File(exportDir, Constants.INGREDIENT_JSON_FILE)
+                            val cocktailFile = File(exportDir, Constants.COCKTAIL_JSON_FILE)
+                            val refFile = File(exportDir, Constants.BRIDGING_JSON_FILE)
+
+                            ingredientFile.writeText(ingredientJson)
+                            cocktailFile.writeText(cocktailJson)
+                            refFile.writeText(refJson)
+
+                            Timber.i("Data saved successfully to $exportDir.")
+                            _jsonSaveStatus.postValue(Constants.DATA_SAVE_SUCCESS)
+                        } catch (e: Exception) {
+                            Timber.e("File creation failed ${e.message}")
+                            _jsonSaveStatus.postValue(Constants.FILE_CREATION_FAILED)
                         }
-
-                        val ingredientFile = File(exportDir, Constants.INGREDIENT_JSON_FILE)
-                        val cocktailFile = File(exportDir, Constants.COCKTAIL_JSON_FILE)
-                        val refFile = File(exportDir, Constants.BRIDGING_JSON_FILE)
-
-                        ingredientFile.writeText(ingredientJson)
-                        cocktailFile.writeText(cocktailJson)
-                        refFile.writeText(refJson)
-
-                        for (imageBitmap in ingredientImageBitmaps) {
-
-                            val imgDir = File(exportDir, "${imageBitmap[0]}.png")
-
-                            val output = FileOutputStream(imgDir)
-                            (imageBitmap[1] as Bitmap).compress(
-                                Bitmap.CompressFormat.PNG,
-                                100,
-                                output
-                            )
-                            output.flush()
-                            output.close()
-                        }
-
-                        for (cocktailBitmap in cocktailImageBitmap) {
-
-                            val imgDir = File(exportDir, "${cocktailBitmap[0]}.png")
-                            // TRIAL
-                            Timber.e("The bitmap for ${cocktailBitmap[0]} is ${cocktailBitmap[1]}")
-                            val output = FileOutputStream(imgDir)
-                            (cocktailBitmap[1] as Bitmap).compress(
-                                Bitmap.CompressFormat.PNG,
-                                100,
-                                output
-                            )
-                            output.flush()
-                            output.close()
-                        }
-
-                        Timber.i("Data saved successfully to $exportDir.")
-                        _jsonSaveStatus.postValue(Constants.DATA_SAVE_SUCCESS)
-                    } catch (e: Exception) {
-                        Timber.e("File creation failed ${e.message}")
-                        _jsonSaveStatus.postValue(Constants.FILE_CREATION_FAILED)
+                    } else {
+                        Timber.e("The directory was blank.")
+                        _jsonSaveStatus.postValue(Constants.DIRECTORY_INVALID)
                     }
                 } else {
-                    Timber.e("The directory was blank.")
-                    _jsonSaveStatus.postValue(Constants.DIRECTORY_INVALID)
+                    Timber.e("The directory was null.")
+                    _jsonSaveStatus.postValue(Constants.GET_DIR_FAILED)
                 }
-            } else {
-                Timber.e("The directory was null.")
-                _jsonSaveStatus.postValue(Constants.GET_DIR_FAILED)
             }
+            else {
+                val resolver = mApplication.contentResolver
+                val directoryName = "hammered_export ${
+                    SimpleDateFormat(
+                        "HH:mm-yyyy-mm-dd",
+                        Locale.US
+                    ).format(System.currentTimeMillis())
+                }"
+
+
+                val ingredientValues = ContentValues().apply {
+                    put(MediaStore.MediaColumns.DISPLAY_NAME, Constants.INGREDIENT_JSON_FILE)
+                    put(MediaStore.MediaColumns.MIME_TYPE, "application/json")
+                    put(
+                        MediaStore.MediaColumns.RELATIVE_PATH, Path(
+                            Environment.DIRECTORY_DOWNLOADS, directoryName
+                        ).toString()
+                    )
+                }
+
+                val cocktailValue = ContentValues().apply {
+                    put(MediaStore.MediaColumns.DISPLAY_NAME, Constants.COCKTAIL_JSON_FILE)
+                    put(MediaStore.MediaColumns.MIME_TYPE, "application/json")
+                    put(
+                        MediaStore.MediaColumns.RELATIVE_PATH, Path(
+                            Environment.DIRECTORY_DOWNLOADS, directoryName
+                        ).toString()
+                    )
+                }
+
+                val refValue = ContentValues().apply {
+                    put(MediaStore.MediaColumns.DISPLAY_NAME, Constants.BRIDGING_JSON_FILE)
+                    put(MediaStore.MediaColumns.MIME_TYPE, "application/json")
+                    put(
+                        MediaStore.MediaColumns.RELATIVE_PATH, Path(
+                            Environment.DIRECTORY_DOWNLOADS, directoryName
+                        ).toString()
+                    )
+                }
+
+                val ingredientUri =
+                    resolver.insert(MediaStore.Files.getContentUri("external"), ingredientValues)
+                val cocktailUri =
+                    resolver.insert(MediaStore.Files.getContentUri("external"), cocktailValue)
+                val refUri =
+                    resolver.insert(MediaStore.Files.getContentUri("external"), refValue)
+
+
+                if (ingredientUri == null || cocktailUri ==null || refUri == null) {
+                    _jsonSaveStatus.postValue(Constants.FILE_CREATION_FAILED)
+                   return@launch
+                }
+
+                resolver.openOutputStream(ingredientUri).use {
+                    it?.write(ingredientJson.encodeToByteArray())
+                    it?.close()
+                }
+
+                resolver.openOutputStream(cocktailUri).use {
+                    it?.write(cocktailJson.encodeToByteArray())
+                    it?.close()
+                }
+
+                resolver.openOutputStream(refUri).use {
+                    it?.write(refJson.encodeToByteArray())
+                    it?.close()
+                }
+
+                _jsonSaveStatus.postValue(Constants.DATA_SAVE_SUCCESS)
+
+            }
+
         }
+
     }
 
+    // FIXME This method will not work anymore.
     fun getFromJson(dataDir: Uri, ignoreNew: Boolean) {
         viewModelScope.launch(Dispatchers.IO) {
             // Import started
             _startImport.postValue(true)
-
+            // TODO check directory name before importing
             val exportTree = DocumentFile.fromTreeUri(getApplication(), dataDir) ?: return@launch
             val fileList = exportTree.listFiles().toMutableList()
 
@@ -282,44 +300,6 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
         }
     }
 
-    private fun getImageBitmap(file: File, imageName: String, bitmapList: MutableList<List<Any>>) {
-        Glide.with(mApplication).asBitmap().load(file).into(
-            object : CustomTarget<Bitmap>() {
-                override fun onResourceReady(
-                    resource: Bitmap,
-                    transition: Transition<in Bitmap>?
-                ) {
-                    bitmapList.add(listOf(imageName, resource))
-                }
-
-                override fun onLoadCleared(placeholder: Drawable?) {
-                    Timber.i("The load was cleared.")
-                }
-            }
-        )
-    }
-
-    private fun getImageBitmap(
-        imageDir: String,
-        imageName: String,
-        bitmapList: MutableList<List<Any>>
-    ) {
-        Glide.with(mApplication).asBitmap().load(imageDir).into(
-            object : CustomTarget<Bitmap>() {
-                override fun onResourceReady(
-                    resource: Bitmap,
-                    transition: Transition<in Bitmap>?
-                ) {
-                    bitmapList.add(listOf(imageName, resource))
-                }
-
-                override fun onLoadCleared(placeholder: Drawable?) {
-                    Timber.i("The load was cleared.")
-                }
-            }
-        )
-    }
-
     private fun getJsonStringFromUri(uri: Uri): String {
         val inputStream = mApplication.contentResolver.openInputStream(uri)
         val bufferedReader = inputStream!!.bufferedReader()
@@ -350,13 +330,15 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
         }
     }
 
-    fun resetApp() {
+    fun resetApp(
+        ingredients: List<Ingredient>,
+        cocktails: List<Cocktail>,
+        references: List<IngredientCocktailRef>
+    ) {
         viewModelScope.launch {
-            repository.deleteAllIngredient()
-            repository.deleteAllCocktail()
-            repository.deleteAllRef()
+            deleteEverything()
 
-            repository.insertAll()
+            repository.insertInitialValues(ingredients, cocktails, references)
         }
     }
 }

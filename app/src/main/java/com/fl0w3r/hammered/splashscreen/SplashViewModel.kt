@@ -4,6 +4,9 @@ import android.app.Application
 import androidx.lifecycle.*
 import com.fl0w3r.hammered.database.CocktailDatabase
 import com.fl0w3r.hammered.datastore.SettingsPreferences
+import com.fl0w3r.hammered.entities.Cocktail
+import com.fl0w3r.hammered.entities.Ingredient
+import com.fl0w3r.hammered.entities.relations.IngredientCocktailRef
 import com.fl0w3r.hammered.repository.CocktailRepository
 import kotlinx.coroutines.launch
 
@@ -19,9 +22,9 @@ class SplashViewModel(application: Application) : AndroidViewModel(application) 
     val populateDatabase: LiveData<Boolean?>
         get() = _populateDatabase
 
-    fun insertValuesInDatabase() {
+    fun insertValuesInDatabase(ingredients: List<Ingredient>,cocktails: List<Cocktail>, references: List<IngredientCocktailRef>) {
         viewModelScope.launch {
-            repository.insertAll()
+            repository.insertInitialValues(ingredients, cocktails, references)
             _populateDatabase.value = true
         }
     }

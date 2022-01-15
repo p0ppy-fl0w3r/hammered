@@ -13,6 +13,12 @@ import com.fl0w3r.hammered.Constants.STARTUP_SCREEN_ID
 import com.fl0w3r.hammered.MainActivity
 import com.fl0w3r.hammered.R
 import com.fl0w3r.hammered.databinding.ActivitySplashBinding
+import com.fl0w3r.hammered.entities.Cocktail
+import com.fl0w3r.hammered.entities.Ingredient
+import com.fl0w3r.hammered.entities.relations.IngredientCocktailRef
+import com.fl0w3r.hammered.utils.JsonUtils
+import org.apache.commons.io.IOUtils
+import timber.log.Timber
 
 
 class SplashActivity : AppCompatActivity() {
@@ -41,16 +47,32 @@ class SplashActivity : AppCompatActivity() {
 
         viewModel.isDataInserted.observe(this) {
             if (it == false) {
+
+                val ingredientList = resources.openRawResource(R.raw.ingredient).use { ingRaw ->
+                    JsonUtils.getClassFromJson<Ingredient>(IOUtils.toString(ingRaw))
+                }
+                val cocktailList = resources.openRawResource(R.raw.cocktail).use { cocktailRaw ->
+                    JsonUtils.getClassFromJson<Cocktail>(IOUtils.toString(cocktailRaw))
+                }
+                val referenceList = resources.openRawResource(R.raw.ref).use { refRaw ->
+                    JsonUtils.getClassFromJson<IngredientCocktailRef>(IOUtils.toString(refRaw))
+                }
+
                 // Only insert data in database after you've confirmed that the database was not populated before.
-                viewModel.insertValuesInDatabase()
+
+                if (ingredientList != null && cocktailList != null && referenceList != null) {
+                    viewModel.insertValuesInDatabase(ingredientList, cocktailList, referenceList)
+                }
+                else{
+                    Timber.e("Some of the values were null. Check the deserializer or Json files.")
+                }
 
                 viewModel.setDataInserted()
 
                 isDataInserted = false
-            }
-            else{
+            } else {
                 // Don't call endSplash if it has already been called in this observation.
-                if (isDataInserted){
+                if (isDataInserted) {
                     endSplash()
                 }
             }

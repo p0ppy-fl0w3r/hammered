@@ -1,0 +1,92 @@
+[
+    {
+        "cocktail_id": 1,
+        "ingredient_id": 1,
+        "ingredient_name": "Lemon",
+        "quantity": 1.0,
+        "quantityUnit": "Oz",
+        "isGarnish": false,
+        "isOptional": false
+    },
+    {
+        "cocktail_id": 1,
+        "ingredient_id": 2,
+        "ingredient_name": "Salt",
+        "quantity": 1.0,
+        "quantityUnit": "Oz",
+        "isGarnish": false,
+        "isOptional": false
+    },
+    {
+        "cocktail_id": 1,
+        "ingredient_id": 3,
+        "ingredient_name": "Water",
+        "quantity": 3.0,
+        "quantityUnit": "Oz",
+        "isGarnish": false,
+        "isOptional": false
+    },
+    {
+        "cocktail_id": 2,
+        "ingredient_id": 4,
+        "ingredient_name": "Gin",
+        "quantity": 1.0,
+        "quantityUnit": "Oz",
+        "isGarnish": true,
+        "isOptional": false
+    },
+    {
+        "cocktail_id": 2,
+        "ingredient_id": 3,
+        "ingredient_name": "Water",
+        "quantity": 1.0,
+        "quantityUnit": "Oz",
+        "isGarnish": false,
+        "isOptional": false
+    },
+    {
+        "cocktail_id": 2,
+        "ingredient_id": 5,
+        "ingredient_name": "Vodka",
+        "quantity": 10.0,
+        "quantityUnit": "Gm",
+        "isGarnish": false,
+        "isOptional": false
+    },
+    {
+        "cocktail_id": 2,
+        "ingredient_id": 1,
+        "ingredient_name": "Lemon",
+        "quantity": 1.0,
+        "quantityUnit": "Oz",
+        "isGarnish": true,
+        "isOptional": false
+    },
+    {
+        "cocktail_id": 3,
+        "ingredient_id": 1,
+        "ingredient_name": "Lemon",
+        "quantity": 15.0,
+        "quantityUnit": "Gm",
+        "isGarnish": false,
+        "isOptional": false
+    },
+    {
+        "cocktail_id": 3,
+        "ingredient_id": 3,
+        "ingredient_name": "Water",
+        "quantity": 1.0,
+        "quantityUnit": "Oz",
+        "isGarnish": true,
+        "isOptional": true
+    },
+    {
+        "cocktail_id": 3,
+        "ingredient_id": 2,
+        "ingredient_name": "Salt",
+        "quantity": 1.0,
+        "quantityUnit": "Oz",
+        "isGarnish": false,
+        "isOptional": false
+    }
+]
