@@ -3,7 +3,6 @@ package com.fl0w3r.hammered.ingredients.createIngredient
 import android.app.Activity
 import android.content.Intent
 import android.graphics.BitmapFactory
-import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
@@ -11,15 +10,14 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.fl0w3r.hammered.R
 import com.fl0w3r.hammered.databinding.ActivityCreateIngredientBinding
 import com.fl0w3r.hammered.dialog.CancelAlertDialog
 import com.fl0w3r.hammered.dialog.WarningDialog
 import com.fl0w3r.hammered.entities.Ingredient
-import com.fl0w3r.hammered.ingredients.IngredientData
+import  com.fl0w3r.hammered.utils.UiUtils
 import timber.log.Timber
-import java.io.File
-import  com.fl0w3r.hammered.utils.UiUtils;
 
 
 class CreateIngredientActivity : AppCompatActivity() {
@@ -28,7 +26,8 @@ class CreateIngredientActivity : AppCompatActivity() {
     private var isEdit = false
     private var initialName = ""
     private var imageEncoded = ""
-    private lateinit var mIngredient: IngredientData
+
+    private lateinit var currentIngredient: Ingredient
 
     private val resultLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
@@ -39,11 +38,10 @@ class CreateIngredientActivity : AppCompatActivity() {
 
                 imageEncoded = UiUtils.encodeToBase64(BitmapFactory.decodeStream(inputStream))
 
-                Timber.e("The base64 is $imageEncoded")
-
                 val newCocktailImage = binding.addIngredientImage
                 // Display the selected image in the add image button
-                Glide.with(this).load(imageUrl).into(newCocktailImage)
+                Glide.with(this).load(imageUrl)
+                    .apply(RequestOptions().error(R.drawable.no_drinks)).into(newCocktailImage)
             }
         }
 
@@ -62,26 +60,29 @@ class CreateIngredientActivity : AppCompatActivity() {
         saveIngredient()
         cancelAndGoBack()
 
-        if (intent?.extras?.get("ingredient") != null) {
-            mIngredient = intent?.extras?.get("ingredient") as IngredientData
-            imageUrl = mIngredient.ingredient_image
+        val ingredientId = intent?.extras?.getLong("ingredient")
 
-            binding.textIngredientName.setText(mIngredient.ingredient_name)
-            binding.ingredientDescriptionText.setText(mIngredient.ingredient_description)
-            binding.createInStock.isChecked = mIngredient.inStock
+        if (ingredientId != null) {
 
-            isEdit = true
-            initialName = mIngredient.ingredient_name
+            viewModel.getIngredient(ingredientId)
 
-            if (imageUrl.isNotBlank()) {
-                val mFile = File(this.filesDir, imageUrl)
-                if (mFile.exists()) {
-                    Timber.e("Got from file")
-                    Glide.with(this).load(mFile).into(binding.addIngredientImage)
-                } else {
-                    Timber.e("Got from URI")
-                    Glide.with(this).load(imageUrl).into(binding.addIngredientImage)
-                }
+        }
+
+        viewModel.currentIngredient.observe(this) { mIngredient ->
+            if (mIngredient != null) {
+                currentIngredient = mIngredient
+
+                imageEncoded = mIngredient.ingredient_image
+
+                binding.textIngredientName.setText(mIngredient.ingredient_name)
+                binding.ingredientDescriptionText.setText(mIngredient.ingredient_description)
+                binding.createInStock.isChecked = mIngredient.inStock
+                Glide.with(this).load(mIngredient.ingredient_image)
+                    .apply(RequestOptions().error(R.drawable.no_drinks))
+                    .into(binding.addIngredientImage)
+
+                isEdit = true
+                initialName = mIngredient.ingredient_name
             }
         }
 
@@ -129,7 +130,7 @@ class CreateIngredientActivity : AppCompatActivity() {
                         ingredient_description = ingredientDescription,
                         inStock = isInStock,
                         inCart = false,
-                        ingredient_image = imageUrl
+                        ingredient_image = imageEncoded
                     )
 
                     viewModel.checkIngredient(mIngredient)
@@ -140,11 +141,11 @@ class CreateIngredientActivity : AppCompatActivity() {
                     )
                 }
             } else {
-                mIngredient.ingredient_name = ingredientName
-                mIngredient.ingredient_description = ingredientDescription
-                mIngredient.inStock = isInStock
-                mIngredient.ingredient_image = imageUrl
-                viewModel.checkIngredient(mIngredient.asIngredient(), initialName)
+                currentIngredient.ingredient_name = ingredientName
+                currentIngredient.ingredient_description = ingredientDescription
+                currentIngredient.inStock = isInStock
+                currentIngredient.ingredient_image = imageEncoded
+                viewModel.checkIngredient(currentIngredient, initialName)
             }
         }
     }

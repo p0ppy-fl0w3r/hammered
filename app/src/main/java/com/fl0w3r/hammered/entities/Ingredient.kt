@@ -18,7 +18,6 @@ data class Ingredient(
             ingredient_id,
             ingredient_name,
             ingredient_description,
-            ingredient_image,
             inStock,
             inCart
         )

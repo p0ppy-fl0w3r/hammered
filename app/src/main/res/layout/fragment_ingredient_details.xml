@@ -59,7 +59,6 @@
                 android:contentDescription="@string/cocktail_detail_desc"
                 android:foregroundGravity="center"
                 android:scaleType="fitCenter"
-                app:imageSource="@{viewModel.currentIngredient.ingredient_image}"
                 tools:src="@drawable/summer_food" />
 
             <TextView

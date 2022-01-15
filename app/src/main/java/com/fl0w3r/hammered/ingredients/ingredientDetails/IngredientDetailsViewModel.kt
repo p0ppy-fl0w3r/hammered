@@ -43,6 +43,8 @@ class IngredientDetailsViewModel(application: Application) : AndroidViewModel(ap
         }
     }
 
+
+
     fun setIngredient(ingredient: Ingredient) {
         _currentIngredient.value = ingredient
 
@@ -83,6 +85,4 @@ class IngredientDetailsViewModel(application: Application) : AndroidViewModel(ap
     fun doneDeleting(){
         _ingredientDeleted.value = null
     }
-
-    fun copyAndEditIngredient(){}
 }

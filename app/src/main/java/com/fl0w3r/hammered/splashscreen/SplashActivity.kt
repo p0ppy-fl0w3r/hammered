@@ -1,5 +1,6 @@
 package com.fl0w3r.hammered.splashscreen
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.drawable.AnimatedVectorDrawable
 import androidx.appcompat.app.AppCompatActivity
@@ -21,6 +22,7 @@ import org.apache.commons.io.IOUtils
 import timber.log.Timber
 
 
+@SuppressLint("CustomSplashScreen")
 class SplashActivity : AppCompatActivity() {
 
     private lateinit var viewModel: SplashViewModel
@@ -35,7 +37,7 @@ class SplashActivity : AppCompatActivity() {
         val animatedVector = binding.cocktailGlass.drawable as AnimatedVectorDrawable
         animatedVector.start()
 
-        viewModel = ViewModelProvider(this).get(SplashViewModel::class.java)
+        viewModel = ViewModelProvider(this)[SplashViewModel::class.java]
 
         viewModel.currentSelectedStartupScreen.observe(this) {
 

@@ -6,23 +6,24 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.fl0w3r.hammered.databinding.DetailsIngredientItemBinding
+import com.fl0w3r.hammered.entities.Ingredient
 import com.fl0w3r.hammered.ingredients.IngredientData
 import com.fl0w3r.hammered.wrappers.RefItemWrapper
 
 class CocktailDetailsAdapter(private val clickListener: CocktailDetailsClickListener) :
-    ListAdapter<RefItemWrapper<IngredientData>, CocktailDetailsViewHolder>(DetailsDiffUtils()) {
+    ListAdapter<RefItemWrapper<Ingredient>, CocktailDetailsViewHolder>(DetailsDiffUtils()) {
 
-    class DetailsDiffUtils : DiffUtil.ItemCallback<RefItemWrapper<IngredientData>>() {
+    class DetailsDiffUtils : DiffUtil.ItemCallback<RefItemWrapper<Ingredient>>() {
         override fun areItemsTheSame(
-            oldItem: RefItemWrapper<IngredientData>,
-            newItem: RefItemWrapper<IngredientData>
+            oldItem: RefItemWrapper<Ingredient>,
+            newItem: RefItemWrapper<Ingredient>
         ): Boolean {
             return oldItem.item.ingredient_id == newItem.item.ingredient_id
         }
 
         override fun areContentsTheSame(
-            oldItem: RefItemWrapper<IngredientData>,
-            newItem: RefItemWrapper<IngredientData>
+            oldItem: RefItemWrapper<Ingredient>,
+            newItem: RefItemWrapper<Ingredient>
         ): Boolean {
             return oldItem == newItem
         }
@@ -43,7 +44,7 @@ class CocktailDetailsAdapter(private val clickListener: CocktailDetailsClickList
 class CocktailDetailsViewHolder private constructor(private val binding: DetailsIngredientItemBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(refIngredient: RefItemWrapper<IngredientData>, clickListener: CocktailDetailsClickListener) {
+    fun bind(refIngredient: RefItemWrapper<Ingredient>, clickListener: CocktailDetailsClickListener) {
         binding.refIngredient = refIngredient
         binding.clickListener = clickListener
 
@@ -60,6 +61,6 @@ class CocktailDetailsViewHolder private constructor(private val binding: Details
     }
 }
 
-class CocktailDetailsClickListener(val clickListener: (RefItemWrapper<IngredientData>) -> Unit) {
-    fun onClick(refIngredient: RefItemWrapper<IngredientData>) = clickListener(refIngredient)
+class CocktailDetailsClickListener(val clickListener: (RefItemWrapper<Ingredient>) -> Unit) {
+    fun onClick(refIngredient: RefItemWrapper<Ingredient>) = clickListener(refIngredient)
 }

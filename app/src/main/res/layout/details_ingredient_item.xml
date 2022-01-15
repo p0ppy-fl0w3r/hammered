@@ -5,12 +5,12 @@
 
     <data>
 
-        <import type="com.fl0w3r.hammered.ingredients.IngredientData" />
+        <import type="com.fl0w3r.hammered.entities.Ingredient" />
         <import type="android.view.View"/>
 
         <variable
             name="refIngredient"
-            type="com.fl0w3r.hammered.wrappers.RefItemWrapper&lt;IngredientData&gt;" />
+            type="com.fl0w3r.hammered.wrappers.RefItemWrapper&lt;Ingredient&gt;" />
 
 
         <variable

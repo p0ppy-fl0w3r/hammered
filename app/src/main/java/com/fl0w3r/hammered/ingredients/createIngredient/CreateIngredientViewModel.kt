@@ -16,9 +16,11 @@ class CreateIngredientViewModel(application: Application) : AndroidViewModel(app
 
     private val _newIngredient = MutableLiveData<Ingredient?>()
 
+    // Ingredient that is to be edited.
+    private val _currentIngredient = MutableLiveData<Ingredient?>()
+
     private val _ingredientExists = MutableLiveData<Boolean?>()
 
-    // TODO Check NOT EXISTS SQLite query https://www.sqlitetutorial.net/sqlite-exists/
     private val _lastIngredientId = MutableLiveData<Long>()
 
     val ingredientExists: LiveData<Boolean?>
@@ -26,6 +28,9 @@ class CreateIngredientViewModel(application: Application) : AndroidViewModel(app
 
     val newIngredient: LiveData<Ingredient?>
         get() = _newIngredient
+
+    val currentIngredient: LiveData<Ingredient?>
+        get() = _currentIngredient
 
     init {
         getLastIngredientId()
@@ -38,6 +43,12 @@ class CreateIngredientViewModel(application: Application) : AndroidViewModel(app
         }
     }
 
+    fun getIngredient(id: Long){
+        viewModelScope.launch {
+            _currentIngredient.value = repository.getIngredient(id)
+        }
+    }
+
     fun checkIngredient(ingredient: Ingredient) {
         /**
          * Check and save a new ingredient.
@@ -47,7 +58,6 @@ class CreateIngredientViewModel(application: Application) : AndroidViewModel(app
             val mIngredient = repository.getIngredient(ingredient.ingredient_name)
 
             if (mIngredient == null) {
-                // TODO change this after adding 'NOT EXISTS' in query.
                 ingredient.ingredient_id = _lastIngredientId.value?.plus(1) ?: 1
                 addIngredient(ingredient)
             }

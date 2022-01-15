@@ -8,27 +8,32 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.fl0w3r.hammered.R
 import com.fl0w3r.hammered.databinding.FragmentIngredientDetailsBinding
 import com.fl0w3r.hammered.dialog.CancelAlertDialog
+import com.fl0w3r.hammered.entities.Ingredient
+import com.fl0w3r.hammered.ingredients.IngredientData
 import com.fl0w3r.hammered.ingredients.createIngredient.CreateIngredientActivity
 import com.fl0w3r.hammered.utils.UiUtils
 
 class IngredientDetailsFragment : Fragment() {
     private lateinit var viewModel: IngredientDetailsViewModel
     private lateinit var binding: FragmentIngredientDetailsBinding
+    private lateinit var selectedIngredient: IngredientData
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
 
-        val selectedIngredient = IngredientDetailsFragmentArgs.fromBundle(
+        selectedIngredient = IngredientDetailsFragmentArgs.fromBundle(
             requireArguments()
         ).ingredient
 
         viewModel =
-            ViewModelProvider(this).get(IngredientDetailsViewModel::class.java)
+            ViewModelProvider(this)[IngredientDetailsViewModel::class.java]
 
         binding = DataBindingUtil.inflate(
             inflater,
@@ -37,16 +42,11 @@ class IngredientDetailsFragment : Fragment() {
             false
         )
 
-
         viewModel.setIngredient(selectedIngredient.asIngredient())
-
 
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
 
-
-        onClickCartIcon()
-        onClickCheckBox()
 
         val adapter = IngredientDetailsAdapter(IngredientDetailsClickListener {
             findNavController().navigate(
@@ -57,6 +57,10 @@ class IngredientDetailsFragment : Fragment() {
         binding.ingredientDetailRecycler.adapter = adapter
         viewModel.currentIngredient.observe(viewLifecycleOwner) {
             if (it != null) {
+                Glide.with(requireContext())
+                    .load(it.ingredient_image)
+                    .apply(RequestOptions().error(R.drawable.no_drinks))
+                    .into(binding.ingredientDetailImage)
                 viewModel.getFromIngredient(selectedIngredient.ingredient_id)
             }
         }
@@ -77,6 +81,9 @@ class IngredientDetailsFragment : Fragment() {
         binding.detailIngredientEdit.setOnClickListener {
             onClickEdit()
         }
+
+        onClickCartIcon()
+        onClickCheckBox()
 
         // Inflate the layout for this fragment
         return binding.root
@@ -114,9 +121,11 @@ class IngredientDetailsFragment : Fragment() {
     }
 
     private fun onClickEdit() {
-        val intent = Intent(requireContext(), CreateIngredientActivity::class.java)
-        intent.putExtra("ingredient", viewModel.currentIngredient.value!!.asIngredientData())
-        startActivity(intent)
+        if (::selectedIngredient.isInitialized) {
+            val intent = Intent(requireContext(), CreateIngredientActivity::class.java)
+            intent.putExtra("ingredient", selectedIngredient.ingredient_id)
+            startActivity(intent)
+        }
     }
 
     override fun onPrepareOptionsMenu(menu: Menu) {

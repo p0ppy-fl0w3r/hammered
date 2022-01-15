@@ -39,11 +39,11 @@ object UiUtils {
 
     fun encodeToBase64(bitmap: Bitmap): String {
 
-        val byteStream = ByteArrayOutputStream();
+        val byteStream = ByteArrayOutputStream()
         // Any image format will be converted to jpeg
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteStream)
 
-        return encodeToString(byteStream.toByteArray(), Base64.DEFAULT);
+        return "data:image/jpeg;base64,${encodeToString(byteStream.toByteArray(), Base64.DEFAULT)}"
     }
 
 }

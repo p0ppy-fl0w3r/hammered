@@ -45,7 +45,8 @@ class CocktailDetailFragment : Fragment() {
         val adapter = CocktailDetailsAdapter(CocktailDetailsClickListener {
             findNavController().navigate(
                 CocktailDetailFragmentDirections.cocktailDetailToIngredientDetail(
-                    it.item
+                    // TODO change to ID
+                    it.item.asIngredientData()
                 )
             )
         })

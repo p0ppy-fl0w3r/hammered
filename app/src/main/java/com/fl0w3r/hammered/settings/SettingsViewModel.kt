@@ -2,9 +2,6 @@ package com.fl0w3r.hammered.settings
 
 import android.app.Application
 import android.content.ContentValues
-import android.content.Context
-import android.graphics.Bitmap
-import android.graphics.drawable.Drawable
 import android.icu.text.SimpleDateFormat
 import android.net.Uri
 import android.os.Build
@@ -12,11 +9,7 @@ import android.os.Environment
 import android.provider.MediaStore
 import androidx.documentfile.provider.DocumentFile
 import androidx.lifecycle.*
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.target.CustomTarget
-import com.bumptech.glide.request.transition.Transition
 import com.fl0w3r.hammered.Constants
-import com.fl0w3r.hammered.R
 import com.fl0w3r.hammered.database.CocktailDatabase
 import com.fl0w3r.hammered.datastore.SettingsPreferences
 import com.fl0w3r.hammered.entities.Cocktail
@@ -25,13 +18,10 @@ import com.fl0w3r.hammered.entities.relations.IngredientCocktailRef
 import com.fl0w3r.hammered.repository.CocktailRepository
 import com.fl0w3r.hammered.utils.JsonUtils
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import org.apache.commons.io.IOUtils
 import timber.log.Timber
 import java.io.File
-import java.io.FileOutputStream
-import java.time.Instant
 import java.util.*
 import kotlin.io.path.Path
 
@@ -76,6 +66,7 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
         }
     }
 
+    @SuppressWarnings("deprecation")
     fun saveToJson() {
 
         _startJsonSave.value = true
@@ -139,8 +130,7 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
                     Timber.e("The directory was null.")
                     _jsonSaveStatus.postValue(Constants.GET_DIR_FAILED)
                 }
-            }
-            else {
+            } else {
                 val resolver = mApplication.contentResolver
                 val directoryName = "hammered_export ${
                     SimpleDateFormat(
@@ -188,9 +178,9 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
                     resolver.insert(MediaStore.Files.getContentUri("external"), refValue)
 
 
-                if (ingredientUri == null || cocktailUri ==null || refUri == null) {
+                if (ingredientUri == null || cocktailUri == null || refUri == null) {
                     _jsonSaveStatus.postValue(Constants.FILE_CREATION_FAILED)
-                   return@launch
+                    return@launch
                 }
 
                 resolver.openOutputStream(ingredientUri).use {
@@ -216,27 +206,29 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
 
     }
 
-    // FIXME This method will not work anymore.
     fun getFromJson(dataDir: Uri, ignoreNew: Boolean) {
         viewModelScope.launch(Dispatchers.IO) {
             // Import started
             _startImport.postValue(true)
-            // TODO check directory name before importing
-            val exportTree = DocumentFile.fromTreeUri(getApplication(), dataDir) ?: return@launch
+
+            val exportTree = DocumentFile.fromTreeUri(getApplication(), dataDir)
+
+            if (exportTree == null) {
+                _importStatus.postValue(Constants.FOLDER_INVALID)
+                return@launch
+            }
+
             val fileList = exportTree.listFiles().toMutableList()
 
             var jCocktailFile: DocumentFile? = null
             var jRefFile: DocumentFile? = null
             var jIngredientFile: DocumentFile? = null
 
-            val imageList = mutableListOf<DocumentFile>()
-
             for (i in fileList) {
                 when (i.name) {
                     Constants.INGREDIENT_JSON_FILE -> jIngredientFile = i
                     Constants.COCKTAIL_JSON_FILE -> jCocktailFile = i
                     Constants.BRIDGING_JSON_FILE -> jRefFile = i
-                    else -> imageList.add(i)
                 }
             }
 
@@ -248,25 +240,14 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
             }
 
             try {
-                val ingredientJsonString = getJsonStringFromUri(jIngredientFile.uri)
-                val cocktailJsonString = getJsonStringFromUri(jCocktailFile.uri)
-                val refJsonString = getJsonStringFromUri(jRefFile.uri)
 
-                val cocktailDataList = JsonUtils.getClassFromJson<Cocktail>(cocktailJsonString)
+                val cocktailDataList =
+                    JsonUtils.getClassFromJson<Cocktail>(getJsonStringFromUri(jCocktailFile.uri))
                 val ingredientDataList =
-                    JsonUtils.getClassFromJson<Ingredient>(ingredientJsonString)
-                val refDataList = JsonUtils.getClassFromJson<IngredientCocktailRef>(refJsonString)
+                    JsonUtils.getClassFromJson<Ingredient>(getJsonStringFromUri(jIngredientFile.uri))
+                val refDataList =
+                    JsonUtils.getClassFromJson<IngredientCocktailRef>(getJsonStringFromUri(jRefFile.uri))
 
-                for (image in imageList) {
-                    mApplication.contentResolver.openInputStream(image.uri).use {
-                        mApplication.openFileOutput(image.name, Context.MODE_PRIVATE)
-                            .use { output ->
-                                do {
-                                    output.write(it?.readBytes())
-                                } while (it?.read() != -1)
-                            }
-                    }
-                }
 
                 ingredientDataList?.forEach {
                     if (ignoreNew) {
@@ -286,7 +267,7 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
 
                 refDataList?.forEach {
                     if (ignoreNew) {
-                        repository.insertIngredientCocktailRef(it)
+                        repository.ignoreInsertIngredientCocktailRef(it)
                     } else {
                         repository.insertIngredientCocktailRef(it)
                     }
@@ -294,7 +275,7 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
                 _importStatus.postValue(Constants.IMPORT_SUCCESS)
 
             } catch (e: Exception) {
-                Timber.e("Export failed ${e.message}")
+                Timber.e("Import failed ${e.message}")
                 _importStatus.postValue(Constants.IMPORT_FAILED)
             }
         }
@@ -302,8 +283,8 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
 
     private fun getJsonStringFromUri(uri: Uri): String {
         val inputStream = mApplication.contentResolver.openInputStream(uri)
-        val bufferedReader = inputStream!!.bufferedReader()
-        return bufferedReader.use { it.readLine() }
+
+        return inputStream.use { IOUtils.toString(it) }
     }
 
     fun doneSave() {

@@ -27,6 +27,7 @@ class CocktailRepository(private val database: CocktailDatabase) {
         }
     }
 
+
     suspend fun insertIngredient(ingredient: Ingredient) {
         database.cocktailDao.insertIngredient(ingredient)
     }

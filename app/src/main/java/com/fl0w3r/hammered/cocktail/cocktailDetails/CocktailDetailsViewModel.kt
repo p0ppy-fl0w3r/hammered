@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.fl0w3r.hammered.database.CocktailDatabase
 import com.fl0w3r.hammered.entities.Cocktail
+import com.fl0w3r.hammered.entities.Ingredient
 import com.fl0w3r.hammered.ingredients.IngredientData
 import com.fl0w3r.hammered.repository.CocktailRepository
 import com.fl0w3r.hammered.wrappers.RefItemWrapper
@@ -16,9 +17,9 @@ class CocktailDetailsViewModel(application: Application) : AndroidViewModel(appl
 
     private val repository = CocktailRepository(CocktailDatabase.getDatabase(application))
 
-    private val _ingredientRefLiveData = MutableLiveData<List<RefItemWrapper<IngredientData>>>()
+    private val _ingredientRefLiveData = MutableLiveData<List<RefItemWrapper<Ingredient>>>()
 
-    val ingredientRefLiveData: LiveData<List<RefItemWrapper<IngredientData>>>
+    val ingredientRefLiveData: LiveData<List<RefItemWrapper<Ingredient>>>
         get() = _ingredientRefLiveData
 
     private val _currentCocktail = MutableLiveData<Cocktail?>()
@@ -53,12 +54,12 @@ class CocktailDetailsViewModel(application: Application) : AndroidViewModel(appl
 
     fun setIngredient(id: Long) {
         viewModelScope.launch {
-            val allIngredientRef = mutableListOf<RefItemWrapper<IngredientData>>()
+            val allIngredientRef = mutableListOf<RefItemWrapper<Ingredient>>()
             val allRefFromCocktail = repository.getRefFromCocktail(id)
 
             for (ref in allRefFromCocktail) {
                 val ingredient = repository.getIngredient(ref.ingredient_id)
-                val ingredientRef = RefItemWrapper(ingredient!!.asIngredientData(), ref)
+                val ingredientRef = RefItemWrapper(ingredient!!, ref)
                 allIngredientRef.add(ingredientRef)
             }
             _ingredientRefLiveData.value = allIngredientRef
