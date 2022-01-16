@@ -3,6 +3,7 @@ package com.fl0w3r.hammered.cocktail.createCocktail
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
+import android.graphics.BitmapFactory
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.*
@@ -11,11 +12,14 @@ import androidx.core.view.get
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.fl0w3r.hammered.Constants
 import com.fl0w3r.hammered.R
 import com.fl0w3r.hammered.cocktail.CocktailData
 import com.fl0w3r.hammered.databinding.ActivityCreateCocktailBinding
 import com.fl0w3r.hammered.dialog.CancelAlertDialog
+import com.fl0w3r.hammered.entities.Cocktail
+import com.fl0w3r.hammered.utils.UiUtils
 import com.fl0w3r.hammered.utils.UiUtils.animateError
 import com.fl0w3r.hammered.utils.UiUtils.hideKeyboard
 import com.fl0w3r.hammered.wrappers.NewCocktailRef
@@ -28,6 +32,7 @@ class CreateCocktailActivity : AppCompatActivity() {
     private lateinit var binding: ActivityCreateCocktailBinding
 
     private var imageUrl = ""
+    private var imageEncoded = ""
 
     private var isEdit = false
 
@@ -35,14 +40,18 @@ class CreateCocktailActivity : AppCompatActivity() {
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if (it.resultCode == Activity.RESULT_OK) {
                 imageUrl = it.data?.data.toString()
-                val newCocktailImage = binding.addCocktailImage
+
+                val inputStream = contentResolver.openInputStream(it.data?.data!!)
+
+                imageEncoded = UiUtils.encodeToBase64(BitmapFactory.decodeStream(inputStream))
+
                 // Display the selected image in the add image button
-                Glide.with(this).load(imageUrl).into(newCocktailImage)
+                Glide.with(this).load(imageUrl).into(binding.addCocktailImage)
             }
         }
 
     private val viewModel: CreateCocktailViewModel by lazy {
-        ViewModelProvider(this).get(CreateCocktailViewModel::class.java)
+        ViewModelProvider(this)[CreateCocktailViewModel::class.java]
     }
 
     // Using specific index of changed set will not work for some reason.
@@ -60,12 +69,13 @@ class CreateCocktailActivity : AppCompatActivity() {
 
         if (selectedCocktail != null) {
             isEdit = true
-            populateFields(selectedCocktail)
+            viewModel.setSelectedCocktail(selectedCocktail.cocktail_id)
         }
 
         if (selectedCocktailForCopy != null) {
-            populateFields(selectedCocktailForCopy)
+            viewModel.setSelectedCocktail(selectedCocktailForCopy.cocktail_id)
         }
+
 
         val nestedScrollView = binding.nestedScrollView
         val ingredientRecycler = binding.ingRefRecycler
@@ -85,6 +95,12 @@ class CreateCocktailActivity : AppCompatActivity() {
 
         binding.stepsRecycler.adapter = stepsAdapter
         binding.ingRefRecycler.adapter = adapter
+
+        viewModel.selectedCocktail.observe(this){
+            if (it != null){
+                populateFields(it)
+            }
+        }
 
         viewModel.editIngredientList.observe(this) {
             val ingredientList = it.mapIndexed { index, ref ->
@@ -250,11 +266,11 @@ class CreateCocktailActivity : AppCompatActivity() {
                         selectedCocktail!!.cocktail_id,
                         cocktailName,
                         description,
-                        imageUrl
+                        imageEncoded
                     )
                     Toast.makeText(this, "Edited cocktail!", Toast.LENGTH_SHORT).show()
                 } else {
-                    viewModel.saveCocktail(cocktailName, description, imageUrl)
+                    viewModel.saveCocktail(cocktailName, description, imageEncoded)
                     Toast.makeText(this, "Cocktail added.", Toast.LENGTH_SHORT).show()
                 }
 
@@ -298,23 +314,18 @@ class CreateCocktailActivity : AppCompatActivity() {
         }
     }
 
-    private fun populateFields(selectedCocktail: CocktailData) {
+    private fun populateFields(selectedCocktail: Cocktail) {
         viewModel.getDataToPopulateFields(selectedCocktail.cocktail_id)
 
         binding.textCocktailName.setText(selectedCocktail.cocktail_name)
         binding.cocktailDescriptionText.setText(selectedCocktail.cocktail_description)
 
-        if (selectedCocktail.cocktail_image.isNotBlank()) {
-            imageUrl = selectedCocktail.cocktail_image
-            if (imageUrl.isNotBlank()) {
-                val mFile = File(this.filesDir, imageUrl)
-                if (mFile.exists()) {
-                    Glide.with(this).load(mFile).into(binding.addCocktailImage)
-                } else {
-                    Glide.with(this).load(imageUrl).into(binding.addCocktailImage)
-                }
-            }
-        }
+        imageEncoded = selectedCocktail.cocktail_image
+
+        Glide.with(this)
+            .load(selectedCocktail.cocktail_image)
+            .apply(RequestOptions().error(R.drawable.no_drinks))
+            .into(binding.addCocktailImage)
 
         viewModel.setStepsFromRawString(selectedCocktail.steps)
     }

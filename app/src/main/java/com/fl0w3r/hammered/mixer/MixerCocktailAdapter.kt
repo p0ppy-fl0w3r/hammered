@@ -46,9 +46,10 @@ class MixerCocktailAdapter(private val clickListener: MixerCocktailClickListener
 
             binding.cocktailName.text = cocktail.cocktail_name
 
-            Glide.with(binding.cocktailImage).load(cocktail.cocktail_image).apply(
-                RequestOptions().error(R.drawable.no_drinks)
-            ).into(binding.cocktailImage)
+            // TODO fix this
+//            Glide.with(binding.cocktailImage).load(cocktail.cocktail_image).apply(
+//                RequestOptions().error(R.drawable.no_drinks)
+//            ).into(binding.cocktailImage)
 
             binding.executePendingBindings()
         }

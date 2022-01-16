@@ -20,7 +20,6 @@ data class Cocktail(
             cocktail_description,
             steps,
             isFavorite,
-            cocktail_image
         )
     }
 }

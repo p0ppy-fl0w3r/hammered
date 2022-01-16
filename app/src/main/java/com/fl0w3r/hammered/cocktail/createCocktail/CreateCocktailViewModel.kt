@@ -18,6 +18,11 @@ import timber.log.Timber
 
 class CreateCocktailViewModel(application: Application) : AndroidViewModel(application) {
 
+    private val _selectedCocktail = MutableLiveData<Cocktail>()
+
+    val selectedCocktail: LiveData<Cocktail>
+        get() = _selectedCocktail
+
     private val _ingredientList = MutableLiveData<MutableList<NewCocktailRef>>()
 
     val ingredientList: LiveData<MutableList<NewCocktailRef>>
@@ -93,6 +98,12 @@ class CreateCocktailViewModel(application: Application) : AndroidViewModel(appli
         }
     }
 
+    fun setSelectedCocktail(id: Long){
+        viewModelScope.launch {
+            _selectedCocktail.value = repository.getCocktail(id)
+        }
+    }
+
     fun addIngredient() {
         try {
             val lastId = _ingredientList.value!!.last().ref_number
@@ -100,8 +111,7 @@ class CreateCocktailViewModel(application: Application) : AndroidViewModel(appli
             val newList = _ingredientList.value!!
             newList.add(newIngredient)
             _ingredientList.value = newList
-        }
-        catch (e: Exception) {
+        } catch (e: Exception) {
             Timber.w("Looks like the ingredient list was empty or null $e")
             _ingredientList.value = mutableListOf(
                 NewCocktailRef()
@@ -129,8 +139,7 @@ class CreateCocktailViewModel(application: Application) : AndroidViewModel(appli
                 allValues.remove(selectedItem)
             }
             _ingredientList.value = allValues!!
-        }
-        else {
+        } else {
             throw IllegalArgumentException("No such ingredient for reference number $ref_number")
         }
     }
@@ -142,8 +151,7 @@ class CreateCocktailViewModel(application: Application) : AndroidViewModel(appli
             val newStep = StepsWrapper(last + 1, "")
             newList.add(newStep)
             _stepsList.value = newList
-        }
-        catch (e: Exception) {
+        } catch (e: Exception) {
             Timber.w("Looks like the steps list was empty or null $e")
             _stepsList.value = mutableListOf(
                 StepsWrapper(0, "")
@@ -156,8 +164,7 @@ class CreateCocktailViewModel(application: Application) : AndroidViewModel(appli
         if (!allValue.isNullOrEmpty()) {
             allValue.remove(step)
             _stepsList.value = allValue
-        }
-        else {
+        } else {
             throw   IllegalArgumentException("No such step: $step")
         }
     }
@@ -183,8 +190,7 @@ class CreateCocktailViewModel(application: Application) : AndroidViewModel(appli
             }
             // The steps are valid
             _stepsValid.value = Constants.VALUE_OK
-        }
-        else {
+        } else {
             _stepsValid.value = Constants.NO_VALUES
         }
     }
@@ -224,8 +230,7 @@ class CreateCocktailViewModel(application: Application) : AndroidViewModel(appli
 
                 }
                 _ingredientValid.value = listOf(Constants.VALUE_OK, 0)
-            }
-            else {
+            } else {
                 _ingredientValid.value = listOf(Constants.NO_VALUES, 0)
             }
         }
@@ -236,8 +241,7 @@ class CreateCocktailViewModel(application: Application) : AndroidViewModel(appli
             && _stepsValid.value == Constants.VALUE_OK
         ) {
             _saveCocktail.value = true
-        }
-        else {
+        } else {
             _saveCocktail.value = null
         }
     }

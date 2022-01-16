@@ -11,7 +11,7 @@ data class CocktailData(
     var cocktail_description: String,
     var steps: String,
     var isFavorite: Boolean,
-    var cocktail_image: String
+
 ) : Parcelable {
     fun asCocktail(): Cocktail {
         return Cocktail(
@@ -20,7 +20,7 @@ data class CocktailData(
             cocktail_description,
             steps,
             isFavorite,
-            cocktail_image
+            ""
         )
     }
 }
