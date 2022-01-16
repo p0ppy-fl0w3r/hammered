@@ -24,7 +24,6 @@ import com.fl0w3r.hammered.utils.UiUtils.animateError
 import com.fl0w3r.hammered.utils.UiUtils.hideKeyboard
 import com.fl0w3r.hammered.wrappers.NewCocktailRef
 import timber.log.Timber
-import java.io.File
 
 
 class CreateCocktailActivity : AppCompatActivity() {

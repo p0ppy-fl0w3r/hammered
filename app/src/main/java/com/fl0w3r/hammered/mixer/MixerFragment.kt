@@ -8,9 +8,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.fl0w3r.hammered.R
-import com.fl0w3r.hammered.cocktail.CocktailData
 import com.fl0w3r.hammered.databinding.FragmentMixerBinding
-import timber.log.Timber
 
 
 class MixerFragment : Fragment() {

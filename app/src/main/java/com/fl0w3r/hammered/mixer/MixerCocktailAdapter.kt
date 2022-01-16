@@ -11,19 +11,20 @@ import com.bumptech.glide.request.RequestOptions
 import com.fl0w3r.hammered.R
 import com.fl0w3r.hammered.cocktail.CocktailData
 import com.fl0w3r.hammered.databinding.MixerCocktailItemBinding
+import com.fl0w3r.hammered.entities.Cocktail
 
 
 class MixerCocktailAdapter(private val clickListener: MixerCocktailClickListener) :
-    ListAdapter<CocktailData, MixerCocktailAdapter.MixerCocktailViewHolder>(
+    ListAdapter<Cocktail, MixerCocktailAdapter.MixerCocktailViewHolder>(
         MixerCocktailDiffUtils()
     ) {
 
-    class MixerCocktailDiffUtils : DiffUtil.ItemCallback<CocktailData>() {
-        override fun areItemsTheSame(oldItem: CocktailData, newItem: CocktailData): Boolean {
+    class MixerCocktailDiffUtils : DiffUtil.ItemCallback<Cocktail>() {
+        override fun areItemsTheSame(oldItem: Cocktail, newItem: Cocktail): Boolean {
             return newItem.cocktail_id == oldItem.cocktail_id
         }
 
-        override fun areContentsTheSame(oldItem: CocktailData, newItem: CocktailData): Boolean {
+        override fun areContentsTheSame(oldItem: Cocktail, newItem: Cocktail): Boolean {
             return oldItem == newItem
         }
     }
@@ -40,16 +41,15 @@ class MixerCocktailAdapter(private val clickListener: MixerCocktailClickListener
         RecyclerView.ViewHolder(binding.root) {
         fun bind(
             clickListener: MixerCocktailClickListener,
-            cocktail: CocktailData
+            cocktail: Cocktail
         ) {
-            binding.root.setOnClickListener { clickListener.onClick(cocktail = cocktail) }
+            binding.root.setOnClickListener { clickListener.onClick(cocktail = cocktail.asData()) }
 
             binding.cocktailName.text = cocktail.cocktail_name
 
-            // TODO fix this
-//            Glide.with(binding.cocktailImage).load(cocktail.cocktail_image).apply(
-//                RequestOptions().error(R.drawable.no_drinks)
-//            ).into(binding.cocktailImage)
+            Glide.with(binding.cocktailImage).load(cocktail.cocktail_image).apply(
+                RequestOptions().error(R.drawable.no_drinks)
+            ).into(binding.cocktailImage)
 
             binding.executePendingBindings()
         }

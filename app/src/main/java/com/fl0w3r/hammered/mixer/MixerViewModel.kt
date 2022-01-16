@@ -9,6 +9,7 @@ import com.fl0w3r.hammered.Constants
 import com.fl0w3r.hammered.cocktail.CocktailData
 import com.fl0w3r.hammered.database.CocktailDatabase
 import com.fl0w3r.hammered.datastore.SettingsPreferences
+import com.fl0w3r.hammered.entities.Cocktail
 import com.fl0w3r.hammered.repository.CocktailRepository
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -22,8 +23,8 @@ class MixerViewModel(application: Application) : AndroidViewModel(application) {
     val ingredientList: LiveData<List<IngredientMixerItem>>
         get() = _ingredientList
 
-    private val _cocktailList = MutableLiveData<List<CocktailData?>>()
-    val cocktailList: LiveData<List<CocktailData?>>
+    private val _cocktailList = MutableLiveData<List<Cocktail?>>()
+    val cocktailList: LiveData<List<Cocktail?>>
         get() = _cocktailList
 
     private val _selectedIngredientList = MutableLiveData<List<Long>>()
@@ -56,18 +57,18 @@ class MixerViewModel(application: Application) : AndroidViewModel(application) {
                     Constants.SELECT_ALL -> {
                         _cocktailList.value =
                             repository.getRefFromIngredientId(selectedIngredients).map { ref ->
-                                repository.getCocktail(ref.cocktail_id)!!.asData()
+                                repository.getCocktail(ref.cocktail_id)!!
                             }
                     }
                     else -> {
                         val cocktailIngList = repository.getAllCocktailWithIngredient()
-                        val collectionCocktailList = mutableListOf<CocktailData>()
+                        val collectionCocktailList = mutableListOf<Cocktail>()
                         for (cocktailWithIngredient in cocktailIngList) {
                             val idList =
                                 cocktailWithIngredient.ingredients.map { mIngredients -> mIngredients.ingredient_id }
                             if (selectedIngredients.isNotEmpty()) {
                                 if (idList.containsAll(selectedIngredients)) {
-                                    collectionCocktailList.add(cocktailWithIngredient.cocktail.asData())
+                                    collectionCocktailList.add(cocktailWithIngredient.cocktail)
                                 }
                             }
                         }
