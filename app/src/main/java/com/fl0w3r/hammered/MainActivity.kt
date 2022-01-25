@@ -32,8 +32,6 @@ import com.fl0w3r.hammered.search.SearchItemClickListener
 import com.fl0w3r.hammered.search.SearchViewModel
 import timber.log.Timber
 
-// TODO write tests.
-// TODO add some valid drinks and ingredient
 
 class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener,
     View.OnFocusChangeListener {

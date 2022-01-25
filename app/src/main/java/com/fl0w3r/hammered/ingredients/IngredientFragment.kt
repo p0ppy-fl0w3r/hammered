@@ -8,14 +8,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.fl0w3r.hammered.Constants
 import com.fl0w3r.hammered.R
 import com.fl0w3r.hammered.database.CocktailDatabase
 import com.fl0w3r.hammered.databinding.IngredientFragmentBinding
 
-// FIXME Cocktail and Ingredient 'Missing' icon is not aligned properly.
+
 class IngredientFragment : Fragment() {
+
 
     private lateinit var binding: IngredientFragmentBinding
 
@@ -40,7 +42,7 @@ class IngredientFragment : Fragment() {
                 Constants.ITEM_IN_CART,
                 Constants.ITEM_IN_STOCK
             )
-        ){
+        ) {
             chipSelection = Constants.NORMAL_ITEM
         }
 
@@ -65,12 +67,15 @@ class IngredientFragment : Fragment() {
         }
 
         viewModel.ingredientData.observe(viewLifecycleOwner) {
+
+            binding.ingredientRecycler.layoutManager =
+                if (it.isNullOrEmpty()) LinearLayoutManager(requireContext()) else StaggeredGridLayoutManager(
+                    2,
+                    StaggeredGridLayoutManager.VERTICAL
+                )
             adapter.addFilterAndSubmitList(it, chipSelection)
         }
 
-        val staggeredGridLayoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
-
-        binding.ingredientRecycler.layoutManager = staggeredGridLayoutManager
         binding.ingredientRecycler.adapter = adapter
 
         setSelectedChip(chipSelection)

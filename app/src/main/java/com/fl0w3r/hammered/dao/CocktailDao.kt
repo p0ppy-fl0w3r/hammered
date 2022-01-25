@@ -8,7 +8,6 @@ import com.fl0w3r.hammered.entities.relations.CocktailWithIngredient
 import com.fl0w3r.hammered.entities.relations.IngredientCocktailRef
 import com.fl0w3r.hammered.entities.relations.IngredientWithCocktail
 
-// TODO check this https://medium.com/androiddevelopers/room-flow-273acffe5b57
 
 @Dao
 interface CocktailDao {
