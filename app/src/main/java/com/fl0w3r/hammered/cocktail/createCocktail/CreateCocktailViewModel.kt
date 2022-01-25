@@ -324,7 +324,7 @@ class CreateCocktailViewModel(application: Application) : AndroidViewModel(appli
 
     private fun getLastCocktailId() {
         viewModelScope.launch {
-            val cocktailId = repository.getLastCocktailId()
+            val cocktailId = repository.getLastCocktailId() ?: 0;
             _cocktailId.value = cocktailId
         }
     }

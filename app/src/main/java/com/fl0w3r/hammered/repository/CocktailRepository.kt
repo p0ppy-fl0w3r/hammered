@@ -92,11 +92,11 @@ class CocktailRepository(private val database: CocktailDatabase) {
         return database.cocktailDao.getAllIngredient()
     }
 
-    suspend fun getLastCocktailId(): Long {
+    suspend fun getLastCocktailId(): Long? {
         return database.cocktailDao.getLastCocktailId()
     }
 
-    suspend fun getLastIngredientId(): Long {
+    suspend fun getLastIngredientId(): Long? {
         return database.cocktailDao.getLastIngredientId()
     }
 

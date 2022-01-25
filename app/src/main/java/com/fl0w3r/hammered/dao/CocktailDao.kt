@@ -58,10 +58,10 @@ interface CocktailDao {
     suspend fun getAllCocktail(): List<Cocktail>
 
     @Query("SElECT cocktail_id FROM Cocktail ORDER BY cocktail_id DESC LIMIT 1")
-    suspend fun getLastCocktailId(): Long
+    suspend fun getLastCocktailId(): Long?
 
     @Query("SElECT ingredient_id FROM Ingredient ORDER BY ingredient_id DESC LIMIT 1")
-    suspend fun getLastIngredientId(): Long
+    suspend fun getLastIngredientId(): Long?
 
     @Query("SELECT * FROM Cocktail WHERE cocktail_name LIKE :name")
     suspend fun getCocktailFromName(name: String): List<CocktailWithIngredient>

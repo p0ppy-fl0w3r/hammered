@@ -95,7 +95,7 @@ class CreateIngredientViewModel(application: Application) : AndroidViewModel(app
 
     private fun getLastIngredientId() {
         viewModelScope.launch {
-            _lastIngredientId.value = repository.getLastIngredientId()
+            _lastIngredientId.value = repository.getLastIngredientId() ?: 0
         }
     }
 
