@@ -14,6 +14,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/select_ingredients"/>
+
     <androidx.recyclerview.widget.RecyclerView
         android:padding="4dp"
         android:layout_width="match_parent"
@@ -22,7 +23,7 @@
         tools:listitem="@layout/mixer_ingredient_item"
         tools:itemCount="4"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-        app:spanCount="4"
+        app:spanCount="@integer/mixer_span_count"
         android:id="@+id/ingredient_select_recycler"/>
     <TextView
         android:layout_width="wrap_content"

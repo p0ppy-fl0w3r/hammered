@@ -9,15 +9,14 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.fl0w3r.hammered.R
 import com.fl0w3r.hammered.databinding.CreateCocktailIngredientItemBinding
-import com.fl0w3r.hammered.wrappers.NewCocktailRef
+import com.fl0w3r.hammered.entities.relations.IngredientCocktailRef
 
 
 class CreateCocktailAdapter(
     private val onClickListener: ItemOnClickListener,
     var arrayAdapter: ArrayAdapter<String>
 ) :
-    ListAdapter<NewCocktailRef, CocktailIngredientViewHolder>(ItemDiffUtil()) {
-
+    ListAdapter<IngredientCocktailRef, CocktailIngredientViewHolder>(ItemDiffUtil()) {
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -36,7 +35,7 @@ class CocktailIngredientViewHolder(private val binding: CreateCocktailIngredient
     RecyclerView.ViewHolder(binding.root) {
 
     fun bind(
-        item: NewCocktailRef,
+        item: IngredientCocktailRef,
         clickListener: ItemOnClickListener,
         arrayAdapter: ArrayAdapter<String>
     ) {
@@ -44,18 +43,20 @@ class CocktailIngredientViewHolder(private val binding: CreateCocktailIngredient
         binding.clickListener = clickListener
 
         // Setting adapters for autofill
-        binding.RefIngredientName.threshold = 2
-        binding.RefIngredientName.setAdapter(arrayAdapter)
+        // TODO move these.
+//        binding.RefIngredientName.threshold = 2
+//        binding.RefIngredientName.setAdapter(arrayAdapter)
 
         // Creating and attaching adapter for spinner
-        ArrayAdapter.createFromResource(
-            binding.cocktailIngRecyclerUnits.context,
-            R.array.units_array,
-            android.R.layout.simple_spinner_item
-        ).also { adapter ->
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-            binding.cocktailIngRecyclerUnits.adapter = adapter
-        }
+        // TODO move these too.
+//        ArrayAdapter.createFromResource(
+//            binding.cocktailIngRecyclerUnits.context,
+//            R.array.units_array,
+//            android.R.layout.simple_spinner_item
+//        ).also { adapter ->
+//            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+//            binding.cocktailIngRecyclerUnits.adapter = adapter
+//        }
 
         binding.executePendingBindings()
     }
@@ -73,12 +74,12 @@ class CocktailIngredientViewHolder(private val binding: CreateCocktailIngredient
     }
 }
 
-class ItemDiffUtil : DiffUtil.ItemCallback<NewCocktailRef>() {
-    override fun areItemsTheSame(oldItem: NewCocktailRef, newItem: NewCocktailRef): Boolean {
-        return oldItem.ref_number == newItem.ref_number
+class ItemDiffUtil : DiffUtil.ItemCallback<IngredientCocktailRef>() {
+    override fun areItemsTheSame(oldItem: IngredientCocktailRef, newItem: IngredientCocktailRef): Boolean {
+        return oldItem === newItem
     }
 
-    override fun areContentsTheSame(oldItem: NewCocktailRef, newItem: NewCocktailRef): Boolean {
+    override fun areContentsTheSame(oldItem: IngredientCocktailRef, newItem: IngredientCocktailRef): Boolean {
         return newItem == oldItem
     }
 }

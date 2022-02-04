@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
         <variable
             name="ingredientItem"
-            type="com.fl0w3r.hammered.wrappers.NewCocktailRef" />
+            type="com.fl0w3r.hammered.entities.relations.IngredientCocktailRef" />
 
         <variable
             name="clickListener"
@@ -22,93 +23,51 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="4dp"
-        android:background="@drawable/detail_text_back">
+        android:layout_margin="4dp"
+        android:background="@drawable/ingredient_back"
+        android:padding="8dp">
 
-        <LinearLayout
-            android:id="@+id/RefIngredientNameContainer"
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/ingredientName"
+            android:layout_width="0dp"
+            android:text="@{ingredientItem.ingredient_name}"
             android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:textColor="#000000"
+            android:textIsSelectable="true"
+            app:layout_constraintBottom_toBottomOf="@+id/editIngredient"
+            app:layout_constraintEnd_toStartOf="@+id/editIngredient"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="@+id/editIngredient"
+            tools:text="Lemon" />
 
-            <AutoCompleteTextView
-                android:id="@+id/RefIngredientName"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="2dp"
-                android:ems="10"
-                android:hint="@string/ingredient_name_edit_text"
-                android:imeOptions="actionNext"
-                android:importantForAutofill="no"
-                android:inputType="textPersonName"
-                android:nextFocusDown="@id/refQuantity"
-                android:text="@={ingredientItem.ingredient_name}" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/refQuantityContainer"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/RefIngredientNameContainer">
-
-            <EditText
-                android:id="@+id/refQuantity"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginStart="2dp"
-                android:layout_marginTop="4dp"
-                android:ems="10"
-                android:hint="@string/quantity_string"
-                android:importantForAutofill="no"
-                android:inputType="numberDecimal"
-                android:text="@={ingredientItem.quantity}" />
-        </LinearLayout>
-
-
-        <Spinner
-            android:id="@+id/cocktailIngRecyclerUnits"
+        <ImageView
+            android:id="@+id/delete_current_ingredient"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            app:layout_constraintBottom_toBottomOf="@+id/refQuantityContainer"
-            app:layout_constraintStart_toEndOf="@+id/refQuantityContainer"
-            app:layout_constraintTop_toTopOf="@+id/refQuantityContainer"
-            app:spinnerSelected="@={ingredientItem.quantityUnitPos}" />
-
-        <CheckBox
-            android:id="@+id/isOptional"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:checked="@={ingredientItem.optional}"
-            android:text="@string/optional"
-            app:layout_constraintEnd_toStartOf="@+id/isGarnishCheck"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/refQuantityContainer" />
-
-        <CheckBox
-            android:id="@+id/isGarnishCheck"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:checked="@={ingredientItem.garnish}"
-            android:text="@string/garnish"
+            android:layout_marginEnd="8dp"
+            android:contentDescription="@string/delete_info"
+            app:layout_constraintBottom_toBottomOf="@+id/ingredientName"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toEndOf="@+id/isOptional"
-            app:layout_constraintTop_toBottomOf="@+id/refQuantityContainer" />
+            app:layout_constraintStart_toEndOf="@+id/editIngredient"
+            app:layout_constraintTop_toTopOf="@+id/editIngredient"
+            app:srcCompat="@android:drawable/ic_menu_close_clear_cancel" />
 
-        <Button
-            android:id="@+id/removeButton"
+        <ImageView
+            android:id="@+id/editIngredient"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:onClick="@{()->clickListener.onItemClick(ingredientItem.ref_number)}"
-            android:text="@string/remove"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/isOptional" />
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:contentDescription="@string/edit_current_ingredient"
+            app:layout_constraintEnd_toStartOf="@+id/delete_current_ingredient"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/ingredientName"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_edit" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

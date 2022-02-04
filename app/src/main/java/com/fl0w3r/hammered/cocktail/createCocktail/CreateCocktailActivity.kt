@@ -22,7 +22,6 @@ import com.fl0w3r.hammered.entities.Cocktail
 import com.fl0w3r.hammered.utils.UiUtils
 import com.fl0w3r.hammered.utils.UiUtils.animateError
 import com.fl0w3r.hammered.utils.UiUtils.hideKeyboard
-import com.fl0w3r.hammered.wrappers.NewCocktailRef
 import timber.log.Timber
 
 
@@ -85,7 +84,8 @@ class CreateCocktailActivity : AppCompatActivity() {
             ArrayAdapter(this, android.R.layout.select_dialog_item, mutableListOf(""))
 
         val adapter = CreateCocktailAdapter(ItemOnClickListener { itemNumber ->
-            viewModel.removeIngredient(itemNumber)
+            // TODO add a new remove ingredient method.
+            //viewModel.removeIngredient(itemNumber)
         }, arrayAdapter)
 
         val stepsAdapter = StepsRecyclerAdapter(ClickListener {
@@ -95,26 +95,12 @@ class CreateCocktailActivity : AppCompatActivity() {
         binding.stepsRecycler.adapter = stepsAdapter
         binding.ingRefRecycler.adapter = adapter
 
-        viewModel.selectedCocktail.observe(this){
-            if (it != null){
+        viewModel.selectedCocktail.observe(this) {
+            if (it != null) {
                 populateFields(it)
             }
         }
 
-        viewModel.editIngredientList.observe(this) {
-            val ingredientList = it.mapIndexed { index, ref ->
-                NewCocktailRef(
-                    ref_number = index,
-                    ingredient_name = ref.ingredient_name,
-                    quantityUnitPos = Constants.UNITS.indexOf(ref.quantityUnit),
-                    quantity = ref.quantity.toString(),
-                    isGarnish = ref.isGarnish,
-                    isOptional = ref.isGarnish
-                )
-            }
-
-            viewModel.setIngredientList(ingredientList)
-        }
 
         viewModel.allIngredientList.observe(this) {
             if (it != null) {
@@ -136,8 +122,10 @@ class CreateCocktailActivity : AppCompatActivity() {
         }
 
         viewModel.ingredientList.observe(this) {
-            adapter.submitList(it)
-            adapter.notifyDataSetChanged()
+            if (it != null) {
+                adapter.submitList(it)
+                adapter.notifyDataSetChanged()
+            }
         }
 
         viewModel.stepsList.observe(this) {
@@ -355,8 +343,19 @@ class CreateCocktailActivity : AppCompatActivity() {
     }
 
     private fun addIngredient() {
-        binding.addIngredient.setOnClickListener {
-            viewModel.addIngredient()
+        binding.addIngredientButton.setOnClickListener {
+            // TODO add ingredient.
+
+            val ingredientName = binding.RefIngredientName.text.toString()
+            val quantity = binding.refQuantity.text.toString().toFloat()
+//            val quantityUnit = binding.unitSpinner.selectedItem.toString()
+            val isOptional = binding.isOptional.isChecked
+            val isGarnish = binding.isGarnishCheck.isChecked
+
+            // FIXME spinner does not have an array adapter.
+            viewModel.addIngredient(
+                ingredientName, quantity, isOptional, isGarnish, "ML"
+            )
             hideKeyboard(this, binding.root)
         }
     }

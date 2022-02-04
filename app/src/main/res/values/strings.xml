@@ -31,7 +31,6 @@
     <string name="ingredient_name_edit_text">Ingredient Name…</string>
     <string name="ingredient_description_edit_text">Ingredient Description</string>
     <string name="add_ingredient_check_msg">You have this ingredient in stock.</string>
-    <string name="save">Save</string>
     <string name="fab_desc">Add ingredient.</string>
     <string name="add_ingredient_image">Add ingredient image</string>
     <string name="all_ingredient_check_msg">Ingredient is in stock.</string>
@@ -87,4 +86,8 @@
     <string name="mixer_setting_info">Select what happens when you click on an ingredient on the mixer.</string>
     <string name="show_all_text">Show the all the cocktails that contain selected ingredients.</string>
     <string name="show_combination_text">Only show the cocktails that contain the combination of all selected ingredients.</string>
+    <string name="save">Save</string>
+    <string name="delete_info">Delete current ingredient.</string>
+    <string name="edit_current_ingredient">Edit current ingredient.</string>
+    <string name="add">Add</string>
 </resources>

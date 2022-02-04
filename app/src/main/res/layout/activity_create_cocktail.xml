@@ -153,12 +153,98 @@
                         tools:itemCount="1"
                         tools:listitem="@layout/create_cocktail_ingredient_item" />
 
-                    <ImageView
-                        android:id="@+id/addIngredient"
+                    <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:contentDescription="@string/add_ingredient"
-                        android:src="@drawable/ic_add" />
+                        android:layout_marginBottom="4dp"
+                        android:layout_marginTop="4dp"
+                        android:background="@drawable/detail_text_back">
+
+                        <LinearLayout
+                            android:id="@+id/RefIngredientNameContainer"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent">
+
+                            <AutoCompleteTextView
+                                android:id="@+id/RefIngredientName"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_margin="2dp"
+                                android:ems="10"
+                                android:hint="@string/ingredient_name_edit_text"
+                                android:imeOptions="actionNext"
+                                android:importantForAutofill="no"
+                                android:inputType="textPersonName"
+                                android:nextFocusDown="@id/refQuantity" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/refQuantityContainer"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/RefIngredientNameContainer">
+
+                            <EditText
+                                android:id="@+id/refQuantity"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_marginStart="2dp"
+                                android:layout_marginTop="4dp"
+                                android:ems="10"
+                                android:hint="@string/quantity_string"
+                                android:importantForAutofill="no"
+                                android:inputType="numberDecimal" />
+                        </LinearLayout>
+
+
+                        <Spinner
+                            android:id="@+id/unitSpinner"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="8dp"
+                            app:layout_constraintBottom_toBottomOf="@+id/refQuantityContainer"
+                            app:layout_constraintStart_toEndOf="@+id/refQuantityContainer"
+                            app:layout_constraintTop_toTopOf="@+id/refQuantityContainer" />
+
+                        <CheckBox
+                            android:id="@+id/isOptional"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:text="@string/optional"
+                            app:layout_constraintEnd_toStartOf="@+id/isGarnishCheck"
+                            app:layout_constraintHorizontal_bias="0.5"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/refQuantityContainer" />
+
+                        <CheckBox
+                            android:id="@+id/isGarnishCheck"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+
+                            android:text="@string/garnish"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.5"
+                            app:layout_constraintStart_toEndOf="@+id/isOptional"
+                            app:layout_constraintTop_toBottomOf="@+id/refQuantityContainer" />
+
+                        <Button
+                            android:id="@+id/addIngredientButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="8dp"
+                            android:text="@string/add"
+                            android:textAllCaps="false"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/isOptional" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
 
                     <Button
                         android:id="@+id/saveCocktail"

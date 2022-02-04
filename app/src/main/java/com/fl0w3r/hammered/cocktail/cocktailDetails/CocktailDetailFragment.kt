@@ -22,9 +22,7 @@ class CocktailDetailFragment : Fragment() {
     lateinit var selectedCocktail: CocktailData
 
     private val viewModel by lazy {
-        ViewModelProvider(requireActivity()).get(
-            CocktailDetailsViewModel::class.java
-        )
+        ViewModelProvider(requireActivity())[CocktailDetailsViewModel::class.java]
     }
 
     override fun onCreateView(
