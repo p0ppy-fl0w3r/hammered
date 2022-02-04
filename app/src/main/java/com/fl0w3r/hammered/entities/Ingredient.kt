@@ -6,7 +6,7 @@ import com.fl0w3r.hammered.ingredients.IngredientData
 
 @Entity
 data class Ingredient(
-    @PrimaryKey(autoGenerate = false) var ingredient_id: Long,
+    @PrimaryKey(autoGenerate = true) var ingredient_id: Long = 0,
     var ingredient_name: String,
     var ingredient_description: String,
     var ingredient_image: String,

@@ -90,4 +90,7 @@
     <string name="delete_info">Delete current ingredient.</string>
     <string name="edit_current_ingredient">Edit current ingredient.</string>
     <string name="add">Add</string>
+    <string name="camera">Camera</string>
+    <string name="file">File</string>
+    <string name="temp">Temp</string>
 </resources>

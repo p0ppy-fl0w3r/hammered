@@ -21,8 +21,6 @@ class CreateIngredientViewModel(application: Application) : AndroidViewModel(app
 
     private val _ingredientExists = MutableLiveData<Boolean?>()
 
-    private val _lastIngredientId = MutableLiveData<Long>()
-
     val ingredientExists: LiveData<Boolean?>
         get() = _ingredientExists
 
@@ -32,9 +30,6 @@ class CreateIngredientViewModel(application: Application) : AndroidViewModel(app
     val currentIngredient: LiveData<Ingredient?>
         get() = _currentIngredient
 
-    init {
-        getLastIngredientId()
-    }
 
     private fun addIngredient(ingredient: Ingredient) {
         viewModelScope.launch {
@@ -58,7 +53,6 @@ class CreateIngredientViewModel(application: Application) : AndroidViewModel(app
             val mIngredient = repository.getIngredient(ingredient.ingredient_name)
 
             if (mIngredient == null) {
-                ingredient.ingredient_id = _lastIngredientId.value?.plus(1) ?: 1
                 addIngredient(ingredient)
             }
             else {
@@ -93,10 +87,5 @@ class CreateIngredientViewModel(application: Application) : AndroidViewModel(app
         _newIngredient.value = null
     }
 
-    private fun getLastIngredientId() {
-        viewModelScope.launch {
-            _lastIngredientId.value = repository.getLastIngredientId() ?: 0
-        }
-    }
 
 }

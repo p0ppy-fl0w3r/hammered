@@ -2,18 +2,22 @@ package com.fl0w3r.hammered.ingredients.createIngredient
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.MediaStore
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.fl0w3r.hammered.Constants
 import com.fl0w3r.hammered.R
 import com.fl0w3r.hammered.databinding.ActivityCreateIngredientBinding
 import com.fl0w3r.hammered.dialog.CancelAlertDialog
+import com.fl0w3r.hammered.dialog.ImageCaptureDialog
 import com.fl0w3r.hammered.dialog.WarningDialog
 import com.fl0w3r.hammered.entities.Ingredient
 import  com.fl0w3r.hammered.utils.UiUtils
@@ -29,21 +33,41 @@ class CreateIngredientActivity : AppCompatActivity() {
 
     private lateinit var currentIngredient: Ingredient
 
-    private val resultLauncher =
+    private val cameraResultLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if (it.resultCode == Activity.RESULT_OK) {
+
+                val imageData = it.data?.extras?.get("data")
+                imageEncoded = UiUtils.encodeToBase64(imageData as Bitmap)
+
+                Glide.with(this).load(imageData)
+                    .apply(RequestOptions().error(R.drawable.no_drinks))
+                    .into(binding.addIngredientImage)
+            }
+        }
+
+
+    private val fileResultLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            if (it.resultCode == Activity.RESULT_OK) {
+
                 imageUrl = it.data?.data.toString()
 
                 val inputStream = contentResolver.openInputStream(it.data?.data!!)
 
-                imageEncoded = UiUtils.encodeToBase64(BitmapFactory.decodeStream(inputStream))
+                imageEncoded =
+                    UiUtils.encodeToBase64(BitmapFactory.decodeStream(inputStream))
 
                 val newCocktailImage = binding.addIngredientImage
                 // Display the selected image in the add image button
                 Glide.with(this).load(imageUrl)
-                    .apply(RequestOptions().error(R.drawable.no_drinks)).into(newCocktailImage)
+                    .apply(RequestOptions().error(R.drawable.no_drinks))
+                    .into(newCocktailImage)
+
             }
+
         }
+
 
     private lateinit var binding: ActivityCreateIngredientBinding
 
@@ -56,7 +80,9 @@ class CreateIngredientActivity : AppCompatActivity() {
         binding =
             DataBindingUtil.setContentView(this, R.layout.activity_create_ingredient)
 
-        getImage()
+        // Click listeners
+        binding.addIngredientImage.setOnClickListener { openImageDialog() }
+
         saveIngredient()
         cancelAndGoBack()
 
@@ -105,16 +131,28 @@ class CreateIngredientActivity : AppCompatActivity() {
         }
     }
 
-    private fun getImage() {
-        binding.addIngredientImage.setOnClickListener {
-            val result = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
-                addCategory(Intent.CATEGORY_OPENABLE)
-                type = "image/*"
-            }
+    private fun openImageDialog() {
+        // TODO add a dialog
+        ImageCaptureDialog({ getCapturedImage() }, { getImageFile() }).show(supportFragmentManager, "ImageCaptureDialog")
 
-            resultLauncher.launch(result)
+    }
 
+    private fun getPlaceHolderImage() {}
+
+    private fun getCapturedImage() {
+        val captureResult = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+
+        cameraResultLauncher.launch(captureResult)
+    }
+
+    private fun getImageFile() {
+
+        val result = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+            addCategory(Intent.CATEGORY_OPENABLE)
+            type = "image/*"
         }
+
+        fileResultLauncher.launch(result)
     }
 
     private fun saveIngredient() {
@@ -125,7 +163,6 @@ class CreateIngredientActivity : AppCompatActivity() {
             if (!isEdit) {
                 if (ingredientName.isNotBlank()) {
                     val mIngredient = Ingredient(
-                        ingredient_id = Long.MIN_VALUE,
                         ingredient_name = ingredientName,
                         ingredient_description = ingredientDescription,
                         inStock = isInStock,

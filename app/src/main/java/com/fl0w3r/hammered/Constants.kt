@@ -73,4 +73,5 @@ object Constants {
     // Mixer settings
     const val SELECT_ALL = "select_all_ingredients"
     const val SELECT_COMBINATION = "select_combination"
+
 }
