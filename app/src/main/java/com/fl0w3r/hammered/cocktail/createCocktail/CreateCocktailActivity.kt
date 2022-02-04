@@ -3,9 +3,11 @@ package com.fl0w3r.hammered.cocktail.createCocktail
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.MediaStore
 import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.view.get
@@ -18,6 +20,7 @@ import com.fl0w3r.hammered.R
 import com.fl0w3r.hammered.cocktail.CocktailData
 import com.fl0w3r.hammered.databinding.ActivityCreateCocktailBinding
 import com.fl0w3r.hammered.dialog.CancelAlertDialog
+import com.fl0w3r.hammered.dialog.ImageCaptureDialog
 import com.fl0w3r.hammered.entities.Cocktail
 import com.fl0w3r.hammered.utils.UiUtils
 import com.fl0w3r.hammered.utils.UiUtils.animateError
@@ -34,7 +37,7 @@ class CreateCocktailActivity : AppCompatActivity() {
 
     private var isEdit = false
 
-    private val resultLauncher =
+    private val fileResultLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if (it.resultCode == Activity.RESULT_OK) {
                 imageUrl = it.data?.data.toString()
@@ -45,6 +48,18 @@ class CreateCocktailActivity : AppCompatActivity() {
 
                 // Display the selected image in the add image button
                 Glide.with(this).load(imageUrl).into(binding.addCocktailImage)
+            }
+        }
+
+    private val cameraResultLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+            if (it.resultCode == Activity.RESULT_OK) {
+                val imageData = it.data?.extras?.get("data")
+                imageEncoded = UiUtils.encodeToBase64(imageData as Bitmap)
+
+                Glide.with(this).load(imageData)
+                    .apply(RequestOptions().error(R.drawable.no_drinks))
+                    .into(binding.addCocktailImage)
             }
         }
 
@@ -274,7 +289,7 @@ class CreateCocktailActivity : AppCompatActivity() {
         }
 
         // Click listeners
-        getImage()
+        binding.addCocktailImage.setOnClickListener {openImageDialog()}
         addIngredient()
         addStep()
         saveCocktail()
@@ -317,15 +332,31 @@ class CreateCocktailActivity : AppCompatActivity() {
         viewModel.setStepsFromRawString(selectedCocktail.steps)
     }
 
-    private fun getImage() {
-        binding.addCocktailImage.setOnClickListener {
-            val result = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
-                addCategory(Intent.CATEGORY_OPENABLE)
-                type = "image/*"
-            }
 
-            resultLauncher.launch(result)
+
+    private fun openImageDialog() {
+        ImageCaptureDialog({ getCapturedImage() }, { getImageFile() }).show(supportFragmentManager, "CocktailImageCaptureDialog")
+
+    }
+
+    private fun getPlaceHolderImage() {
+        TODO("Add placeholder images")
+    }
+
+    private fun getCapturedImage() {
+        val captureResult = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+
+        cameraResultLauncher.launch(captureResult)
+    }
+
+    private fun getImageFile() {
+
+        val result = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
+            addCategory(Intent.CATEGORY_OPENABLE)
+            type = "image/*"
         }
+
+        fileResultLauncher.launch(result)
     }
 
     private fun cancelAndGoBack() {

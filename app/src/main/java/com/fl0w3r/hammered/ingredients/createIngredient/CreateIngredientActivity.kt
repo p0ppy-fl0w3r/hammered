@@ -132,12 +132,13 @@ class CreateIngredientActivity : AppCompatActivity() {
     }
 
     private fun openImageDialog() {
-        // TODO add a dialog
         ImageCaptureDialog({ getCapturedImage() }, { getImageFile() }).show(supportFragmentManager, "ImageCaptureDialog")
 
     }
 
-    private fun getPlaceHolderImage() {}
+    private fun getPlaceHolderImage() {
+        TODO("Add placeholder images")
+    }
 
     private fun getCapturedImage() {
         val captureResult = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
