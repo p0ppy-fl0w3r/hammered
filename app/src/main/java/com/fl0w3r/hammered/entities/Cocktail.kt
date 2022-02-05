@@ -6,7 +6,7 @@ import com.fl0w3r.hammered.cocktail.CocktailData
 
 @Entity
 data class Cocktail(
-    @PrimaryKey(autoGenerate = false) var cocktail_id: Long,
+    @PrimaryKey(autoGenerate = true) var cocktail_id: Long,
     var cocktail_name: String,
     var cocktail_description: String,
     var steps: String,

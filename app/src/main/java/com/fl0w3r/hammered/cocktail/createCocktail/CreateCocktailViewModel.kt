@@ -15,6 +15,7 @@ import com.fl0w3r.hammered.wrappers.StepsWrapper
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
+// FIXME the app throws an error when adding cocktail with no ingredient in database
 class CreateCocktailViewModel(application: Application) : AndroidViewModel(application) {
 
     private val _selectedCocktail = MutableLiveData<Cocktail>()
@@ -47,13 +48,7 @@ class CreateCocktailViewModel(application: Application) : AndroidViewModel(appli
     val saveCocktail: LiveData<Boolean?>
         get() = _saveCocktail
 
-    private val _editIngredientList = MutableLiveData<List<IngredientCocktailRef>>()
-    val editIngredientList: LiveData<List<IngredientCocktailRef>>
-        get() = _editIngredientList
-
     private val repository = CocktailRepository(CocktailDatabase.getDatabase(application))
-
-    private val _cocktailId = MutableLiveData<Long>()
 
     private val _allIngredientList = MutableLiveData<List<Ingredient>>()
 
@@ -70,13 +65,11 @@ class CreateCocktailViewModel(application: Application) : AndroidViewModel(appli
 
         _ingredientList.value = mutableListOf()
         _stepsList.value = mutableListOf(StepsWrapper())
-
-        getLastCocktailId()
     }
 
     fun getDataToPopulateFields(id: Long) {
         viewModelScope.launch {
-            _editIngredientList.value = repository.getRefFromCocktail(id)
+            _ingredientList.value = repository.getRefFromCocktail(id).toMutableList()
         }
     }
 
@@ -110,7 +103,6 @@ class CreateCocktailViewModel(application: Application) : AndroidViewModel(appli
         isGarnish: Boolean,
         quantityUnit: String
     ) {
-        // TODO check and add ingredient id here.
         val mIngredientList = _ingredientList.value!!
         mIngredientList.add(
             IngredientCocktailRef(
@@ -162,6 +154,14 @@ class CreateCocktailViewModel(application: Application) : AndroidViewModel(appli
         }
     }
 
+    fun removeIngredient(position: Int) {
+        val mIngredient = _ingredientList.value
+        if (!mIngredient.isNullOrEmpty()) {
+            mIngredient.removeAt(position)
+            _ingredientList.value = mIngredient!!
+        }
+    }
+
     private fun checkSteps() {
         val allSteps = _stepsList.value
         if (!allSteps.isNullOrEmpty()) {
@@ -196,8 +196,7 @@ class CreateCocktailViewModel(application: Application) : AndroidViewModel(appli
                         return@launch
                     }
                     // The quantity field was empty or 0
-                    // TODO add checks for negative values.
-                    if (quantity == 0f) {
+                    if (quantity <= 0f) {
                         _ingredientValid.value =
                             listOf(Constants.QUANTITY_FIELD_EMPTY, ingredients.index)
                         return@launch
@@ -234,9 +233,9 @@ class CreateCocktailViewModel(application: Application) : AndroidViewModel(appli
 
     fun saveCocktail(name: String, description: String, imageUrl: String) {
         viewModelScope.launch {
-            val newCocktail = _cocktailId.value?.plus(1)?.let {
-                Cocktail(
-                    cocktail_id = it,
+            val newCocktailId =
+                repository.insertCocktail(Cocktail(
+                    cocktail_id = 0,
                     cocktail_name = name,
                     cocktail_description = description,
                     cocktail_image = imageUrl,
@@ -244,24 +243,10 @@ class CreateCocktailViewModel(application: Application) : AndroidViewModel(appli
                     steps = _stepsList.value!!.joinToString(separator = "\n") { value ->
                         value.steps
                     }
-                )
-            }
-            if (newCocktail != null) {
-                repository.insertCocktail(newCocktail)
-            }
-            val listCocktailIngredientRef = mutableListOf<IngredientCocktailRef>()
-// FIXME add new cocktail
-//            for (ingredients in _ingredientList.value!!) {
-//                if (newCocktail != null) {
-//                    ingredients.ingredient_id =
-//                        repository.getIngredient(ingredients.ingredient_name)!!.ingredient_id
-//                    listCocktailIngredientRef.add(ingredients.toIngredientCocktailRef(newCocktail.cocktail_id))
-//                }
-//            }
+                ))
 
-            for (ingredientRef in listCocktailIngredientRef) {
-                repository.insertIngredientCocktailRef(ingredientRef)
-            }
+            insertIngredientsDatabase(newCocktailId)
+
             doneChecking()
         }
 
@@ -288,26 +273,22 @@ class CreateCocktailViewModel(application: Application) : AndroidViewModel(appli
             // ingredient when editing.
             repository.deleteAllRefOfCocktail(newCocktail.cocktail_id)
 
-            val listCocktailIngredientRef = mutableListOf<IngredientCocktailRef>()
-// FIXME edit new cocktail.
-//            for (ingredients in _ingredientList.value!!) {
-//                ingredients.ingredient_id =
-//                    repository.getIngredient(ingredients.ingredient_name)!!.ingredient_id
-//                listCocktailIngredientRef.add(ingredients.toIngredientCocktailRef(newCocktail.cocktail_id))
-//            }
+            insertIngredientsDatabase(id)
 
-            for (ingredientRef in listCocktailIngredientRef) {
-                repository.insertIngredientCocktailRef(ingredientRef)
-            }
             doneChecking()
         }
     }
 
-    private fun getLastCocktailId() {
-        viewModelScope.launch {
-            val cocktailId = repository.getLastCocktailId() ?: 0;
-            _cocktailId.value = cocktailId
+    private suspend fun insertIngredientsDatabase(cocktailId: Long) {
+
+        for (ingredient in _ingredientList.value!!) {
+            ingredient.ingredient_id =
+                repository.getIngredient(ingredient.ingredient_name)!!.ingredient_id
+            ingredient.cocktail_id = cocktailId
+            repository.insertIngredientCocktailRef(ingredient)
         }
+
     }
+
 
 }

@@ -9,14 +9,6 @@
             name="ingredientItem"
             type="com.fl0w3r.hammered.entities.relations.IngredientCocktailRef" />
 
-        <variable
-            name="clickListener"
-            type="com.fl0w3r.hammered.cocktail.createCocktail.ItemOnClickListener" />
-
-        <variable
-            name="viewModel"
-            type="com.fl0w3r.hammered.cocktail.createCocktail.CreateCocktailViewModel" />
-
     </data>
 
 

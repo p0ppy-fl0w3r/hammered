@@ -27,7 +27,7 @@ import com.fl0w3r.hammered.utils.UiUtils.animateError
 import com.fl0w3r.hammered.utils.UiUtils.hideKeyboard
 import timber.log.Timber
 
-
+// TODO refactor code.
 class CreateCocktailActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityCreateCocktailBinding
@@ -94,14 +94,18 @@ class CreateCocktailActivity : AppCompatActivity() {
         val ingredientRecycler = binding.ingRefRecycler
         val stepsRecycler = binding.stepsRecycler
 
-        // Array adapter for ingredient name autoCompleteTextView
-        val arrayAdapter =
-            ArrayAdapter(this, android.R.layout.select_dialog_item, mutableListOf(""))
+        // Set adapter for units spinner
+        setUnitsAdapter()
 
-        val adapter = CreateCocktailAdapter(ItemOnClickListener { itemNumber ->
-            // TODO add a new remove ingredient method.
-            //viewModel.removeIngredient(itemNumber)
-        }, arrayAdapter)
+        // Array adapter for ingredient name AutoCompleteTextView
+        setAutoFillAdapter()
+
+        val adapter = CreateCocktailAdapter(onDeleteListener =  ItemOnClickListener { itemNumber ->
+            viewModel.removeIngredient(itemNumber)
+        },
+        onEditListener = ItemOnClickListener {
+            // TODO add a edit option.
+        })
 
         val stepsAdapter = StepsRecyclerAdapter(ClickListener {
             viewModel.removeStep(it)
@@ -113,26 +117,6 @@ class CreateCocktailActivity : AppCompatActivity() {
         viewModel.selectedCocktail.observe(this) {
             if (it != null) {
                 populateFields(it)
-            }
-        }
-
-
-        viewModel.allIngredientList.observe(this) {
-            if (it != null) {
-                val ingredientNameList = mutableListOf<String>()
-                for (i in it) {
-                    ingredientNameList.add(i.ingredient_name)
-                }
-
-                // Create an array adapter with all known ingredient name from the database.
-                val mAdapter =
-                    ArrayAdapter(
-                        this,
-                        R.layout.autofill_dialog_item,
-                        ingredientNameList
-                    )
-                adapter.arrayAdapter = mAdapter
-                ingredientRecycler.adapter = adapter
             }
         }
 
@@ -148,6 +132,7 @@ class CreateCocktailActivity : AppCompatActivity() {
             stepsAdapter.notifyDataSetChanged()
         }
 
+        // TODO simplify these.
         viewModel.stepsValid.observe(this) {
             when (it) {
                 Constants.VALUE_OK -> {
@@ -289,11 +274,32 @@ class CreateCocktailActivity : AppCompatActivity() {
         }
 
         // Click listeners
-        binding.addCocktailImage.setOnClickListener {openImageDialog()}
+        selectImageDialog()
         addIngredient()
         addStep()
         saveCocktail()
         cancelAndGoBack()
+    }
+
+    private fun setAutoFillAdapter() {
+        viewModel.allIngredientList.observe(this) {
+            if (it != null) {
+                val ingredientNameList = mutableListOf<String>()
+                for (i in it) {
+                    ingredientNameList.add(i.ingredient_name)
+                }
+
+                // Create an array adapter with all known ingredient name from the database.
+                val mAdapter =
+                    ArrayAdapter(
+                        this,
+                        R.layout.autofill_dialog_item,
+                        ingredientNameList
+                    )
+                binding.RefIngredientName.threshold = 2
+                binding.RefIngredientName.setAdapter(mAdapter)
+            }
+        }
     }
 
     private fun saveCocktail() {
@@ -316,6 +322,22 @@ class CreateCocktailActivity : AppCompatActivity() {
         }
     }
 
+    private fun setUnitsAdapter() {
+        ArrayAdapter.createFromResource(
+            this,
+            R.array.units_array,
+            android.R.layout.simple_spinner_item
+        ).also { adapter ->
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            binding.unitSpinner.adapter = adapter
+        }
+    }
+
+    private fun selectImageDialog() {
+
+        binding.addCocktailImage.setOnClickListener { openImageDialog() }
+    }
+
     private fun populateFields(selectedCocktail: Cocktail) {
         viewModel.getDataToPopulateFields(selectedCocktail.cocktail_id)
 
@@ -333,9 +355,11 @@ class CreateCocktailActivity : AppCompatActivity() {
     }
 
 
-
     private fun openImageDialog() {
-        ImageCaptureDialog({ getCapturedImage() }, { getImageFile() }).show(supportFragmentManager, "CocktailImageCaptureDialog")
+        ImageCaptureDialog({ getCapturedImage() }, { getImageFile() }).show(
+            supportFragmentManager,
+            "CocktailImageCaptureDialog"
+        )
 
     }
 
@@ -375,17 +399,15 @@ class CreateCocktailActivity : AppCompatActivity() {
 
     private fun addIngredient() {
         binding.addIngredientButton.setOnClickListener {
-            // TODO add ingredient.
 
             val ingredientName = binding.RefIngredientName.text.toString()
             val quantity = binding.refQuantity.text.toString().toFloat()
-//            val quantityUnit = binding.unitSpinner.selectedItem.toString()
+            val quantityUnit = binding.unitSpinner.selectedItem.toString()
             val isOptional = binding.isOptional.isChecked
             val isGarnish = binding.isGarnishCheck.isChecked
 
-            // FIXME spinner does not have an array adapter.
             viewModel.addIngredient(
-                ingredientName, quantity, isOptional, isGarnish, "ML"
+                ingredientName, quantity, isOptional, isGarnish, quantityUnit
             )
             hideKeyboard(this, binding.root)
         }

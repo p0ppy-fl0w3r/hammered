@@ -32,8 +32,8 @@ class CocktailRepository(private val database: CocktailDatabase) {
         database.cocktailDao.insertIngredient(ingredient)
     }
 
-    suspend fun insertCocktail(cocktail: Cocktail) {
-        database.cocktailDao.insertCocktail(cocktail)
+    suspend fun insertCocktail(cocktail: Cocktail):Long {
+        return database.cocktailDao.insertCocktail(cocktail)
     }
 
     suspend fun ignoreInsertIngredient(ingredient: Ingredient) {

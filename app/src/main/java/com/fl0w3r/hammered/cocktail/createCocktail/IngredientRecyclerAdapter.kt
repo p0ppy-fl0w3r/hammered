@@ -13,8 +13,8 @@ import com.fl0w3r.hammered.entities.relations.IngredientCocktailRef
 
 
 class CreateCocktailAdapter(
-    private val onClickListener: ItemOnClickListener,
-    var arrayAdapter: ArrayAdapter<String>
+    private val onDeleteListener: ItemOnClickListener,
+    private val onEditListener: ItemOnClickListener
 ) :
     ListAdapter<IngredientCocktailRef, CocktailIngredientViewHolder>(ItemDiffUtil()) {
 
@@ -27,7 +27,7 @@ class CreateCocktailAdapter(
 
     override fun onBindViewHolder(holder: CocktailIngredientViewHolder, position: Int) {
         val item = getItem(position)
-        holder.bind(item, onClickListener, arrayAdapter)
+        holder.bind(item,position, onEditListener, onDeleteListener)
     }
 }
 
@@ -36,27 +36,14 @@ class CocktailIngredientViewHolder(private val binding: CreateCocktailIngredient
 
     fun bind(
         item: IngredientCocktailRef,
-        clickListener: ItemOnClickListener,
-        arrayAdapter: ArrayAdapter<String>
+        position: Int,
+        onEditListener: ItemOnClickListener,
+        onDeleteListener: ItemOnClickListener,
     ) {
         binding.ingredientItem = item
-        binding.clickListener = clickListener
 
-        // Setting adapters for autofill
-        // TODO move these.
-//        binding.RefIngredientName.threshold = 2
-//        binding.RefIngredientName.setAdapter(arrayAdapter)
-
-        // Creating and attaching adapter for spinner
-        // TODO move these too.
-//        ArrayAdapter.createFromResource(
-//            binding.cocktailIngRecyclerUnits.context,
-//            R.array.units_array,
-//            android.R.layout.simple_spinner_item
-//        ).also { adapter ->
-//            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-//            binding.cocktailIngRecyclerUnits.adapter = adapter
-//        }
+        binding.editIngredient.setOnClickListener{ onEditListener.listener(position) }
+        binding.deleteCurrentIngredient.setOnClickListener{ onDeleteListener.listener(position) }
 
         binding.executePendingBindings()
     }

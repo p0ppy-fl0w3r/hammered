@@ -13,7 +13,7 @@ import com.fl0w3r.hammered.entities.relations.IngredientWithCocktail
 interface CocktailDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertCocktail(cocktail: Cocktail)
+    suspend fun insertCocktail(cocktail: Cocktail):Long
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertIngredient(ingredient: Ingredient)
