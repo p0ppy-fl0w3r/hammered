@@ -18,13 +18,13 @@ import timber.log.Timber
 // FIXME the app throws an error when adding cocktail with no ingredient in database
 class CreateCocktailViewModel(application: Application) : AndroidViewModel(application) {
 
-    private val _selectedCocktail = MutableLiveData<Cocktail>()
+    private val repository = CocktailRepository(CocktailDatabase.getDatabase(application))
 
+    private val _selectedCocktail = MutableLiveData<Cocktail>()
     val selectedCocktail: LiveData<Cocktail>
         get() = _selectedCocktail
 
     private val _ingredientList = MutableLiveData<MutableList<IngredientCocktailRef>>()
-
     val ingredientList: LiveData<MutableList<IngredientCocktailRef>>
         get() = _ingredientList
 
@@ -33,38 +33,27 @@ class CreateCocktailViewModel(application: Application) : AndroidViewModel(appli
         get() = _stepsList
 
     private val _stepsValid = MutableLiveData<Int>()
-
     val stepsValid: LiveData<Int>
         get() = _stepsValid
 
-    // The error code convention is errorCode, Index eg:- (-2, 0)
-    private val _ingredientValid = MutableLiveData<List<Int>>()
-
-    val ingredientValid: LiveData<List<Int>>
+    private val _ingredientValid = MutableLiveData<Int>()
+    val ingredientValid: LiveData<Int>
         get() = _ingredientValid
 
-    private val _saveCocktail = MutableLiveData<Boolean?>()
-
-    val saveCocktail: LiveData<Boolean?>
-        get() = _saveCocktail
-
-    private val repository = CocktailRepository(CocktailDatabase.getDatabase(application))
-
     private val _allIngredientList = MutableLiveData<List<Ingredient>>()
-
     val allIngredientList: LiveData<List<Ingredient>>
         get() = _allIngredientList
 
     private val _finishActivity = MutableLiveData<Boolean?>()
-
     val finishActivity: LiveData<Boolean?>
         get() = _finishActivity
+
 
     init {
         getAllIngredientFromDatabase()
 
         _ingredientList.value = mutableListOf()
-        _stepsList.value = mutableListOf(StepsWrapper())
+        _stepsList.value = mutableListOf()
     }
 
     fun getDataToPopulateFields(id: Long) {
@@ -119,18 +108,11 @@ class CreateCocktailViewModel(application: Application) : AndroidViewModel(appli
         _ingredientList.value = mIngredientList
     }
 
-    fun addStep() {
-        try {
-            val newList = _stepsList.value!!
-            val last = newList.last().ref
-            val newStep = StepsWrapper(last + 1, "")
-            newList.add(newStep)
-            _stepsList.value = newList
-        } catch (e: Exception) {
-            Timber.w("Looks like the steps list was empty or null $e")
-            _stepsList.value = mutableListOf(
-                StepsWrapper(0, "")
-            )
+    fun addStep(step: String) {
+        _stepsList.value?.let {
+            val stepId = if (it.size > 0) it.last().ref + 1 else 1
+            it.add(StepsWrapper(stepId, step))
+            _stepsList.value = it
         }
     }
 
@@ -144,33 +126,16 @@ class CreateCocktailViewModel(application: Application) : AndroidViewModel(appli
         }
     }
 
-    fun validate() {
-        checkSteps()
-
-        // Only check the ingredient if the steps are valid
-        // Otherwise the animation will play for both steps and ingredient.
-        if (_stepsValid.value == Constants.VALUE_OK) {
-            checkIngredient()
-        }
-    }
-
     fun removeIngredient(position: Int) {
-        val mIngredient = _ingredientList.value
-        if (!mIngredient.isNullOrEmpty()) {
-            mIngredient.removeAt(position)
-            _ingredientList.value = mIngredient!!
+        _ingredientList.value?.let {
+            it.removeAt(position)
+            _ingredientList.value = it
         }
     }
 
-    private fun checkSteps() {
+    fun checkSteps() {
         val allSteps = _stepsList.value
         if (!allSteps.isNullOrEmpty()) {
-            for (steps in allSteps.withIndex()) {
-                if (steps.value.steps.isBlank()) {
-                    _stepsValid.value = steps.index
-                    return
-                }
-            }
             // The steps are valid
             _stepsValid.value = Constants.VALUE_OK
         } else {
@@ -178,56 +143,18 @@ class CreateCocktailViewModel(application: Application) : AndroidViewModel(appli
         }
     }
 
-    private fun checkIngredient() {
+    fun checkIngredient() {
         viewModelScope.launch {
             val allIngredient = _ingredientList.value
             if (!allIngredient.isNullOrEmpty()) {
-                for (ingredients in allIngredient.withIndex()) {
-                    // Get the value form the quantity editText
-                    val quantity = ingredients.value.quantity
-
-                    val ingredientFromDatabase =
-                        repository.getIngredient(ingredients.value.ingredient_name)
-
-                    // The ingredient name field was left blank
-                    if (ingredients.value.ingredient_name.isBlank()) {
-                        _ingredientValid.value =
-                            listOf(Constants.INGREDIENT_NAME_EMPTY, ingredients.index)
-                        return@launch
-                    }
-                    // The quantity field was empty or 0
-                    if (quantity <= 0f) {
-                        _ingredientValid.value =
-                            listOf(Constants.QUANTITY_FIELD_EMPTY, ingredients.index)
-                        return@launch
-                    }
-                    // There was no such ingredient in the database
-                    if (ingredientFromDatabase == null) {
-                        _ingredientValid.value =
-                            listOf(Constants.NO_INGREDIENT_IN_DATABASE, ingredients.index)
-                        return@launch
-                    }
-
-                }
-                _ingredientValid.value = listOf(Constants.VALUE_OK, 0)
+                _ingredientValid.value = Constants.VALUE_OK
             } else {
-                _ingredientValid.value = listOf(Constants.NO_VALUES, 0)
+                _ingredientValid.value = Constants.NO_VALUES
             }
         }
     }
 
-    fun setCocktailChecked() {
-        if (_ingredientValid.value == listOf(Constants.VALUE_OK, 0)
-            && _stepsValid.value == Constants.VALUE_OK
-        ) {
-            _saveCocktail.value = true
-        } else {
-            _saveCocktail.value = null
-        }
-    }
-
     private fun doneChecking() {
-        _saveCocktail.value = null
         _finishActivity.value = true
     }
 

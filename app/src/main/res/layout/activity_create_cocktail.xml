@@ -46,26 +46,21 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="8dp">
 
-                <LinearLayout
-                    android:id="@+id/textCocktailNameContainer"
+
+                <EditText
+                    android:id="@+id/textCocktailName"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="8dp"
+                    android:ems="10"
+                    android:hint="@string/cocktail_name_hint"
+                    android:importantForAutofill="no"
+                    android:inputType="textPersonName"
+                    android:paddingStart="2dp"
+                    android:paddingEnd="2dp"
                     app:layout_constraintEnd_toStartOf="@+id/addCocktailImage"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <EditText
-                        android:id="@+id/textCocktailName"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginTop="8dp"
-                        android:ems="10"
-                        android:hint="@string/cocktail_name_hint"
-                        android:importantForAutofill="no"
-                        android:inputType="textPersonName"
-                        android:paddingStart="2dp"
-                        android:paddingEnd="2dp" />
-                </LinearLayout>
+                    app:layout_constraintTop_toTopOf="parent" />
 
 
                 <com.google.android.material.imageview.ShapeableImageView
@@ -78,11 +73,11 @@
                     android:padding="1.8dp"
                     android:scaleType="center"
                     android:src="@android:drawable/ic_menu_camera"
-                    app:layout_constraintBottom_toBottomOf="@+id/textCocktailNameContainer"
+                    app:layout_constraintBottom_toBottomOf="@+id/textCocktailName"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toEndOf="@+id/textCocktailNameContainer"
-                    app:layout_constraintTop_toTopOf="@+id/textCocktailNameContainer"
+                    app:layout_constraintStart_toEndOf="@+id/textCocktailName"
+                    app:layout_constraintTop_toTopOf="@+id/textCocktailName"
                     app:shapeAppearanceOverlay="@style/roundedImage"
                     app:strokeColor="@color/secondaryDarkColor"
                     app:strokeWidth="2dp" />
@@ -100,40 +95,52 @@
                     android:inputType="textMultiLine"
                     android:lines="5"
                     android:padding="4dp"
-                    app:layout_constraintBottom_toTopOf="@id/textContainerLayout"
+                    app:layout_constraintBottom_toTopOf="@id/stepsRecycler"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textCocktailNameContainer" />
+                    app:layout_constraintTop_toBottomOf="@+id/textCocktailName" />
+
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/stepsRecycler"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintBottom_toTopOf="@id/newStepContainer"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/cocktailDescriptionText"
+                    tools:itemCount="1"
+                    tools:listitem="@layout/cocktail_steps_item" />
 
                 <LinearLayout
-                    android:id="@+id/textContainerLayout"
+                    android:id="@+id/newStepContainer"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    app:layout_constraintBottom_toTopOf="@id/addStep"
+                    android:layout_marginTop="8dp"
+                    android:orientation="horizontal"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/cocktailDescriptionText">
+                    app:layout_constraintTop_toBottomOf="@+id/stepsRecycler">
 
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/stepsRecycler"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                        tools:itemCount="1"
-                        tools:listitem="@layout/cocktail_steps_item" />
+                    <EditText
+                        android:id="@+id/newStepText"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:hint="@string/add_a_new_step"
+                        android:importantForAutofill="no"
+                        android:inputType="text" />
+
+                    <Button
+                        android:id="@+id/addStep"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textAllCaps="false"
+                        android:text="@string/add_step" />
+
                 </LinearLayout>
 
-
-                <ImageView
-                    android:id="@+id/addStep"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="@string/add_step"
-                    android:src="@drawable/ic_add"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textContainerLayout" />
 
                 <LinearLayout
                     android:id="@+id/recyclerContainer"
@@ -143,7 +150,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/addStep">
+                    app:layout_constraintTop_toBottomOf="@id/newStepContainer">
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/ingRefRecycler"
@@ -156,8 +163,8 @@
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="4dp"
                         android:layout_marginTop="4dp"
+                        android:layout_marginBottom="4dp"
                         android:background="@drawable/detail_text_back">
 
                         <LinearLayout

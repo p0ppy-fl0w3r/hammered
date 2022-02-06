@@ -10,7 +10,6 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.view.get
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
@@ -25,12 +24,11 @@ import com.fl0w3r.hammered.entities.Cocktail
 import com.fl0w3r.hammered.utils.UiUtils
 import com.fl0w3r.hammered.utils.UiUtils.animateError
 import com.fl0w3r.hammered.utils.UiUtils.hideKeyboard
-import timber.log.Timber
 
-// TODO refactor code.
 class CreateCocktailActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityCreateCocktailBinding
+    private lateinit var ingredientNameList: MutableList<String>
 
     private var imageUrl = ""
     private var imageEncoded = ""
@@ -67,8 +65,7 @@ class CreateCocktailActivity : AppCompatActivity() {
         ViewModelProvider(this)[CreateCocktailViewModel::class.java]
     }
 
-    // Using specific index of changed set will not work for some reason.
-    @SuppressLint("NotifyDataSetChanged")
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -89,23 +86,18 @@ class CreateCocktailActivity : AppCompatActivity() {
             viewModel.setSelectedCocktail(selectedCocktailForCopy.cocktail_id)
         }
 
-
-        val nestedScrollView = binding.nestedScrollView
-        val ingredientRecycler = binding.ingRefRecycler
-        val stepsRecycler = binding.stepsRecycler
-
         // Set adapter for units spinner
         setUnitsAdapter()
 
         // Array adapter for ingredient name AutoCompleteTextView
         setAutoFillAdapter()
 
-        val adapter = CreateCocktailAdapter(onDeleteListener =  ItemOnClickListener { itemNumber ->
+        val adapter = CreateCocktailAdapter(onDeleteListener = ItemOnClickListener { itemNumber ->
             viewModel.removeIngredient(itemNumber)
         },
-        onEditListener = ItemOnClickListener {
-            // TODO add a edit option.
-        })
+            onEditListener = ItemOnClickListener {
+                // TODO add a edit option.
+            })
 
         val stepsAdapter = StepsRecyclerAdapter(ClickListener {
             viewModel.removeStep(it)
@@ -114,164 +106,23 @@ class CreateCocktailActivity : AppCompatActivity() {
         binding.stepsRecycler.adapter = stepsAdapter
         binding.ingRefRecycler.adapter = adapter
 
-        viewModel.selectedCocktail.observe(this) {
-            if (it != null) {
-                populateFields(it)
-            }
-        }
+        // Populate fields if you're editing a cocktail
+        setFieldValues()
 
-        viewModel.ingredientList.observe(this) {
-            if (it != null) {
-                adapter.submitList(it)
-                adapter.notifyDataSetChanged()
-            }
-        }
+        // Populate the ingredient list.
+        setIngredientList(adapter)
 
-        viewModel.stepsList.observe(this) {
-            stepsAdapter.submitList(it)
-            stepsAdapter.notifyDataSetChanged()
-        }
+        // Populate the steps list.
+        setStepsList(stepsAdapter)
 
-        // TODO simplify these.
-        viewModel.stepsValid.observe(this) {
-            when (it) {
-                Constants.VALUE_OK -> {
-                    Timber.i("The the steps are valid")
-                }
-                Constants.NO_VALUES -> {
-                    Toast.makeText(
-                        this,
-                        "There are no steps!",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-                else -> {
-                    stepsRecycler.post {
-                        val yPos = stepsRecycler.y + stepsRecycler.getChildAt(it).y
-                        nestedScrollView.smoothScrollTo(0, yPos.toInt())
-                    }
-                    val errorItem =
-                        stepsRecycler[it].findViewById<LinearLayout>(R.id.stepsTextContainer)
-                    animateError(errorItem)
+        // Observe if the steps are valid.
+        observeSteps()
 
-                    Toast.makeText(
-                        this,
-                        "Looks like a step is blank!",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-            }
-        }
+        // Observe if the ingredients are valid.
+        observeIngredients(selectedCocktail)
 
-        viewModel.ingredientValid.observe(this)
-        {
-
-            when (it[0]) {
-                Constants.VALUE_OK -> {
-                    Timber.i("The ingredient values are ok")
-                    viewModel.setCocktailChecked()
-                }
-
-                Constants.NO_VALUES -> {
-                    Toast.makeText(
-                        this,
-                        "You need to add an ingredient!",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-
-                Constants.INGREDIENT_NAME_EMPTY -> {
-                    Toast.makeText(
-                        this,
-                        "Looks like an ingredient name is blank.",
-                        Toast.LENGTH_SHORT
-                    ).show()
-
-                    val errorItem =
-                        ingredientRecycler[it[1]].findViewById<LinearLayout>(R.id.RefIngredientNameContainer)
-
-                    // Scroll to error item
-                    ingredientRecycler.post {
-                        val yPos = ingredientRecycler.y + ingredientRecycler.getChildAt(it[1]).y
-                        nestedScrollView.smoothScrollTo(0, yPos.toInt())
-                    }
-
-                    animateError(errorItem)
-                }
-
-                Constants.NO_INGREDIENT_IN_DATABASE -> {
-                    Toast.makeText(
-                        this,
-                        "Invalid ingredient name!",
-                        Toast.LENGTH_SHORT
-                    ).show()
-
-                    val errorItem =
-                        ingredientRecycler[it[1]].findViewById<LinearLayout>(R.id.RefIngredientNameContainer)
-
-                    ingredientRecycler.post {
-                        val yPos = ingredientRecycler.y + ingredientRecycler.getChildAt(it[1]).y
-                        nestedScrollView.smoothScrollTo(0, yPos.toInt())
-                    }
-
-                    animateError(errorItem)
-                }
-
-                Constants.QUANTITY_FIELD_EMPTY -> {
-                    binding.ingRefRecycler.smoothScrollToPosition(it[1])
-                    val errorItem =
-                        ingredientRecycler[it[1]].findViewById<LinearLayout>(R.id.refQuantityContainer)
-
-                    ingredientRecycler.post {
-                        val yPos = ingredientRecycler.y + ingredientRecycler.getChildAt(it[1]).y
-                        nestedScrollView.smoothScrollTo(0, yPos.toInt())
-                    }
-
-                    animateError(errorItem)
-                    Toast.makeText(
-                        this,
-                        "Quantity is invalid.",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-
-                else -> {
-                    throw IllegalArgumentException("Error code or item index not valid $it")
-                }
-            }
-        }
-
-        viewModel.saveCocktail.observe(this)
-        {
-            if (it == true) {
-                val cocktailName = binding.textCocktailName.text.toString()
-                val description = binding.cocktailDescriptionText.text.toString()
-
-                if (isEdit) {
-                    // If is edited is true, selectedCocktail can never be null
-                    viewModel.editCocktail(
-                        selectedCocktail!!.cocktail_id,
-                        cocktailName,
-                        description,
-                        imageEncoded
-                    )
-                    Toast.makeText(this, "Edited cocktail!", Toast.LENGTH_SHORT).show()
-                } else {
-                    viewModel.saveCocktail(cocktailName, description, imageEncoded)
-                    Toast.makeText(this, "Cocktail added.", Toast.LENGTH_SHORT).show()
-                }
-
-            }
-        }
-
-        // Only finish the activity when all the database operations are completed.
-        // finishActivity will be set true only when new cocktail and all it's associated ingredients
-        // are inserted in the database.
-        viewModel.finishActivity.observe(this) {
-            if (it == true) {
-                finish()
-            }
-        }
+        // Close the activity when everything is ok
+        closeActivity()
 
         // Click listeners
         selectImageDialog()
@@ -281,10 +132,85 @@ class CreateCocktailActivity : AppCompatActivity() {
         cancelAndGoBack()
     }
 
+    private fun setFieldValues() {
+        viewModel.selectedCocktail.observe(this) {
+            if (it != null) {
+                populateFields(it)
+            }
+        }
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    private fun setIngredientList(adapter: CreateCocktailAdapter) {
+        viewModel.ingredientList.observe(this) {
+            if (it != null) {
+                adapter.submitList(it)
+                adapter.notifyDataSetChanged()
+            }
+        }
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    private fun setStepsList(stepsAdapter: StepsRecyclerAdapter) {
+        viewModel.stepsList.observe(this) {
+            stepsAdapter.submitList(it)
+            stepsAdapter.notifyDataSetChanged()
+        }
+    }
+
+    private fun observeSteps() {
+        viewModel.stepsValid.observe(this) {
+            when (it) {
+                Constants.VALUE_OK -> {
+                    viewModel.checkIngredient()
+                }
+                Constants.NO_VALUES -> {
+                    animateError(binding.newStepContainer)
+                    Toast.makeText(
+                        this,
+                        "There are no steps!",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+        }
+    }
+
+    private fun observeIngredients(selectedCocktail: CocktailData?) {
+        viewModel.ingredientValid.observe(this)
+        {
+
+            when (it) {
+                Constants.VALUE_OK -> {
+                    saveNewCocktail(selectedCocktail)
+                }
+
+                Constants.NO_VALUES -> {
+                    Toast.makeText(
+                        this,
+                        "You need to add an ingredient!",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+                else -> {
+                    throw IllegalArgumentException("Error code or item index not valid $it")
+                }
+            }
+        }
+    }
+
+    private fun closeActivity(){
+        viewModel.finishActivity.observe(this) {
+            if (it == true) {
+                finish()
+            }
+        }
+    }
+
     private fun setAutoFillAdapter() {
         viewModel.allIngredientList.observe(this) {
             if (it != null) {
-                val ingredientNameList = mutableListOf<String>()
+                ingredientNameList = mutableListOf()
                 for (i in it) {
                     ingredientNameList.add(i.ingredient_name)
                 }
@@ -305,11 +231,10 @@ class CreateCocktailActivity : AppCompatActivity() {
     private fun saveCocktail() {
         binding.saveCocktail.setOnClickListener {
             val cocktailNameView = binding.textCocktailName
-            val cocktailNameContainer = binding.textCocktailNameContainer
 
             val cocktailName = cocktailNameView.text
             if (cocktailName.isNotBlank()) {
-                viewModel.validate()
+                viewModel.checkSteps()
             } else {
                 Toast.makeText(
                     this,
@@ -317,8 +242,31 @@ class CreateCocktailActivity : AppCompatActivity() {
                     Toast.LENGTH_LONG
                 ).show()
 
-                animateError(cocktailNameContainer)
+                animateError(cocktailNameView)
             }
+        }
+    }
+
+    private fun saveNewCocktail(selectedCocktail: CocktailData?) {
+        val cocktailName = binding.textCocktailName.text.toString()
+        val description = binding.cocktailDescriptionText.text.toString()
+
+        if (isEdit) {
+            // If is edited is true, selectedCocktail can never be null
+            selectedCocktail?.let {
+                viewModel.editCocktail(
+                    it.cocktail_id,
+                    cocktailName,
+                    description,
+                    imageEncoded
+                )
+
+                Toast.makeText(this, "Edited cocktail!", Toast.LENGTH_SHORT).show()
+            }
+
+        } else {
+            viewModel.saveCocktail(cocktailName, description, imageEncoded)
+            Toast.makeText(this, "Cocktail added.", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -401,7 +349,30 @@ class CreateCocktailActivity : AppCompatActivity() {
         binding.addIngredientButton.setOnClickListener {
 
             val ingredientName = binding.RefIngredientName.text.toString()
-            val quantity = binding.refQuantity.text.toString().toFloat()
+            if (ingredientName !in ingredientNameList) {
+                animateError(binding.RefIngredientName)
+                if (ingredientName.isBlank()) {
+                    Toast.makeText(
+                        this,
+                        "Ingredient name can't be blank!!",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                } else {
+                    Toast.makeText(
+                        this,
+                        "Looks like the ingredient does not exist...yet!",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+                return@setOnClickListener
+            }
+            val quantity = when (binding.refQuantity.text.toString().isBlank()) {
+                true -> {
+                    animateError(binding.refQuantity)
+                    return@setOnClickListener
+                }
+                else -> binding.refQuantity.text.toString().toFloat()
+            }
             val quantityUnit = binding.unitSpinner.selectedItem.toString()
             val isOptional = binding.isOptional.isChecked
             val isGarnish = binding.isGarnishCheck.isChecked
@@ -415,7 +386,13 @@ class CreateCocktailActivity : AppCompatActivity() {
 
     private fun addStep() {
         binding.addStep.setOnClickListener {
-            viewModel.addStep()
+            if (binding.newStepText.text.toString().isBlank()) {
+                animateError(binding.newStepText)
+                Toast.makeText(this, "Steps can't be empty", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            viewModel.addStep(binding.newStepText.text.toString())
+
             hideKeyboard(this, binding.root)
         }
     }

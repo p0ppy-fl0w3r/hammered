@@ -93,4 +93,5 @@
     <string name="camera">Camera</string>
     <string name="file">File</string>
     <string name="temp">Temp</string>
+    <string name="add_a_new_step">Add a new step...</string>
 </resources>

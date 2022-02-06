@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
@@ -7,60 +8,73 @@
         <variable
             name="value"
             type="com.fl0w3r.hammered.wrappers.StepsWrapper" />
-
-        <variable
-            name="clickListener"
-            type="com.fl0w3r.hammered.cocktail.createCocktail.ClickListener" />
     </data>
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="4dp"
-        android:orientation="horizontal">
+        android:layout_margin="4dp"
+        android:background="@drawable/ingredient_back"
+        android:padding="2dp">
 
         <TextView
             android:id="@+id/stepNumber"
             android:layout_width="25dp"
             android:layout_height="25dp"
-            android:background="@drawable/serial_num_back"
-            android:paddingTop="4dp"
-            android:paddingStart="2dp"
-            android:paddingEnd="2dp"
-            android:textAlignment="center"
             android:layout_gravity="center"
-            android:gravity="center_horizontal"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="4dp"
+            android:background="@drawable/serial_num_back"
+            android:gravity="center"
+            android:textAlignment="center"
             android:textColor="@color/color_black"
             android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="@+id/stepText"
+            app:layout_constraintEnd_toStartOf="@+id/stepText"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/stepText"
             tools:text="1" />
 
-        <LinearLayout
-            android:id="@+id/stepsTextContainer"
+        <TextView
+            android:id="@+id/stepText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1">
-
-            <EditText
-                android:id="@+id/stepText"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:hint="@string/add_step_hint"
-                android:importantForAutofill="no"
-                android:inputType="text"
-                android:text="@={value.steps}" />
-
-        </LinearLayout>
-
+            android:text="@{value.steps}"
+            android:textAppearance="@style/TextAppearance.AppCompat.Small"
+            android:textColor="#000000"
+            android:textIsSelectable="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/editStep"
+            app:layout_constraintStart_toEndOf="@+id/stepNumber"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Lemon" />
 
         <ImageView
-            android:id="@+id/removeStep"
+            android:id="@+id/deleteStep"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
-            android:contentDescription="@string/remove_step_desc"
-            android:onClick="@{()->clickListener.onClick(value)}"
-            android:src="@drawable/cross" />
-    </LinearLayout>
+            android:contentDescription="@string/delete_info"
+            app:layout_constraintBottom_toBottomOf="@+id/editStep"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/editStep"
+            app:layout_constraintTop_toTopOf="@+id/editStep"
+            app:srcCompat="@android:drawable/ic_menu_close_clear_cancel" />
+
+        <ImageView
+            android:id="@+id/editStep"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:contentDescription="@string/edit_current_ingredient"
+            app:layout_constraintBottom_toBottomOf="@+id/stepText"
+            app:layout_constraintEnd_toStartOf="@+id/deleteStep"
+            app:layout_constraintStart_toEndOf="@+id/stepText"
+            app:layout_constraintTop_toTopOf="@+id/stepText"
+            app:srcCompat="@drawable/ic_edit" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 </layout>

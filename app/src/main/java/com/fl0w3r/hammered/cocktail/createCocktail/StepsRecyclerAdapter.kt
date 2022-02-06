@@ -1,5 +1,6 @@
 package com.fl0w3r.hammered.cocktail.createCocktail
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
@@ -11,6 +12,7 @@ import com.fl0w3r.hammered.R
 import com.fl0w3r.hammered.databinding.CocktailStepsItemBinding
 import com.fl0w3r.hammered.wrappers.StepsWrapper
 
+// TODO add a onEditListener
 class StepsRecyclerAdapter(private val clickListener: ClickListener) :
     ListAdapter<StepsWrapper, StepsViewHolder>(StepsDiffUtils()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StepsViewHolder {
@@ -19,8 +21,7 @@ class StepsRecyclerAdapter(private val clickListener: ClickListener) :
 
     override fun onBindViewHolder(holder: StepsViewHolder, position: Int) {
         val item = getItem(position)
-        holder.bind(item, clickListener)
-        holder.itemView.findViewById<TextView>(R.id.stepNumber).text = (position + 1).toString()
+        holder.bind(item,position+1, clickListener)
     }
 
 }
@@ -38,9 +39,12 @@ class StepsDiffUtils : DiffUtil.ItemCallback<StepsWrapper>() {
 class StepsViewHolder(private val binding: CocktailStepsItemBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(step: StepsWrapper, clickListener: ClickListener) {
+    fun bind(step: StepsWrapper, index: Int, clickListener: ClickListener) {
         binding.value = step
-        binding.clickListener = clickListener
+        binding.stepNumber.text = index.toString()
+
+        binding.deleteStep.setOnClickListener { clickListener.listener(step) }
+
         binding.executePendingBindings()
     }
 

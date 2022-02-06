@@ -35,9 +35,6 @@ object Constants {
     // Status code for create cocktail
     const val VALUE_OK = -2
     const val NO_VALUES = -1
-    const val NO_INGREDIENT_IN_DATABASE = -3
-    const val QUANTITY_FIELD_EMPTY = -4
-    const val INGREDIENT_NAME_EMPTY = -5
 
     // Create cocktail extra key
     const val EDIT_COCKTAIL = "cocktail"

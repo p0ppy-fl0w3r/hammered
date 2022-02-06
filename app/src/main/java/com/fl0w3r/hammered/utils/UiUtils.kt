@@ -10,6 +10,7 @@ import android.util.Base64
 import android.util.Base64.encodeToString
 import android.view.View
 import android.view.inputmethod.InputMethodManager
+import androidx.core.animation.doOnEnd
 import java.io.ByteArrayOutputStream
 
 
@@ -22,6 +23,9 @@ object UiUtils {
     }
 
     fun animateError(view: View) {
+
+        val background = view.background
+
         val animation = ObjectAnimator.ofInt(
             view,
             "backgroundColor",
@@ -35,6 +39,9 @@ object UiUtils {
         animation.repeatCount = 1
         animation.setEvaluator(ArgbEvaluator())
         animation.start()
+        animation.doOnEnd {
+            view.background = background
+        }
     }
 
     fun encodeToBase64(bitmap: Bitmap): String {
