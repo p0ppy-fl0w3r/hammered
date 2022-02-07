@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+
+    <TextView
+        style="@style/DialogHeadingStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/detail_text_back"
+        android:text="@string/edit_step" />
+
+    <EditText
+        android:id="@+id/dialogStep"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/ingredient_back"
+        android:ems="10"
+        android:layout_margin="2dp"
+        android:gravity="start|top"
+        android:importantForAutofill="no"
+        android:inputType="textMultiLine"
+        android:lines="4"
+        android:padding="4dp"
+        android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+</LinearLayout>

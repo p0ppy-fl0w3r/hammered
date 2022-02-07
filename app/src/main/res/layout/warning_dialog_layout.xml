@@ -6,13 +6,9 @@
     android:orientation="vertical">
 
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:background="@drawable/detail_text_back"
-        android:fontFamily="@font/poppins_semibold"
-        android:gravity="center_horizontal"
         android:text="@string/warning"
-        android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
+        style="@style/DialogHeadingStyle" />
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

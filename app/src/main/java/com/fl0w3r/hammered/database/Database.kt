@@ -12,7 +12,7 @@ import com.fl0w3r.hammered.entities.relations.IngredientCocktailRef
 @Database(
     entities = [Cocktail::class, Ingredient::class, IngredientCocktailRef::class],
     exportSchema = false,
-    version = 9
+    version = 10
 )
 abstract class CocktailDatabase : RoomDatabase() {
 

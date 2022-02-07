@@ -2,7 +2,6 @@ package com.fl0w3r.hammered.cocktail.createCocktail
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -12,7 +11,7 @@ import com.fl0w3r.hammered.databinding.CreateCocktailIngredientItemBinding
 import com.fl0w3r.hammered.entities.relations.IngredientCocktailRef
 
 
-class CreateCocktailAdapter(
+class CocktailIngredientAdapter(
     private val onDeleteListener: ItemOnClickListener,
     private val onEditListener: ItemOnClickListener
 ) :
@@ -27,7 +26,7 @@ class CreateCocktailAdapter(
 
     override fun onBindViewHolder(holder: CocktailIngredientViewHolder, position: Int) {
         val item = getItem(position)
-        holder.bind(item,position, onEditListener, onDeleteListener)
+        holder.bind(item, position, onEditListener, onDeleteListener)
     }
 }
 
@@ -42,8 +41,8 @@ class CocktailIngredientViewHolder(private val binding: CreateCocktailIngredient
     ) {
         binding.ingredientItem = item
 
-        binding.editIngredient.setOnClickListener{ onEditListener.listener(position) }
-        binding.deleteCurrentIngredient.setOnClickListener{ onDeleteListener.listener(position) }
+        binding.editIngredient.setOnClickListener { onEditListener.listener(position, item) }
+        binding.deleteCurrentIngredient.setOnClickListener { onDeleteListener.listener(position, item) }
 
         binding.executePendingBindings()
     }
@@ -62,17 +61,24 @@ class CocktailIngredientViewHolder(private val binding: CreateCocktailIngredient
 }
 
 class ItemDiffUtil : DiffUtil.ItemCallback<IngredientCocktailRef>() {
-    override fun areItemsTheSame(oldItem: IngredientCocktailRef, newItem: IngredientCocktailRef): Boolean {
+    override fun areItemsTheSame(
+        oldItem: IngredientCocktailRef,
+        newItem: IngredientCocktailRef
+    ): Boolean {
         return oldItem === newItem
     }
 
-    override fun areContentsTheSame(oldItem: IngredientCocktailRef, newItem: IngredientCocktailRef): Boolean {
+    override fun areContentsTheSame(
+        oldItem: IngredientCocktailRef,
+        newItem: IngredientCocktailRef
+    ): Boolean {
         return newItem == oldItem
     }
 }
 
 
-class ItemOnClickListener(val listener: (itemNumber: Int) -> Unit) {
-    fun onItemClick(itemNumber: Int) = listener(itemNumber)
+class ItemOnClickListener(val listener: (itemNumber: Int, ingredient: IngredientCocktailRef) -> Unit) {
+    fun onItemClick(itemNumber: Int, ingredient: IngredientCocktailRef) =
+        listener(itemNumber, ingredient)
 }
 

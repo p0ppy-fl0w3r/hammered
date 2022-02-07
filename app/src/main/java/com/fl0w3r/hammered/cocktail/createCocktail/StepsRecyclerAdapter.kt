@@ -1,9 +1,7 @@
 package com.fl0w3r.hammered.cocktail.createCocktail
 
-import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -12,8 +10,7 @@ import com.fl0w3r.hammered.R
 import com.fl0w3r.hammered.databinding.CocktailStepsItemBinding
 import com.fl0w3r.hammered.wrappers.StepsWrapper
 
-// TODO add a onEditListener
-class StepsRecyclerAdapter(private val clickListener: ClickListener) :
+class StepsRecyclerAdapter(private val onDeleteListenerSteps: StepsClickListener, private val onEditListenerSteps: StepsClickListener) :
     ListAdapter<StepsWrapper, StepsViewHolder>(StepsDiffUtils()) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StepsViewHolder {
         return StepsViewHolder.from(parent)
@@ -21,7 +18,7 @@ class StepsRecyclerAdapter(private val clickListener: ClickListener) :
 
     override fun onBindViewHolder(holder: StepsViewHolder, position: Int) {
         val item = getItem(position)
-        holder.bind(item,position+1, clickListener)
+        holder.bind(item,position+1, onDeleteListenerSteps, onEditListenerSteps)
     }
 
 }
@@ -39,11 +36,12 @@ class StepsDiffUtils : DiffUtil.ItemCallback<StepsWrapper>() {
 class StepsViewHolder(private val binding: CocktailStepsItemBinding) :
     RecyclerView.ViewHolder(binding.root) {
 
-    fun bind(step: StepsWrapper, index: Int, clickListener: ClickListener) {
+    fun bind(step: StepsWrapper, index: Int, onDeleteListener: StepsClickListener, onEditListenerSteps: StepsClickListener) {
         binding.value = step
         binding.stepNumber.text = index.toString()
 
-        binding.deleteStep.setOnClickListener { clickListener.listener(step) }
+        binding.deleteStep.setOnClickListener { onDeleteListener.listener(step) }
+        binding.editStep.setOnClickListener { onEditListenerSteps.listener(step) }
 
         binding.executePendingBindings()
     }
@@ -62,6 +60,6 @@ class StepsViewHolder(private val binding: CocktailStepsItemBinding) :
     }
 }
 
-class ClickListener(val listener: (StepsWrapper) -> Unit) {
+class StepsClickListener(val listener: (StepsWrapper) -> Unit) {
     fun onClick(step: StepsWrapper) = listener(step)
 }

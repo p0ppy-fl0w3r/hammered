@@ -108,6 +108,14 @@ class CreateCocktailViewModel(application: Application) : AndroidViewModel(appli
         _ingredientList.value = mIngredientList
     }
 
+    fun updateIngredient(position: Int, ingredientRef: IngredientCocktailRef){
+        _ingredientList.value?.let {
+            it.removeAt(position)
+            it.set(position, ingredientRef)
+            _ingredientList.value = it
+        }
+    }
+
     fun addStep(step: String) {
         _stepsList.value?.let {
             val stepId = if (it.size > 0) it.last().ref + 1 else 1
@@ -117,12 +125,17 @@ class CreateCocktailViewModel(application: Application) : AndroidViewModel(appli
     }
 
     fun removeStep(step: StepsWrapper) {
-        val allValue = _stepsList.value
-        if (!allValue.isNullOrEmpty()) {
-            allValue.remove(step)
-            _stepsList.value = allValue
-        } else {
-            throw   IllegalArgumentException("No such step: $step")
+        _stepsList.value?.let {
+            it.remove(step)
+            _stepsList.value = it
+        }
+
+    }
+
+    fun editStep(step: StepsWrapper) {
+        _stepsList.value?.let {
+            it[it.indexOfFirst { wrapper -> wrapper.ref == step.ref }] = step
+            _stepsList.value = it
         }
     }
 

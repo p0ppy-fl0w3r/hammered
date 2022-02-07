@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        style="@style/DialogHeadingStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/detail_text_back"
+        android:text="@string/edit_ingredient" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="4dp"
+        android:background="@drawable/ingredient_back">
+
+        <AutoCompleteTextView
+            android:id="@+id/updateIngredientName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="2dp"
+            android:ems="10"
+            android:hint="@string/ingredient_name_edit_text"
+            android:imeOptions="actionNext"
+            android:importantForAutofill="no"
+            android:inputType="textPersonName"
+            android:nextFocusDown="@id/updateQuantity"
+            android:textSize="15sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/updateQuantity"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="2dp"
+            android:layout_marginTop="4dp"
+            android:ems="10"
+            android:hint="@string/quantity_string"
+            android:importantForAutofill="no"
+            android:inputType="numberDecimal"
+            android:textSize="15sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/updateIngredientName" />
+
+
+        <Spinner
+            android:id="@+id/unitSpinnerUpdate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            app:layout_constraintBottom_toBottomOf="@+id/updateQuantity"
+            app:layout_constraintStart_toEndOf="@+id/updateQuantity"
+            app:layout_constraintTop_toTopOf="@+id/updateQuantity" />
+
+        <CheckBox
+            android:id="@+id/optionalUpdate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/optional"
+            android:textSize="15sp"
+            app:layout_constraintEnd_toStartOf="@+id/garnishCheck"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/updateQuantity" />
+
+        <CheckBox
+            android:id="@+id/garnishCheck"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/garnish"
+            android:textSize="15sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/optionalUpdate"
+            app:layout_constraintTop_toBottomOf="@+id/updateQuantity" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>

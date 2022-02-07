@@ -8,7 +8,7 @@ data class IngredientCocktailRef(
     var cocktail_id: Long,
     var ingredient_id: Long,
     var ingredient_name: String,
-    var quantity:Float,
+    var quantity:Float?,
     var quantityUnit: String,
     var isGarnish:Boolean,
     var isOptional:Boolean

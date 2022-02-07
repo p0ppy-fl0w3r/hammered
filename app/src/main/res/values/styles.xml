@@ -52,12 +52,26 @@
         <item name="android:buttonBarPositiveButtonStyle">@style/PositiveButtonStyle</item>
     </style>
 
+    <style name="DarkButtonDialog" parent="ThemeOverlay.MaterialComponents.Dialog.Alert">
+        <item name="android:buttonBarPositiveButtonStyle">@style/PositiveButtonStyle</item>
+        <item name="android:buttonBarNegativeButtonStyle">@style/NegativeButtonStyle</item>
+    </style>
+
+
     <style name="NegativeButtonStyle" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
         <item name="android:textColor">@color/secondaryDarkColor</item>
     </style>
 
     <style name="PositiveButtonStyle" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
         <item name="android:textColor">@color/secondaryDarkColor</item>
+    </style>
+
+    <style name="DialogHeadingStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:fontFamily">@font/poppins_semibold</item>
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:textAppearance">@style/TextAppearance.AppCompat.Headline</item>
     </style>
 
 </resources>

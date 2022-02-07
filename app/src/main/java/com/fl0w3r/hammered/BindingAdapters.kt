@@ -114,11 +114,11 @@ fun detailCocktailFavourite(imageView: ImageView, cocktail: Cocktail) {
 @BindingAdapter("quantity")
 fun quantity(textView: TextView, ingredientRef: IngredientCocktailRef) {
 
-    val refRem = ingredientRef.quantity % 1
+    val refRem = ingredientRef.quantity!! % 1
     if (refRem <= 0.01f) {
         textView.text = textView.context.getString(
             R.string.quantity,
-            ingredientRef.quantity.toInt(),
+            ingredientRef.quantity!!.toInt(),
             ingredientRef.quantityUnit
         )
     } else {
