@@ -23,7 +23,7 @@ class CocktailFragment : Fragment() {
     private var chipSelection = Constants.NORMAL_COCKTAIL_ITEM
 
     private val viewModel: CocktailViewModel by lazy {
-        ViewModelProvider(this).get(CocktailViewModel::class.java)
+        ViewModelProvider(this)[CocktailViewModel::class.java]
     }
 
     override fun onCreateView(

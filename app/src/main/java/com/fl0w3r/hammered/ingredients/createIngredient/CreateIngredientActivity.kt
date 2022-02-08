@@ -132,7 +132,10 @@ class CreateIngredientActivity : AppCompatActivity() {
     }
 
     private fun openImageDialog() {
-        ImageCaptureDialog({ getCapturedImage() }, { getImageFile() }).show(supportFragmentManager, "ImageCaptureDialog")
+        ImageCaptureDialog(
+            { getCapturedImage() },
+            { getImageFile() },
+            { getPlaceHolderImage() }).show(supportFragmentManager, "ImageCaptureDialog")
 
     }
 

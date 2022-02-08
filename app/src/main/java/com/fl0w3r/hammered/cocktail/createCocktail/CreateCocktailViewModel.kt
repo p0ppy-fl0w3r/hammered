@@ -15,7 +15,7 @@ import com.fl0w3r.hammered.wrappers.StepsWrapper
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
-// FIXME the app throws an error when adding cocktail with no ingredient in database
+
 class CreateCocktailViewModel(application: Application) : AndroidViewModel(application) {
 
     private val repository = CocktailRepository(CocktailDatabase.getDatabase(application))
@@ -108,7 +108,7 @@ class CreateCocktailViewModel(application: Application) : AndroidViewModel(appli
         _ingredientList.value = mIngredientList
     }
 
-    fun updateIngredient(position: Int, ingredientRef: IngredientCocktailRef){
+    fun updateIngredient(position: Int, ingredientRef: IngredientCocktailRef) {
         _ingredientList.value?.let {
             it.removeAt(position)
             it.set(position, ingredientRef)

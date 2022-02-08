@@ -5,11 +5,14 @@ import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.drawable.Drawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.toBitmap
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
@@ -18,16 +21,14 @@ import com.fl0w3r.hammered.Constants
 import com.fl0w3r.hammered.R
 import com.fl0w3r.hammered.cocktail.CocktailData
 import com.fl0w3r.hammered.databinding.ActivityCreateCocktailBinding
-import com.fl0w3r.hammered.dialog.CancelAlertDialog
-import com.fl0w3r.hammered.dialog.EditIngredientDialog
-import com.fl0w3r.hammered.dialog.EditStepDialog
-import com.fl0w3r.hammered.dialog.ImageCaptureDialog
+import com.fl0w3r.hammered.dialog.*
 import com.fl0w3r.hammered.entities.Cocktail
 import com.fl0w3r.hammered.entities.relations.IngredientCocktailRef
 import com.fl0w3r.hammered.utils.UiUtils
 import com.fl0w3r.hammered.utils.UiUtils.animateError
 import com.fl0w3r.hammered.utils.UiUtils.hideKeyboard
 import com.fl0w3r.hammered.wrappers.StepsWrapper
+import timber.log.Timber
 
 class CreateCocktailActivity : AppCompatActivity() {
 
@@ -337,7 +338,7 @@ class CreateCocktailActivity : AppCompatActivity() {
 
 
     private fun openImageDialog() {
-        ImageCaptureDialog({ getCapturedImage() }, { getImageFile() }).show(
+        ImageCaptureDialog({ getCapturedImage() }, { getImageFile() }, {getPlaceHolderImage()}).show(
             supportFragmentManager,
             "CocktailImageCaptureDialog"
         )
@@ -345,7 +346,29 @@ class CreateCocktailActivity : AppCompatActivity() {
     }
 
     private fun getPlaceHolderImage() {
-        TODO("Add placeholder images")
+        PlaceholderDialog(){
+            setPlaceholderImage(it)
+        }.show(supportFragmentManager, "PlaceholderDialog")
+    }
+
+    private fun setPlaceholderImage(layoutId: Int){
+        val drawable = when(layoutId){
+            R.id.placeholder_1 -> R.drawable.placeholder_1
+            R.id.placeholder_2 -> R.drawable.placeholder_2
+            R.id.placeholder_3 -> R.drawable.placeholder_3
+            R.id.placeholder_4 -> R.drawable.placeholder_4
+            R.id.placeholder_5 -> R.drawable.placeholder_5
+            R.id.placeholder_6 -> R.drawable.placeholder_6
+            R.id.placeholder_7 -> R.drawable.placeholder_7
+            R.id.placeholder_8 -> R.drawable.placeholder_8
+            else -> R.drawable.placeholder_9
+        }
+
+        imageEncoded = UiUtils.encodeToBase64(ContextCompat.getDrawable(this,drawable)!!.toBitmap())
+
+        Glide.with(this).load(drawable)
+            .apply(RequestOptions().error(R.drawable.no_drinks))
+            .into(binding.addCocktailImage)
     }
 
     private fun getCapturedImage() {

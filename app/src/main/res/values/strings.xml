@@ -96,4 +96,7 @@
     <string name="add_a_new_step">Add a new step…</string>
     <string name="edit_step">Edit step</string>
     <string name="edit_ingredient">Edit Ingredient</string>
+    <string name="placeholder_1">Placeholder image with red cocktail and straws.</string>
+    <string name="placeholder_2">Placeholder image with lemon.</string>
+    <string name="select_an_image">Select an Image.</string>
 </resources>

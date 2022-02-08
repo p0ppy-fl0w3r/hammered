@@ -9,7 +9,7 @@ import androidx.fragment.app.DialogFragment
 import com.fl0w3r.hammered.R
 import java.lang.IllegalStateException
 
-class ImageCaptureDialog(val cameraButton: () -> Unit, val fileButton: () -> Unit) :
+class ImageCaptureDialog(val cameraButton: () -> Unit, val fileButton: () -> Unit, val placeholderButton: () -> Unit) :
     DialogFragment() {
     @SuppressLint("InflateParams")
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
@@ -23,6 +23,10 @@ class ImageCaptureDialog(val cameraButton: () -> Unit, val fileButton: () -> Uni
         }
         dialogView.findViewById<Button>(R.id.fileButton).setOnClickListener {
             fileButton()
+            this.dismiss()
+        }
+        dialogView.findViewById<Button>(R.id.tempButton).setOnClickListener {
+            placeholderButton()
             this.dismiss()
         }
 

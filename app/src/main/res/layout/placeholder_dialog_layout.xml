@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/placeholderRoot"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/heading"
+        style="@style/DialogHeadingStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#40B4A647"
+        android:text="@string/select_an_image"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/placeholder_3"
+        style="@style/PlaceholderStyle"
+        android:padding="4dp"
+        app:layout_constraintBottom_toBottomOf="@+id/placeholder_1"
+        app:layout_constraintEnd_toStartOf="@+id/placeholder_2"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/placeholder_1"
+        app:layout_constraintTop_toTopOf="@+id/placeholder_1"
+        app:shapeAppearanceOverlay="@style/boxImage"
+        app:srcCompat="@drawable/placeholder_3"
+        app:strokeColor="@color/color_black"
+        app:strokeWidth="2dp"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/placeholder_1"
+        style="@style/PlaceholderStyle"
+        android:padding="4dp"
+        app:layout_constraintBottom_toTopOf="@+id/placeholder_5"
+        app:layout_constraintEnd_toStartOf="@+id/placeholder_3"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/heading"
+        app:shapeAppearanceOverlay="@style/boxImage"
+        app:srcCompat="@drawable/placeholder_1"
+        app:strokeColor="@color/color_black"
+        app:strokeWidth="2dp"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/placeholder_2"
+        style="@style/PlaceholderStyle"
+        android:padding="4dp"
+        app:layout_constraintBottom_toBottomOf="@+id/placeholder_1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/placeholder_3"
+        app:layout_constraintTop_toTopOf="@+id/placeholder_1"
+        app:shapeAppearanceOverlay="@style/boxImage"
+        app:srcCompat="@drawable/placeholder_2"
+        app:strokeColor="@color/color_black"
+        app:strokeWidth="2dp"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/placeholder_4"
+        style="@style/PlaceholderStyle"
+        android:padding="4dp"
+        app:layout_constraintBottom_toBottomOf="@+id/placeholder_5"
+        app:layout_constraintEnd_toStartOf="@+id/placeholder_6"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/placeholder_5"
+        app:layout_constraintTop_toTopOf="@+id/placeholder_5"
+        app:shapeAppearanceOverlay="@style/boxImage"
+        app:srcCompat="@drawable/placeholder_4"
+        app:strokeColor="@color/color_black"
+        app:strokeWidth="2dp"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/placeholder_5"
+        style="@style/PlaceholderStyle"
+        android:padding="4dp"
+        app:layout_constraintBottom_toTopOf="@+id/placeholder_7"
+        app:layout_constraintEnd_toStartOf="@+id/placeholder_4"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/placeholder_1"
+        app:shapeAppearanceOverlay="@style/boxImage"
+        app:srcCompat="@drawable/placeholder_5"
+        app:strokeColor="@color/color_black"
+        app:strokeWidth="2dp"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/placeholder_6"
+        style="@style/PlaceholderStyle"
+        android:padding="4dp"
+        app:layout_constraintBottom_toBottomOf="@+id/placeholder_5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/placeholder_4"
+        app:layout_constraintTop_toTopOf="@+id/placeholder_5"
+        app:shapeAppearanceOverlay="@style/boxImage"
+        app:srcCompat="@drawable/placeholder_6"
+        app:strokeColor="@color/color_black"
+        app:strokeWidth="2dp"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/placeholder_7"
+        style="@style/PlaceholderStyle"
+        android:padding="4dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/placeholder_9"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/placeholder_5"
+        app:shapeAppearanceOverlay="@style/boxImage"
+        app:srcCompat="@drawable/placeholder_7"
+        app:strokeColor="@color/color_black"
+        app:strokeWidth="2dp"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/placeholder_8"
+        style="@style/PlaceholderStyle"
+        android:padding="4dp"
+        app:layout_constraintBottom_toBottomOf="@+id/placeholder_7"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/placeholder_9"
+        app:layout_constraintTop_toBottomOf="@+id/placeholder_5"
+        app:shapeAppearanceOverlay="@style/boxImage"
+        app:srcCompat="@drawable/placeholder_8"
+        app:strokeColor="@color/color_black"
+        app:strokeWidth="2dp"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/placeholder_9"
+        style="@style/PlaceholderStyle"
+        android:padding="4dp"
+        app:layout_constraintBottom_toBottomOf="@+id/placeholder_7"
+        app:layout_constraintEnd_toStartOf="@+id/placeholder_8"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/placeholder_7"
+        app:layout_constraintTop_toBottomOf="@+id/placeholder_5"
+        app:shapeAppearanceOverlay="@style/boxImage"
+        app:srcCompat="@drawable/placeholder_9"
+        app:strokeColor="@color/color_black"
+        app:strokeWidth="2dp"
+        tools:ignore="SpeakableTextPresentCheck" />
+</androidx.constraintlayout.widget.ConstraintLayout>
