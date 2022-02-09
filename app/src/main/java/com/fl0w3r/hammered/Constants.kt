@@ -71,4 +71,6 @@ object Constants {
     const val SELECT_ALL = "select_all_ingredients"
     const val SELECT_COMBINATION = "select_combination"
 
+    // Slides intent key
+    const val COCKTAIL_DATA = "cocktailData"
 }

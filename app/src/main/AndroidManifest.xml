@@ -5,42 +5,43 @@
 
     <queries>
         <intent>
-            <action android:name="android.intent.action.OPEN_DOCUMENT_TREE"/>
+            <action android:name="android.intent.action.OPEN_DOCUMENT_TREE" />
         </intent>
     </queries>
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         tools:ignore="ScopedStorage" />
 
     <application
-        android:name="com.fl0w3r.hammered.HammeredApplication"
+        android:name=".HammeredApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher"
         android:requestLegacyExternalStorage="true"
+        android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="false"
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup">
         <activity
-            android:name="com.fl0w3r.hammered.ingredients.createIngredient.CreateIngredientActivity"
-            android:screenOrientation="nosensor" />
+            android:name=".cocktail.cocktailDetails.SlidesActivity"
+            android:theme="@style/SlidesTheme"
+            android:exported="false"/>
+
+        <activity android:name=".ingredients.createIngredient.CreateIngredientActivity" />
+        <activity android:name=".cocktail.createCocktail.CreateCocktailActivity" />
         <activity
-            android:name="com.fl0w3r.hammered.cocktail.createCocktail.CreateCocktailActivity"
-            android:screenOrientation="nosensor" />
-        <activity
-            android:name="com.fl0w3r.hammered.splashscreen.SplashActivity"
-            android:screenOrientation="nosensor"
+            android:name=".splashscreen.SplashActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name="com.fl0w3r.hammered.MainActivity"
-            android:screenOrientation="nosensor" />
+        <activity android:name=".MainActivity" />
+
 
         <meta-data
             android:name="preloaded_fonts"

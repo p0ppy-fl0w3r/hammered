@@ -68,4 +68,5 @@
         android:id="@+id/mixerFragment"
         android:name="com.fl0w3r.hammered.mixer.MixerFragment"
         tools:layout="@layout/fragment_mixer" />
+
 </navigation>

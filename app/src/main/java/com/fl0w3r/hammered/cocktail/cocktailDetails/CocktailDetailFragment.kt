@@ -15,7 +15,7 @@ import com.fl0w3r.hammered.databinding.FragmentCocktailDetailBinding
 import com.fl0w3r.hammered.dialog.CancelAlertDialog
 import com.fl0w3r.hammered.utils.UiUtils
 
-
+// TODO refactor this
 class CocktailDetailFragment : Fragment() {
 
     lateinit var binding: FragmentCocktailDetailBinding
@@ -62,6 +62,7 @@ class CocktailDetailFragment : Fragment() {
             adapter.submitList(it)
         }
 
+        // FIXME this might be unnecessary
         viewModel.editCocktail.observe(viewLifecycleOwner){
             if (it != null){
                 viewModel.doneEdit()
@@ -99,7 +100,22 @@ class CocktailDetailFragment : Fragment() {
             }
         }
 
+        // Click Listeners
+        onClickPlay(selectedCocktail)
+
         return binding.root
+    }
+
+    private fun onClickPlay(cocktailData: CocktailData){
+        binding.playSlides.setOnClickListener {
+            showSlides(cocktailData)
+        }
+    }
+
+    private fun showSlides(cocktailData: CocktailData){
+        val intent = Intent(requireContext(), SlidesActivity::class.java)
+        intent.putExtra(Constants.COCKTAIL_DATA, cocktailData)
+        startActivity(intent)
     }
 
     override fun onPrepareOptionsMenu(menu: Menu) {

@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.PersistableBundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -43,14 +44,21 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener,
     private lateinit var searchAdapter: SearchAdapter
     private lateinit var searchView: SearchView
 
+    private var hasStarted = false
+
     private val viewModel: SearchViewModel by lazy {
-        ViewModelProvider(this).get(SearchViewModel::class.java)
+        ViewModelProvider(this)[SearchViewModel::class.java]
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        requestPermissions(arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE), 1)
+        requestPermissions(
+            arrayOf(
+                Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE
+            ), 1
+        )
 
         val startUpScreenId = intent.getIntExtra(Constants.STARTUP_SCREEN_ID, 0)
 
@@ -88,6 +96,7 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener,
 
         searchAdapter = SearchAdapter(SearchItemClickListener { selectedItem ->
 
+            // TODO see if this can be improved.
             val mBundle = Bundle()
             when (selectedItem) {
                 is IngredientWithCocktail -> {
@@ -107,13 +116,25 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener,
                 }
             }
         })
+
+        if (savedInstanceState != null) {
+            hasStarted = savedInstanceState.getBoolean("hasStarted", false)
+            Timber.e("Has Started: ${savedInstanceState.getBoolean("hasStarted")}")
+        }
+        else{
+            Timber.e("The value was null")
+        }
+
         binding.searchRecycler.adapter = searchAdapter
 
         viewModel.foundItems.observe(this) {
             searchAdapter.addFilterAndSubmitList(it)
         }
 
-        navigateToStartup(startUpScreenId)
+        if (!hasStarted) {
+            Timber.e("The thing happened $hasStarted")
+            navigateToStartup(startUpScreenId)
+        }
 
     }
 
@@ -181,7 +202,17 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener,
         }
     }
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        Timber.e("The has  value is $hasStarted")
+        outState.putBoolean("hasStarted", hasStarted)
+        super.onSaveInstanceState(outState)
+    }
+
+
+
     private fun navigateToStartup(id: Int) {
+
+        hasStarted = true
 
         val mBundle = Bundle()
         mBundle.putInt(BUNDLE_STARTUP_INT, id)

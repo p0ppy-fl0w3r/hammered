@@ -15,6 +15,11 @@
         <item name="alertDialogTheme">@style/cancelAlertDialogStyle</item>
     </style>
 
+    <style name="SlidesTheme" parent="AppTheme">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowFullscreen">true</item>
+    </style>
+
     <style name="DrawerTheme" parent="ThemeOverlay.AppCompat.Light">
         <item name="colorControlHighlight">@color/secondaryLightColor</item>
     </style>
@@ -74,12 +79,16 @@
         <item name="android:textAppearance">@style/TextAppearance.AppCompat.Headline</item>
     </style>
 
-    <style name="PlaceholderStyle">
-        <item name="android:layout_width">100dp</item>
-        <item name="android:layout_height">100dp</item>
+    <style name="ClickableImageStyle">
         <item name="android:background">?attr/selectableItemBackgroundBorderless</item>
         <item name="android:clickable">true</item>
         <item name="android:focusable">true</item>
+    </style>
+
+    <style name="PlaceholderStyle" parent="ClickableImageStyle">
+        <item name="android:layout_width">100dp</item>
+        <item name="android:layout_height">100dp</item>
+
     </style>
 
 </resources>
