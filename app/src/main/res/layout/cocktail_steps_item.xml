@@ -19,21 +19,13 @@
 
         <TextView
             android:id="@+id/stepNumber"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:layout_gravity="center"
-            android:layout_marginStart="4dp"
-            android:layout_marginEnd="4dp"
             android:background="@drawable/serial_num_back"
-            android:gravity="center"
-            android:textAlignment="center"
-            android:textColor="@color/color_black"
-            android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="@+id/stepText"
             app:layout_constraintEnd_toStartOf="@+id/stepText"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/stepText"
-            tools:text="1" />
+            tools:text="1"
+            style="@style/CircularTextStyle" />
 
         <TextView
             android:id="@+id/stepText"

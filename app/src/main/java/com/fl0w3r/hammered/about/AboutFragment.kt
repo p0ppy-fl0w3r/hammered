@@ -5,6 +5,7 @@ import android.view.*
 import androidx.fragment.app.Fragment
 import com.fl0w3r.hammered.R
 
+// TODO add buttons for navigation.
 class AboutFragment : Fragment() {
 
 

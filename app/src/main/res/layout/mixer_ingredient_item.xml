@@ -32,14 +32,14 @@
                     app:strokeColor="@color/secondaryDarkColor"
                     app:strokeWidth="2dp"
                     tools:srcCompat="@drawable/summer_food" />
+
                 <ImageView
                     android:id="@+id/checkedImage"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:src="@drawable/selected"
-                    android:visibility="invisible"
                     android:contentDescription="@string/selected_desc"
-                    />
+                    android:src="@drawable/selected"
+                    android:visibility="invisible" />
             </RelativeLayout>
 
 

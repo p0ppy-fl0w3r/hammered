@@ -32,7 +32,7 @@ import timber.log.Timber
 class SettingsFragment : Fragment() {
 
     val viewModel: SettingsViewModel by lazy {
-        ViewModelProvider(requireActivity()).get(SettingsViewModel::class.java)
+        ViewModelProvider(requireActivity())[SettingsViewModel::class.java]
     }
 
     private val requestPermissionLauncher =

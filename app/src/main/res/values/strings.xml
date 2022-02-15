@@ -100,4 +100,6 @@
     <string name="placeholder_2">Placeholder image with lemon.</string>
     <string name="select_an_image">Select an Image.</string>
     <string name="start_play">Start playing step slides.</string>
+    <string name="frame_desc">Frame for about page.</string>
+    <string name="slide_desc">The following ingredients are used in this step:</string>
 </resources>

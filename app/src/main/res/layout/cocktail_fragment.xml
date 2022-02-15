@@ -9,6 +9,8 @@
         android:orientation="vertical"
         tools:context=".cocktail.CocktailFragment">
 
+
+
         <com.google.android.material.chip.ChipGroup
             android:id="@+id/cocktail_chip_group"
             android:layout_width="match_parent"

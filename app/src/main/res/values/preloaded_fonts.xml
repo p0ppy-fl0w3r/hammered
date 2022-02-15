@@ -3,5 +3,6 @@
     <array name="preloaded_fonts" translatable="false">
         <item>@font/cherry_swash</item>
         <item>@font/poppins_semibold</item>
+        <item>@font/roboto_medium</item>
     </array>
 </resources>

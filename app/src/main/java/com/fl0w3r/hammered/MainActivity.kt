@@ -68,7 +68,6 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener,
 
         val toolbar = binding.toolbar
 
-
         // Setting up cocktailFragment as top level destination so that it shows the hamburger button-
         // instead of the back button.
 
@@ -77,13 +76,35 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener,
             drawerLayout = drawerLayout
         )
 
+        // Provides controls for MainActivity views for each fragments
+        // TODO control the search icon visibility from here.
+        // FIXME the toolbar is rendered before the fragment is visible.
         navController.addOnDestinationChangedListener() { controller, destination, _ ->
-            if (destination.id == controller.graph[R.id.ingredientFragment].id
-                || destination.id == controller.graph[R.id.cocktailFragment].id
-            ) {
-                drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
-            } else {
-                drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+
+            when (destination.id) {
+
+                controller.graph[R.id.ingredientFragment].id -> {
+                    drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
+                    toolbar.visibility = View.VISIBLE
+                }
+
+                controller.graph[R.id.cocktailFragment].id -> {
+                    drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
+                    toolbar.visibility = View.VISIBLE
+                }
+                controller.graph[R.id.settingsFragment].id -> {
+                    drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+                    toolbar.visibility = View.VISIBLE
+                }
+                controller.graph[R.id.aboutFragment].id -> {
+                    drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+                    toolbar.visibility = View.GONE
+                }
+                else -> {
+                    drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+                    toolbar.visibility = View.VISIBLE
+                }
+
             }
 
         }
@@ -121,9 +142,6 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener,
             hasStarted = savedInstanceState.getBoolean("hasStarted", false)
             Timber.e("Has Started: ${savedInstanceState.getBoolean("hasStarted")}")
         }
-        else{
-            Timber.e("The value was null")
-        }
 
         binding.searchRecycler.adapter = searchAdapter
 
@@ -132,7 +150,6 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener,
         }
 
         if (!hasStarted) {
-            Timber.e("The thing happened $hasStarted")
             navigateToStartup(startUpScreenId)
         }
 
@@ -207,7 +224,6 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener,
         outState.putBoolean("hasStarted", hasStarted)
         super.onSaveInstanceState(outState)
     }
-
 
 
     private fun navigateToStartup(id: Int) {
