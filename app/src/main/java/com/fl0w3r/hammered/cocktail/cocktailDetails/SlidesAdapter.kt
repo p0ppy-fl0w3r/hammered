@@ -47,9 +47,7 @@ class SlidesAdapter() :
         fun bind(slideWrapper: SlideWrapper, index: String) {
             binding.slideStepText.text  = slideWrapper.step
 
-            // TODO move the click listener out
-            val ingredientAdapter = CocktailDetailsAdapter(CocktailDetailsClickListener {  })
-
+            val ingredientAdapter = SlideRecyclerAdapter()
             binding.slideRecycler.adapter = ingredientAdapter
             ingredientAdapter.submitList(slideWrapper.ingredient)
 
