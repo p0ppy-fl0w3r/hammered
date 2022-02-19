@@ -2,8 +2,7 @@
 buildscript {
 
     ext{
-        kotlin_version = '1.6.10'
-        lifecycle_version = "2.4.0"
+        kotlin_version = '1.6.0'
         glide_version = "4.12.0"
     }
 

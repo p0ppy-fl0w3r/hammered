@@ -20,6 +20,10 @@ class SlidesViewModel(application: Application) : AndroidViewModel(application) 
     val stepIngredient: LiveData<List<SlideWrapper>>
         get() = _stepIngredients
 
+    private val _loadModel = MutableLiveData<Boolean?>()
+    val loadModel : LiveData<Boolean?>
+        get() = _loadModel
+
     fun getIngredients(cocktailData: CocktailData) {
         viewModelScope.launch {
             val mCocktailRef: List<IngredientCocktailRef> =
@@ -46,6 +50,10 @@ class SlidesViewModel(application: Application) : AndroidViewModel(application) 
             _stepIngredients.value = slideIngredients
         }
 
+    }
+
+    fun gotModel(){
+        _loadModel.value = true
     }
 
     private fun getIngInStep(

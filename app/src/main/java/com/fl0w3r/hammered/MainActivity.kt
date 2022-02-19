@@ -220,7 +220,6 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener,
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-        Timber.e("The has  value is $hasStarted")
         outState.putBoolean("hasStarted", hasStarted)
         super.onSaveInstanceState(outState)
     }

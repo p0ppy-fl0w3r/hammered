@@ -1,2 +1,2 @@
 rootProject.name = "Hammered"
-include ':app'
+include ':app', ':models'
