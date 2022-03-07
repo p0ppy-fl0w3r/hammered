@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Display
 import android.view.View
 import android.widget.Toast
 import androidx.core.content.ContextCompat
@@ -52,12 +53,9 @@ class SlidesActivity : AppCompatActivity(), RecognitionListener {
             }
         }
 
-        // TRIAL Temporary solution
-        viewModel.loadModel.observe(this) {
-            if (it == true) {
-                recognizeCommands()
-                viewModel.getIngredients(cocktailData)
-            }
+        viewModel.model.observe(this) {
+            recognizeCommands(it)
+            viewModel.getIngredients(cocktailData)
         }
 
         viewPager = binding.slidesPager
@@ -79,34 +77,22 @@ class SlidesActivity : AppCompatActivity(), RecognitionListener {
                 Constants.AUDIO_PERMISSION
             )
         } else {
-            setModel()
+            viewModel.setModel(this)
         }
     }
 
-    private fun setModel() {
 
-        StorageService.unpack(this, "model-en-us", "model", {
-            this.model = it
-            viewModel.gotModel()
-        }, {
-            Timber.e("Failed to load model: $it")
-        })
-    }
+    private fun recognizeCommands(model: Model) {
 
-    private fun recognizeCommands() {
-        if (::speechService.isInitialized) {
-            speechService.stop()
-            Timber.e("Stopping speech service.")
-        } else {
-            try {
-                val recognizer = Recognizer(model, 16_000.0f)
-                speechService = SpeechService(recognizer, 16_000.0f)
-                speechService.startListening(this)
+        try {
+            val recognizer = Recognizer(model, 16_000.0f)
+            speechService = SpeechService(recognizer, 16_000.0f)
+            speechService.startListening(this)
 
-            } catch (e: IOException) {
-                Timber.e("Failed to start speech service $e")
-            }
+        } catch (e: IOException) {
+            Timber.e("Failed to start speech service $e")
         }
+
     }
 
     private fun previousSlide() {
@@ -124,6 +110,7 @@ class SlidesActivity : AppCompatActivity(), RecognitionListener {
         if (::speechService.isInitialized) {
             speechService.stop()
             speechService.shutdown()
+            Timber.e("The speech service was destroyed")
         }
     }
 
@@ -135,7 +122,7 @@ class SlidesActivity : AppCompatActivity(), RecognitionListener {
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == Constants.AUDIO_PERMISSION && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            setModel()
+            viewModel.setModel(this)
         }
     }
 
@@ -157,15 +144,19 @@ class SlidesActivity : AppCompatActivity(), RecognitionListener {
         pauseSpeechService(false)
     }
 
+    override fun onResume() {
+        super.onResume()
+        pauseSpeechService(false)
+    }
+
     override fun onPartialResult(hypothesis: String?) {
 
     }
 
     override fun onResult(hypothesis: String?) {
-        if(hypothesis?.contains("next") == true){
+        if (hypothesis?.contains("next") == true) {
             nextSlide()
-        }
-        else if (hypothesis?.contains("previous") == true){
+        } else if (hypothesis?.contains("previous") == true) {
             previousSlide()
         }
         Timber.e("On Result: $hypothesis")

@@ -1,6 +1,7 @@
 package com.fl0w3r.hammered.cocktail.cocktailDetails
 
 import android.app.Application
+import android.content.Context
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -12,6 +13,9 @@ import com.fl0w3r.hammered.entities.relations.IngredientCocktailRef
 import com.fl0w3r.hammered.wrappers.RefItemWrapper
 import com.fl0w3r.hammered.wrappers.SlideWrapper
 import kotlinx.coroutines.launch
+import org.vosk.android.StorageService
+import timber.log.Timber
+import org.vosk.Model
 
 class SlidesViewModel(application: Application) : AndroidViewModel(application) {
     private val repository = CocktailDatabase.getDatabase(application).cocktailDao
@@ -20,9 +24,10 @@ class SlidesViewModel(application: Application) : AndroidViewModel(application) 
     val stepIngredient: LiveData<List<SlideWrapper>>
         get() = _stepIngredients
 
-    private val _loadModel = MutableLiveData<Boolean?>()
-    val loadModel : LiveData<Boolean?>
-        get() = _loadModel
+
+    private val _model = MutableLiveData<Model>();
+    val model: LiveData<Model>
+        get() = _model
 
     fun getIngredients(cocktailData: CocktailData) {
         viewModelScope.launch {
@@ -52,10 +57,6 @@ class SlidesViewModel(application: Application) : AndroidViewModel(application) 
 
     }
 
-    fun gotModel(){
-        _loadModel.value = true
-    }
-
     private fun getIngInStep(
         step: String,
         ingredients: List<IngredientCocktailRef>
@@ -79,7 +80,15 @@ class SlidesViewModel(application: Application) : AndroidViewModel(application) 
 
         return mIngredientList
 
+    }
 
+        fun setModel(context: Context) {
+
+        StorageService.unpack(context, "model-en-us", "model", {
+            _model.value = it
+        }, {
+            Timber.e("Failed to load model: $it")
+        })
     }
 
     private fun filterIngredient(
