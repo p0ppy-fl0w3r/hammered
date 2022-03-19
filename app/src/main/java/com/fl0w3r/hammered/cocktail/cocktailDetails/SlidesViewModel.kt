@@ -10,6 +10,7 @@ import com.fl0w3r.hammered.cocktail.CocktailData
 import com.fl0w3r.hammered.database.CocktailDatabase
 import com.fl0w3r.hammered.entities.Ingredient
 import com.fl0w3r.hammered.entities.relations.IngredientCocktailRef
+import com.fl0w3r.hammered.repository.CocktailRepository
 import com.fl0w3r.hammered.wrappers.RefItemWrapper
 import com.fl0w3r.hammered.wrappers.SlideWrapper
 import kotlinx.coroutines.launch
@@ -18,7 +19,7 @@ import timber.log.Timber
 import org.vosk.Model
 
 class SlidesViewModel(application: Application) : AndroidViewModel(application) {
-    private val repository = CocktailDatabase.getDatabase(application).cocktailDao
+    private val repository = CocktailRepository(CocktailDatabase.getDatabase(application))
 
     private val _stepIngredients = MutableLiveData<List<SlideWrapper>>()
     val stepIngredient: LiveData<List<SlideWrapper>>
@@ -82,7 +83,7 @@ class SlidesViewModel(application: Application) : AndroidViewModel(application) 
 
     }
 
-        fun setModel(context: Context) {
+    fun setModel(context: Context) {
 
         StorageService.unpack(context, "model-en-us", "model", {
             _model.value = it
@@ -105,6 +106,12 @@ class SlidesViewModel(application: Application) : AndroidViewModel(application) 
             }
         }
         return foundIngredient
+    }
+
+    fun updateScore(cocktailId: Long) {
+        viewModelScope.launch {
+            repository.updateCocktailScore(cocktailId)
+        }
     }
 
 }

@@ -1,6 +1,7 @@
 package com.fl0w3r.hammered.cocktail.cocktailDetails
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,8 +15,8 @@ import com.fl0w3r.hammered.wrappers.SlideWrapper
 import com.fl0w3r.hammered.wrappers.StepsWrapper
 import timber.log.Timber
 
-class SlidesAdapter() :
-    ListAdapter<SlideWrapper,SlidesAdapter.SlidesViewHolder>(SlideDiffUtils()) {
+class SlidesAdapter(private val closeButtonClicked: CloseClickListener) :
+    ListAdapter<SlideWrapper, SlidesAdapter.SlidesViewHolder>(SlideDiffUtils()) {
 
     class SlideDiffUtils : DiffUtil.ItemCallback<SlideWrapper>() {
         override fun areItemsTheSame(
@@ -39,17 +40,32 @@ class SlidesAdapter() :
     }
 
     override fun onBindViewHolder(holder: SlidesViewHolder, position: Int) {
-        holder.bind(getItem(position), (position + 1).toString())
+
+        holder.bind(
+            getItem(position),
+            (position + 1).toString(),
+            position == itemCount - 1,
+            closeButtonClicked
+        )
     }
 
     class SlidesViewHolder(private val binding: StepSlideLayoutBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(slideWrapper: SlideWrapper, index: String) {
-            binding.slideStepText.text  = slideWrapper.step
+        fun bind(slideWrapper: SlideWrapper, index: String, isLast: Boolean, closeClicked: CloseClickListener) {
+            binding.slideStepText.text = slideWrapper.step
 
             val ingredientAdapter = SlideRecyclerAdapter()
             binding.slideRecycler.adapter = ingredientAdapter
             ingredientAdapter.submitList(slideWrapper.ingredient)
+
+            if (isLast) {
+                binding.closeButton.visibility = View.VISIBLE
+                binding.closeButton.setOnClickListener {
+                    closeClicked.closeButtonClicked()
+                }
+            } else {
+                binding.closeButton.visibility = View.GONE
+            }
 
             binding.serialNumber.text = index
         }
@@ -61,5 +77,9 @@ class SlidesAdapter() :
                 return SlidesViewHolder(binding)
             }
         }
+    }
+
+    class CloseClickListener(val closeButtonClicked: ()-> Unit){
+        fun closeClicked() =  closeButtonClicked()
     }
 }

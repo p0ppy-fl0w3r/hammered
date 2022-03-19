@@ -27,6 +27,10 @@
         android:name="com.fl0w3r.hammered.settings.SettingsFragment"
         tools:layout="@layout/settings_fragment" />
     <fragment
+        android:id="@+id/hammerMeFragment"
+        android:name="com.fl0w3r.hammered.recommendation.HammerMeFragment"
+        tools:layout="@layout/fragment_hammer_me" />
+    <fragment
         android:id="@+id/cocktailDetailFragment"
         android:name="com.fl0w3r.hammered.cocktail.cocktailDetails.CocktailDetailFragment"
 

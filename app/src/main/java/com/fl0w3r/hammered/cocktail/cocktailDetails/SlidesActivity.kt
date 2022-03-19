@@ -28,7 +28,6 @@ import java.lang.Exception
 class SlidesActivity : AppCompatActivity(), RecognitionListener {
 
     private lateinit var binding: ActivitySlidesBinding
-    private lateinit var model: Model
 
     private lateinit var viewPager: ViewPager2
 
@@ -44,7 +43,10 @@ class SlidesActivity : AppCompatActivity(), RecognitionListener {
 
         val cocktailData = intent.getParcelableExtra<CocktailData>(Constants.COCKTAIL_DATA)!!
 
-        val adapter = SlidesAdapter()
+        val adapter = SlidesAdapter(SlidesAdapter.CloseClickListener {
+            viewModel.updateScore(cocktailData.cocktail_id)
+            finish()
+        })
 
         viewModel.stepIngredient.observe(this) {
             if (it != null) {

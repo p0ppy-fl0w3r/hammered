@@ -12,6 +12,10 @@
         <item
             android:id="@+id/mixerFragment"
             android:title="@string/mixer" />
+
+        <item
+            android:id="@+id/hammerMeFragment"
+            android:title="@string/hammer_me" />
     </group>
 
     <group android:id="@+id/settings_group">

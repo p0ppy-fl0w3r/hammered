@@ -102,4 +102,7 @@
     <string name="start_play">Start playing step slides.</string>
     <string name="frame_desc">Frame for about page.</string>
     <string name="slide_desc">The following ingredients are used in this step:</string>
+    <string name="hammer_me">Hammer Me</string>
+    <string name="close">Close</string>
+    <string name="hammer_me_msg">Hammer you? I barely know you. On a serious note you should probably use the app a bit more to get better recommendation. In the mean time enjoy this random drink.</string>
 </resources>

@@ -164,4 +164,23 @@ class CocktailRepository(private val database: CocktailDatabase) {
         database.cocktailDao.deleteAllRef()
     }
 
+    suspend fun updateCocktailScore(cocktailId: Long){
+        database.cocktailDao.updateCocktailScore(cocktailId)
+    }
+
+    suspend fun getCocktailByCount(): List<Cocktail> {
+        return database.cocktailDao.getCocktailByCount()
+    }
+
+    suspend fun getDistinctIngredient(cocktailId: List<Long>):List<Int>{
+        return database.cocktailDao.getDistinctIngredients(cocktailId)
+    }
+
+    suspend fun hasIngredient(cocktailId: Long, ingredientId: Int):Boolean{
+        return database.cocktailDao.hasIngredient(cocktailId).contains(ingredientId)
+    }
+
+    suspend fun getSampleCocktail(cocktail_Ids:List<Long>):List<Cocktail>{
+        return database.cocktailDao.getSampleCocktail(cocktail_Ids)
+    }
 }

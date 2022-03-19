@@ -13,7 +13,7 @@ import com.fl0w3r.hammered.entities.relations.IngredientWithCocktail
 interface CocktailDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertCocktail(cocktail: Cocktail):Long
+    suspend fun insertCocktail(cocktail: Cocktail): Long
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertIngredient(ingredient: Ingredient)
@@ -141,5 +141,20 @@ interface CocktailDao {
 
     @Query("DELETE FROM ingredientcocktailref WHERE ingredient_id = :id")
     suspend fun deleteAllRefOfIngredient(id: Long)
+
+    @Query("UPDATE cocktail SET makeCount = makeCount + 1 WHERE cocktail_id=:id")
+    suspend fun updateCocktailScore(id: Long)
+
+    @Query("SELECT * FROM cocktail ORDER BY makeCount DESC LIMIT 10")
+    suspend fun getCocktailByCount(): List<Cocktail>
+
+    @Query("SELECT DISTINCT(ingredient_id) FROM IngredientCocktailRef WHERE cocktail_id IN (:cocktail_Ids) ORDER BY ingredient_id")
+    suspend fun getDistinctIngredients(cocktail_Ids: List<Long>): List<Int>
+
+    @Query("SELECT ingredient_id FROM IngredientCocktailRef WHERE cocktail_id = :cocktailId")
+    suspend fun hasIngredient(cocktailId: Long): List<Int>
+
+    @Query("SELECT * FROM Cocktail WHERE cocktail_id NOT IN (:cocktail_Ids)")
+    suspend fun getSampleCocktail(cocktail_Ids: List<Long>): List<Cocktail>
 
 }

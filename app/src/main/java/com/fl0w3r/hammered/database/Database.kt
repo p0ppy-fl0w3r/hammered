@@ -12,7 +12,7 @@ import com.fl0w3r.hammered.entities.relations.IngredientCocktailRef
 @Database(
     entities = [Cocktail::class, Ingredient::class, IngredientCocktailRef::class],
     exportSchema = false,
-    version = 10
+    version = 13
 )
 abstract class CocktailDatabase : RoomDatabase() {
 
@@ -27,7 +27,7 @@ abstract class CocktailDatabase : RoomDatabase() {
                 var instance = INSTANCE
                 if (instance == null) {
                     instance = Room.databaseBuilder(
-                        context.applicationContext,
+                        context.applicationContext ,
                         CocktailDatabase::class.java,
                         "cocktail_database"
                     ).fallbackToDestructiveMigration().build()
