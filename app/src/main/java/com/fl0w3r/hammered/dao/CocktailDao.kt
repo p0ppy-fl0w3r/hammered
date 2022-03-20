@@ -104,6 +104,9 @@ interface CocktailDao {
     @Query("SELECT * FROM cocktail WHERE cocktail_id = :cocktail_id")
     suspend fun getIngredientFromCocktail(cocktail_id: Long): CocktailWithIngredient
 
+    @Query("SELECT * FROM cocktail WHERE cocktail_id IN (:cocktail_Ids)")
+    suspend fun getCocktailWithIngredient(cocktail_Ids: List<Int>):List<CocktailWithIngredient>
+
     @Transaction
     @Query("SELECT * FROM cocktail")
     suspend fun getAllIngredientFromCocktail(): List<CocktailWithIngredient>
@@ -156,5 +159,8 @@ interface CocktailDao {
 
     @Query("SELECT * FROM Cocktail WHERE cocktail_id NOT IN (:cocktail_Ids)")
     suspend fun getSampleCocktail(cocktail_Ids: List<Long>): List<Cocktail>
+
+    @Query("SELECT * FROM Cocktail ORDER BY RANDOM() LIMIT 1")
+    suspend fun getRandomCocktail():CocktailWithIngredient
 
 }

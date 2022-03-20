@@ -183,4 +183,12 @@ class CocktailRepository(private val database: CocktailDatabase) {
     suspend fun getSampleCocktail(cocktail_Ids:List<Long>):List<Cocktail>{
         return database.cocktailDao.getSampleCocktail(cocktail_Ids)
     }
+
+    suspend fun getRandomCocktail():CocktailWithIngredient{
+        return database.cocktailDao.getRandomCocktail()
+    }
+
+    suspend fun getCocktailWithIngredient(cocktailId: List<Int>):List<CocktailWithIngredient>{
+        return database.cocktailDao.getCocktailWithIngredient(cocktailId)
+    }
 }

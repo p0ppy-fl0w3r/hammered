@@ -13,15 +13,29 @@
         tools:context=".recommendation.HammerMeFragment">
 
         <TextView
+            style="@style/heading_style"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:gravity="center"
+            android:text="@string/recommendation_heading" />
+
+        <TextView
+            android:id="@+id/defaultMessage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto_medium"
+            android:gravity="center"
+            android:padding="18dp"
             android:text="@string/hammer_me_msg" />
 
-        <Button
-            android:id="@+id/testButton"
-            android:layout_width="wrap_content"
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_marginTop="24dp"
+            android:id="@+id/recommenderRecycler"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Test" />
+            tools:listitem="@layout/all_cocktail_item" />
+
 
     </LinearLayout>
 </layout>
