@@ -37,6 +37,8 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
 
     val currentMixerOption = preferences.currentMixerOptionSelection.asLiveData()
 
+    val astStatus  = preferences.asrStatus.asLiveData()
+
     private val _startJsonSave = MutableLiveData<Boolean?>()
     val startJsonSave: LiveData<Boolean?>
         get() = _startJsonSave
@@ -63,6 +65,12 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
     fun changeMixerOption(option: String) {
         viewModelScope.launch(Dispatchers.IO) {
             preferences.changeMixerOption(option)
+        }
+    }
+
+    fun changeAsrStatus(status: Boolean){
+        viewModelScope.launch {
+            preferences.asrStatus(status)
         }
     }
 

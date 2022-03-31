@@ -4,12 +4,12 @@ import android.Manifest
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
 import android.widget.SearchView
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.ViewModelProvider
@@ -79,8 +79,6 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener,
         )
 
         // Provides controls for MainActivity views for each fragments
-        // TODO control the search icon visibility from here.
-        // FIXME the toolbar is rendered before the fragment is visible.
         navController.addOnDestinationChangedListener() { controller, destination, _ ->
 
             when (destination.id) {
@@ -102,7 +100,7 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener,
                     drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
                     toolbar.visibility = View.GONE
                 }
-                controller.graph[R.id.attributeFragment].id ->{
+                controller.graph[R.id.attributeFragment].id -> {
                     drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
                     toolbar.visibility = View.GONE
                 }
@@ -122,14 +120,13 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener,
         binding.navigationView.setupWithNavController(navController)
 
 
-
-       val headerImage = binding.navigationView.getHeaderView(0).findViewById<ImageView>(R.id.nav_header_image)
+        val headerImage =
+            binding.navigationView.getHeaderView(0).findViewById<ImageView>(R.id.nav_header_image)
 
         Glide.with(this).asGif().load(R.drawable.toasting).into(headerImage)
 
         searchAdapter = SearchAdapter(SearchItemClickListener { selectedItem ->
 
-            // TODO see if this can be improved.
             val mBundle = Bundle()
             when (selectedItem) {
                 is IngredientWithCocktail -> {
@@ -174,7 +171,7 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener,
         menuInflater.inflate(R.menu.option_menu, menu)
 
         searchView = menu.findItem(R.id.searchItem).actionView as SearchView
-        searchView.isSubmitButtonEnabled = true
+        searchView.isSubmitButtonEnabled = false
         searchView.setOnQueryTextListener(this)
         searchView.setOnQueryTextFocusChangeListener(this)
 
@@ -210,10 +207,11 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener,
         return super.onOptionsItemSelected(item)
     }
 
-    override fun onQueryTextSubmit(query: String?): Boolean {
 
+    override fun onQueryTextSubmit(p0: String?): Boolean {
         return true
     }
+
 
     override fun onQueryTextChange(newText: String?): Boolean {
         searchAdapter.submitList(null)

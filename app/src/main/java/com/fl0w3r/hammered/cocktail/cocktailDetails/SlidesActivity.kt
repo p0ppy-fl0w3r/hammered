@@ -31,6 +31,8 @@ class SlidesActivity : AppCompatActivity(), RecognitionListener {
 
     private lateinit var viewPager: ViewPager2
 
+    private lateinit var cocktailData: CocktailData
+
     private val viewModel by lazy {
         ViewModelProvider(this)[SlidesViewModel::class.java]
     }
@@ -41,7 +43,7 @@ class SlidesActivity : AppCompatActivity(), RecognitionListener {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_slides)
 
-        val cocktailData = intent.getParcelableExtra<CocktailData>(Constants.COCKTAIL_DATA)!!
+        cocktailData = intent.getParcelableExtra(Constants.COCKTAIL_DATA)!!
 
         val adapter = SlidesAdapter(SlidesAdapter.CloseClickListener {
             viewModel.updateScore(cocktailData.cocktail_id)
@@ -55,19 +57,23 @@ class SlidesActivity : AppCompatActivity(), RecognitionListener {
             }
         }
 
-        viewModel.model.observe(this) {
-            recognizeCommands(it)
-            viewModel.getIngredients(cocktailData)
+        viewModel.asrStatus.observe(this) { allowAsr ->
+            if (allowAsr) {
+                viewModel.model.observe(this) {
+                    recognizeCommands(it)
+                    viewModel.getIngredients(cocktailData)
+                }
+                requestAudioPermissions()
+            } else {
+                viewModel.getIngredients(cocktailData)
+            }
         }
 
         viewPager = binding.slidesPager
         viewPager.adapter = adapter
 
-        requestAudioPermissions()
-
     }
 
-    // FIXME the model is too big and takes quite a while to load.
     private fun requestAudioPermissions() {
         if (ContextCompat.checkSelfPermission(
                 this,
@@ -116,7 +122,7 @@ class SlidesActivity : AppCompatActivity(), RecognitionListener {
         }
     }
 
-    // TODO add fallback for denied permission.
+
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
@@ -125,6 +131,9 @@ class SlidesActivity : AppCompatActivity(), RecognitionListener {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == Constants.AUDIO_PERMISSION && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             viewModel.setModel(this)
+        } else if (requestCode == Constants.AUDIO_PERMISSION && grantResults[0] == PackageManager.PERMISSION_DENIED) {
+            Toast.makeText(this, "Voice commands not available.", Toast.LENGTH_SHORT).show()
+            viewModel.getIngredients(cocktailData)
         }
     }
 

@@ -2,12 +2,10 @@ package com.fl0w3r.hammered.cocktail.cocktailDetails
 
 import android.app.Application
 import android.content.Context
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.fl0w3r.hammered.cocktail.CocktailData
 import com.fl0w3r.hammered.database.CocktailDatabase
+import com.fl0w3r.hammered.datastore.SettingsPreferences
 import com.fl0w3r.hammered.entities.Ingredient
 import com.fl0w3r.hammered.entities.relations.IngredientCocktailRef
 import com.fl0w3r.hammered.repository.CocktailRepository
@@ -19,6 +17,8 @@ import timber.log.Timber
 import org.vosk.Model
 
 class SlidesViewModel(application: Application) : AndroidViewModel(application) {
+
+    private val preferences = SettingsPreferences(application)
     private val repository = CocktailRepository(CocktailDatabase.getDatabase(application))
 
     private val _stepIngredients = MutableLiveData<List<SlideWrapper>>()
@@ -29,6 +29,9 @@ class SlidesViewModel(application: Application) : AndroidViewModel(application) 
     private val _model = MutableLiveData<Model>();
     val model: LiveData<Model>
         get() = _model
+
+    val asrStatus = preferences.asrStatus.asLiveData()
+
 
     fun getIngredients(cocktailData: CocktailData) {
         viewModelScope.launch {

@@ -135,8 +135,6 @@ class SettingsFragment : Fragment() {
         }
 
         binding.resetCard.setOnClickListener {
-
-
             reset()
         }
 
@@ -154,7 +152,15 @@ class SettingsFragment : Fragment() {
             }
         }
 
+        binding.tootleAsr.setOnClickListener {
+            setAsrOption(binding.tootleAsr.isChecked)
+        }
+
         // LiveData observers
+
+        viewModel.astStatus.observe(viewLifecycleOwner){
+            binding.tootleAsr.isChecked = it
+        }
 
         viewModel.currentStartupScreen.observe(viewLifecycleOwner) {
             binding.textCurrentScreen.text = Constants.ALL_ITEM_LIST[it]
@@ -221,6 +227,10 @@ class SettingsFragment : Fragment() {
         super.onCreate(savedInstanceState)
 
         setHasOptionsMenu(true)
+    }
+
+    private fun setAsrOption(status: Boolean){
+        viewModel.changeAsrStatus(status)
     }
 
     private fun importFromJson() {

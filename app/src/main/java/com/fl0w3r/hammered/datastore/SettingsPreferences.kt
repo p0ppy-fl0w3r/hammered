@@ -19,6 +19,7 @@ class SettingsPreferences(private val context: Context) {
 
         val CURRENT_STARTUP_SCREEN = intPreferencesKey(name = "current_startup_screen")
         val DATA_ADDED_TO_APP = booleanPreferencesKey(name = "data_inserted_to_database")
+        val ASR_STATUS = booleanPreferencesKey(name = "asr_Status")
         val MIXER_SELECTION = stringPreferencesKey(name = "mixer_selection")
     }
 
@@ -40,6 +41,16 @@ class SettingsPreferences(private val context: Context) {
 
     val currentDataInsertionStatus: Flow<Boolean> = context.dataStore.data.map { preferences ->
         preferences[DATA_ADDED_TO_APP] ?: false
+    }
+
+    suspend fun asrStatus(status: Boolean){
+        context.dataStore.edit { preferences ->
+            preferences[ASR_STATUS] = status
+        }
+    }
+
+    val asrStatus: Flow<Boolean> = context.dataStore.data.map { preferences ->
+        preferences[ASR_STATUS] ?: false
     }
 
     suspend fun changeMixerOption(option: String){

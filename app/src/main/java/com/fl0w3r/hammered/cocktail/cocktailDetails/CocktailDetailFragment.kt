@@ -15,7 +15,7 @@ import com.fl0w3r.hammered.databinding.FragmentCocktailDetailBinding
 import com.fl0w3r.hammered.dialog.CancelAlertDialog
 import com.fl0w3r.hammered.utils.UiUtils
 
-// TODO refactor this
+
 class CocktailDetailFragment : Fragment() {
 
     lateinit var binding: FragmentCocktailDetailBinding
@@ -62,7 +62,7 @@ class CocktailDetailFragment : Fragment() {
             adapter.submitList(it)
         }
 
-        // FIXME this might be unnecessary
+
         viewModel.editCocktail.observe(viewLifecycleOwner){
             if (it != null){
                 viewModel.doneEdit()
