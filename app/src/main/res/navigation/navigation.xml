@@ -67,10 +67,19 @@
     <fragment
         android:id="@+id/aboutFragment"
         android:name="com.fl0w3r.hammered.about.AboutFragment"
-        tools:layout="@layout/fragment_about" />
+        tools:layout="@layout/fragment_about" >
+        <action
+            android:id="@+id/aboutToAttr"
+            app:destination="@id/attributeFragment" />
+    </fragment>
     <fragment
         android:id="@+id/mixerFragment"
         android:name="com.fl0w3r.hammered.mixer.MixerFragment"
         tools:layout="@layout/fragment_mixer" />
+    <fragment
+        android:id="@+id/attributeFragment"
+        android:name="com.fl0w3r.hammered.about.AttributeFragment"
+        tools:layout="@layout/fragment_attribute"
+         />
 
 </navigation>

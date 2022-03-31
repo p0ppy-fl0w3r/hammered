@@ -6,16 +6,22 @@
 
     </data>
 
-    <FrameLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:orientation="vertical"
         tools:context=".about.AttributeFragment">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/attr_heading"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body2"/>
+    <WebView
+        android:id="@+id/attrView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
 
-        <!-- TODO: Update blank fragment layout -->
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="@string/hello_blank_fragment" />
 
-    </FrameLayout>
+    </LinearLayout>
 </layout>

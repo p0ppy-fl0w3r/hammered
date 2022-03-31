@@ -102,6 +102,10 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener,
                     drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
                     toolbar.visibility = View.GONE
                 }
+                controller.graph[R.id.attributeFragment].id ->{
+                    drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+                    toolbar.visibility = View.GONE
+                }
                 else -> {
                     drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
                     toolbar.visibility = View.VISIBLE
