@@ -8,6 +8,7 @@ import android.os.PersistableBundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.ImageView
 import android.widget.SearchView
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
@@ -19,6 +20,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI.setupActionBarWithNavController
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupWithNavController
+import com.bumptech.glide.Glide
 import com.fl0w3r.hammered.Constants.AVAILABLE_COCKTAIL_ITEM
 import com.fl0w3r.hammered.Constants.BUNDLE_STARTUP_INT
 import com.fl0w3r.hammered.Constants.FAVORITE_COCKTAIL_ITEM
@@ -114,6 +116,12 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener,
 
         setupActionBarWithNavController(this, navController, appBarConfiguration)
         binding.navigationView.setupWithNavController(navController)
+
+
+
+       val headerImage = binding.navigationView.getHeaderView(0).findViewById<ImageView>(R.id.nav_header_image)
+
+        Glide.with(this).asGif().load(R.drawable.toasting).into(headerImage)
 
         searchAdapter = SearchAdapter(SearchItemClickListener { selectedItem ->
 

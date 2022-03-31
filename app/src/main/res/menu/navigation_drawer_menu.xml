@@ -5,24 +5,30 @@
     <group android:id="@+id/main_group">
         <item
             android:id="@+id/cocktailFragment"
+            android:icon="@drawable/round_cocktail_icon"
             android:title="@string/cocktails" />
         <item
             android:id="@+id/ingredientFragment"
+            android:icon="@drawable/ingredient_icon"
             android:title="@string/ingredients" />
         <item
             android:id="@+id/mixerFragment"
+            android:icon="@drawable/shaker"
             android:title="@string/mixer" />
 
         <item
+            android:icon="@drawable/round_liquor_24"
             android:id="@+id/hammerMeFragment"
             android:title="@string/hammer_me" />
     </group>
 
     <group android:id="@+id/settings_group">
         <item
+            android:icon="@drawable/settings_icon"
             android:id="@+id/settingsFragment"
             android:title="@string/settings" />
         <item
+            android:icon="@drawable/ic_baseline_info_24"
             android:id="@+id/aboutFragment"
             android:title="@string/about" />
     </group>

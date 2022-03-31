@@ -108,4 +108,5 @@
     <string name="recommendation_heading">Hammer you?</string>
     <string name="rec_msg">Base on your previous interaction you will probably like these drinks:</string>
     <string name="empty_list_msg">Ummm... Looks like there are no drinks available at the moment. Perhaps you should add some :)</string>
+    <string name="glass_toasting_gif">Glass toasting gif</string>
 </resources>

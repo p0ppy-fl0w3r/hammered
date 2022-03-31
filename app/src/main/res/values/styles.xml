@@ -45,6 +45,7 @@
 
     <style name="chipStyle" parent="Widget.MaterialComponents.Chip.Choice">
         <item name="android:textColor">@color/primaryTextColor</item>
+        <item name="android:elevation">5dp</item>
         <item name="chipBackgroundColor">@color/chip_state_color</item>
     </style>
 
@@ -110,6 +111,14 @@
         <item name="android:textAppearance">@style/TextAppearance.MaterialComponents.Headline4
         </item>
         <item name="android:textColor">@color/color_black</item>
+    </style>
+
+    <style name="DefaultCardStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_margin">@dimen/my_item_margin</item>
+        <item name="android:clipChildren">false</item>
+        <item name="android:clipToPadding">false</item>
     </style>
 
 </resources>

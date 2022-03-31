@@ -15,14 +15,12 @@
     </data>
 
     <com.google.android.material.card.MaterialCardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="@dimen/my_item_margin"
-        android:clickable="true"
-        android:elevation="10dp"
         android:onClick="@{() -> clickListener.onClick(cocktailWithIngredient)}"
         app:cardCornerRadius="8dp"
-        app:rippleColor="@color/secondaryLightColor">
+        app:cardElevation="8dp"
+        app:cardPreventCornerOverlap="false"
+        app:rippleColor="@color/secondaryLightColor"
+        style="@style/DefaultCardStyle">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -44,7 +42,7 @@
                 app:shapeAppearanceOverlay="@style/roundedImage"
                 app:strokeColor="@color/secondaryDarkColor"
                 app:strokeWidth="2dp"
-                tools:srcCompat="@drawable/summer_food" />
+                tools:srcCompat="@drawable/placeholder_1" />
 
             <LinearLayout
                 android:id="@+id/cocktail_text_container"

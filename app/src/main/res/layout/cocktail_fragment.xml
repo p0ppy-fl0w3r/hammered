@@ -9,15 +9,13 @@
         android:orientation="vertical"
         tools:context=".cocktail.CocktailFragment">
 
-
-
         <com.google.android.material.chip.ChipGroup
             android:id="@+id/cocktail_chip_group"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:selectionRequired="true"
             app:singleSelection="true"
-            android:layout_margin="8dp">
+            android:padding="5dp">
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/chipAllDrinks"
@@ -25,7 +23,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:checked="true"
-
                 android:text="@string/all_drinks" />
 
             <com.google.android.material.chip.Chip
