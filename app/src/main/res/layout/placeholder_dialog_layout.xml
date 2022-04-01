@@ -29,7 +29,7 @@
         app:layout_constraintStart_toEndOf="@+id/placeholder_1"
         app:layout_constraintTop_toTopOf="@+id/placeholder_1"
         app:shapeAppearanceOverlay="@style/boxImage"
-        app:srcCompat="@drawable/placeholder_3"
+        tools:srcCompat="@drawable/placeholder_3"
         app:strokeColor="@color/color_black"
         app:strokeWidth="2dp"
         tools:ignore="SpeakableTextPresentCheck" />
@@ -45,7 +45,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/heading"
         app:shapeAppearanceOverlay="@style/boxImage"
-        app:srcCompat="@drawable/placeholder_1"
+        tools:srcCompat="@drawable/placeholder_1"
         app:strokeColor="@color/color_black"
         app:strokeWidth="2dp"
         tools:ignore="SpeakableTextPresentCheck" />
@@ -60,7 +60,7 @@
         app:layout_constraintStart_toEndOf="@+id/placeholder_3"
         app:layout_constraintTop_toTopOf="@+id/placeholder_1"
         app:shapeAppearanceOverlay="@style/boxImage"
-        app:srcCompat="@drawable/placeholder_2"
+        tools:srcCompat="@drawable/placeholder_2"
         app:strokeColor="@color/color_black"
         app:strokeWidth="2dp"
         tools:ignore="SpeakableTextPresentCheck" />
@@ -75,7 +75,7 @@
         app:layout_constraintStart_toEndOf="@+id/placeholder_5"
         app:layout_constraintTop_toTopOf="@+id/placeholder_5"
         app:shapeAppearanceOverlay="@style/boxImage"
-        app:srcCompat="@drawable/placeholder_4"
+        tools:srcCompat="@drawable/placeholder_4"
         app:strokeColor="@color/color_black"
         app:strokeWidth="2dp"
         tools:ignore="SpeakableTextPresentCheck" />
@@ -91,7 +91,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/placeholder_1"
         app:shapeAppearanceOverlay="@style/boxImage"
-        app:srcCompat="@drawable/placeholder_5"
+        tools:srcCompat="@drawable/placeholder_5"
         app:strokeColor="@color/color_black"
         app:strokeWidth="2dp"
         tools:ignore="SpeakableTextPresentCheck" />
@@ -106,7 +106,7 @@
         app:layout_constraintStart_toEndOf="@+id/placeholder_4"
         app:layout_constraintTop_toTopOf="@+id/placeholder_5"
         app:shapeAppearanceOverlay="@style/boxImage"
-        app:srcCompat="@drawable/placeholder_6"
+        tools:srcCompat="@drawable/placeholder_6"
         app:strokeColor="@color/color_black"
         app:strokeWidth="2dp"
         tools:ignore="SpeakableTextPresentCheck" />
@@ -122,7 +122,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/placeholder_5"
         app:shapeAppearanceOverlay="@style/boxImage"
-        app:srcCompat="@drawable/placeholder_7"
+        tools:srcCompat="@drawable/placeholder_7"
         app:strokeColor="@color/color_black"
         app:strokeWidth="2dp"
         tools:ignore="SpeakableTextPresentCheck" />
@@ -137,7 +137,7 @@
         app:layout_constraintStart_toEndOf="@+id/placeholder_9"
         app:layout_constraintTop_toBottomOf="@+id/placeholder_5"
         app:shapeAppearanceOverlay="@style/boxImage"
-        app:srcCompat="@drawable/placeholder_8"
+        tools:srcCompat="@drawable/placeholder_8"
         app:strokeColor="@color/color_black"
         app:strokeWidth="2dp"
         tools:ignore="SpeakableTextPresentCheck" />
@@ -152,7 +152,7 @@
         app:layout_constraintStart_toEndOf="@+id/placeholder_7"
         app:layout_constraintTop_toBottomOf="@+id/placeholder_5"
         app:shapeAppearanceOverlay="@style/boxImage"
-        app:srcCompat="@drawable/placeholder_9"
+        tools:srcCompat="@drawable/placeholder_9"
         app:strokeColor="@color/color_black"
         app:strokeWidth="2dp"
         tools:ignore="SpeakableTextPresentCheck" />

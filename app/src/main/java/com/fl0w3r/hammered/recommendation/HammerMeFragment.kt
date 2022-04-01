@@ -31,43 +31,44 @@ class HammerMeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
 
-        // TODO add loading animation to import and export screens
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_hammer_me, container, false)
 
         viewModel.getRecommendation()
 
         val adapter = IngredientDetailsAdapter(IngredientDetailsClickListener {
-            // TODO add navigation
+            findNavController().navigate(HammerMeFragmentDirections.hammerToCocktail(it.cocktail.asData()))
         })
 
         binding.recommenderRecycler.layoutManager = LinearLayoutManager(requireContext())
         binding.recommenderRecycler.adapter = adapter
 
         // LiveData observers
-        viewModel.recommendationScore.observe(viewLifecycleOwner){
+        viewModel.recommendationScore.observe(viewLifecycleOwner) {
             it.let {
                 // Score less han 0.01 can be negligible
-                if (it.values.sum() < 0.01f){
+                if (it.values.sum() < 0.01f) {
                     viewModel.showRandomRecommendation()
+                    showTitleMessage(R.string.hammer_me_msg)
                     return@observe
                 }
 
-                showTitleMessage()
+                showTitleMessage(R.string.rec_msg)
                 viewModel.showRecommendation(it.keys)
 
             }
         }
 
-        viewModel.cocktailList.observe(viewLifecycleOwner){
+        viewModel.cocktailList.observe(viewLifecycleOwner) {
             it.let {
                 adapter.submitList(it)
             }
         }
 
-        viewModel.isEmpty.observe(viewLifecycleOwner){
-            if (it != null){
-                if (it){
-                    getString(R.string.empty_list_msg).also { binding.defaultMessage.text = it }
+        viewModel.isEmpty.observe(viewLifecycleOwner) { empty ->
+            if (empty != null) {
+                if (empty) {
+                    showTitleMessage(R.string.empty_list_msg)
+
                 }
             }
         }
@@ -87,8 +88,8 @@ class HammerMeFragment : Fragment() {
         setHasOptionsMenu(true)
     }
 
-    private fun showTitleMessage(){
-        binding.defaultMessage.text = getString(R.string.rec_msg)
+    private fun showTitleMessage(resId: Int) {
+        binding.defaultMessage.text = getString(resId)
     }
 
 }

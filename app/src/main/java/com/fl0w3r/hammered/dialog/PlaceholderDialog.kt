@@ -7,16 +7,17 @@ import android.os.Bundle
 import android.widget.ImageView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.DialogFragment
+import com.bumptech.glide.Glide
 import com.fl0w3r.hammered.R
 
-class PlaceholderDialog(private val onImageSelect: (Int) -> Unit) : DialogFragment() {
+class PlaceholderDialog(private val imageList: List<Int>,private val onImageSelect: (Int) -> Unit) : DialogFragment() {
     @SuppressLint("InflateParams")
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
 
         val layoutInflater = requireActivity().layoutInflater
         val dialogView = layoutInflater.inflate(R.layout.placeholder_dialog_layout, null)
 
-        for (id in listOf(
+        for (id in  listOf(
             R.id.placeholder_1,
             R.id.placeholder_2,
             R.id.placeholder_3,
@@ -26,11 +27,16 @@ class PlaceholderDialog(private val onImageSelect: (Int) -> Unit) : DialogFragme
             R.id.placeholder_7,
             R.id.placeholder_8,
             R.id.placeholder_9,
-        )) {
-            dialogView.findViewById<ImageView>(id).setOnClickListener {
+        ).zip(imageList)) {
+            val placeholderView = dialogView.findViewById<ImageView>(id.first)
+
+            placeholderView.setOnClickListener {
                 onImageSelect(it.id)
                 this.dismiss()
             }
+
+            Glide.with(this).load(id.second).into(placeholderView)
+
         }
 
 

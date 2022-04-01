@@ -346,7 +346,17 @@ class CreateCocktailActivity : AppCompatActivity() {
     }
 
     private fun getPlaceHolderImage() {
-        PlaceholderDialog(){
+        PlaceholderDialog(imageList = listOf(
+            R.drawable.placeholder_1,
+            R.drawable.placeholder_2,
+            R.drawable.placeholder_3,
+            R.drawable.placeholder_4,
+            R.drawable.placeholder_5,
+            R.drawable.placeholder_6,
+            R.drawable.placeholder_7,
+            R.drawable.placeholder_8,
+            R.drawable.placeholder_9
+        )){
             setPlaceholderImage(it)
         }.show(supportFragmentManager, "PlaceholderDialog")
     }

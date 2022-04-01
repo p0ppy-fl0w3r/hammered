@@ -29,7 +29,13 @@
     <fragment
         android:id="@+id/hammerMeFragment"
         android:name="com.fl0w3r.hammered.recommendation.HammerMeFragment"
-        tools:layout="@layout/fragment_hammer_me" />
+        tools:layout="@layout/fragment_hammer_me" >
+        <action
+            android:id="@+id/hammerToCocktail"
+            app:destination="@id/cocktailDetailFragment"
+            app:popUpTo="@id/hammerMeFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
     <fragment
         android:id="@+id/cocktailDetailFragment"
         android:name="com.fl0w3r.hammered.cocktail.cocktailDetails.CocktailDetailFragment"

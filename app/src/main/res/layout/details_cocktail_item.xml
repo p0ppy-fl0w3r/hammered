@@ -22,7 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/my_item_margin"
         android:clickable="true"
-        android:elevation="4dp"
+        app:cardElevation="4dp"
         android:onClick="@{() -> clickListener.onClick(refCocktail)}"
         app:cardCornerRadius="8dp"
         app:rippleColor="@color/secondaryLightColor">
@@ -45,7 +45,7 @@
                 app:shapeAppearanceOverlay="@style/roundedImage"
                 app:strokeColor="@color/secondaryDarkColor"
                 app:strokeWidth="2dp"
-                tools:srcCompat="@drawable/summer_food" />
+                tools:srcCompat="@drawable/placeholder_1" />
 
             <LinearLayout
                 android:id="@+id/details_linear_layout"

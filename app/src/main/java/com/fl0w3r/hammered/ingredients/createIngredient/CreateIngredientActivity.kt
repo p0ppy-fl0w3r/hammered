@@ -9,6 +9,8 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.toBitmap
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
@@ -18,6 +20,7 @@ import com.fl0w3r.hammered.R
 import com.fl0w3r.hammered.databinding.ActivityCreateIngredientBinding
 import com.fl0w3r.hammered.dialog.CancelAlertDialog
 import com.fl0w3r.hammered.dialog.ImageCaptureDialog
+import com.fl0w3r.hammered.dialog.PlaceholderDialog
 import com.fl0w3r.hammered.dialog.WarningDialog
 import com.fl0w3r.hammered.entities.Ingredient
 import  com.fl0w3r.hammered.utils.UiUtils
@@ -140,7 +143,39 @@ class CreateIngredientActivity : AppCompatActivity() {
     }
 
     private fun getPlaceHolderImage() {
-        TODO("Add placeholder images")
+        PlaceholderDialog(imageList = listOf(
+            R.drawable.black_bottle,
+            R.drawable.pink_bottle,
+            R.drawable.vodka_bottle,
+            R.drawable.whiskey_bottle,
+            R.drawable.fruit_1,
+            R.drawable.fruit_2,
+            R.drawable.fruit_3,
+            R.drawable.fruit_4,
+            R.drawable.spices
+        )){
+            setPlaceholderImage(it)
+        }.show(supportFragmentManager, "PlaceholderDialog")
+    }
+
+    private fun setPlaceholderImage(layoutId: Int){
+        val drawable = when(layoutId){
+            R.id.placeholder_1 -> R.drawable.black_bottle
+            R.id.placeholder_2 -> R.drawable.pink_bottle
+            R.id.placeholder_3 -> R.drawable.vodka_bottle
+            R.id.placeholder_4 -> R.drawable.whiskey_bottle
+            R.id.placeholder_5 -> R.drawable.fruit_1
+            R.id.placeholder_6 -> R.drawable.fruit_2
+            R.id.placeholder_7 -> R.drawable.fruit_3
+            R.id.placeholder_8 -> R.drawable.fruit_4
+            else -> R.drawable.spices
+        }
+
+        imageEncoded = UiUtils.encodeToBase64(ContextCompat.getDrawable(this,drawable)!!.toBitmap())
+
+        Glide.with(this).load(drawable)
+            .apply(RequestOptions().error(R.drawable.no_drinks))
+            .into(binding.addIngredientImage)
     }
 
     private fun getCapturedImage() {

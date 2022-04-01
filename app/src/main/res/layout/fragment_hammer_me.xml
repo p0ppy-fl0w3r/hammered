@@ -27,14 +27,14 @@
             android:fontFamily="@font/roboto_medium"
             android:gravity="center"
             android:padding="18dp"
-            android:text="@string/hammer_me_msg" />
+            tools:text="@string/hammer_me_msg" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:layout_marginTop="24dp"
             android:id="@+id/recommenderRecycler"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:listitem="@layout/all_cocktail_item" />
+            tools:listitem="@layout/details_cocktail_item" />
 
 
     </LinearLayout>
