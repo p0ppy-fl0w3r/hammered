@@ -18,6 +18,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/my_item_margin"
+        app:cardElevation="8dp"
         android:clickable="true"
         android:elevation="4dp"
         android:onClick="@{() -> clickListener.onClick(ingredientWithCocktail)}"

@@ -14,7 +14,7 @@
     <string name="favorite_drinks">Favorite Drinks</string>
     <string name="all_ingredients">All ingredients</string>
     <string name="my_stock">My Stock</string>
-    <string name="shopping_cart">Shopping Cart</string>
+    <string name="shopping_cart">Shopping List</string>
     <string name="cross_description">Cross to remove item from cart</string>
     <string name="tick_info">You have ingredients to make this drink.</string>
     <string name="not_in_stock_msg">You do not have %1$s</string>
@@ -114,4 +114,6 @@
     <string name="attributions"><u>Attributions</u></string>
     <string name="voice_commands">Voice Commands</string>
     <string name="enable_voice">Enable voice command on slides.</string>
+    <string name="search_online">Search Online</string>
+    <string name="select_a_vendor">Select a vendor</string>
 </resources>

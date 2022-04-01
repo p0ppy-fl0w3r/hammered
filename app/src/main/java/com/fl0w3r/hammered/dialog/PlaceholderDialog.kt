@@ -5,7 +5,6 @@ import android.app.AlertDialog
 import android.app.Dialog
 import android.os.Bundle
 import android.widget.ImageView
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.DialogFragment
 import com.bumptech.glide.Glide
 import com.fl0w3r.hammered.R
@@ -19,7 +18,7 @@ class PlaceholderDialog(private val imageList: List<Int>,private val onImageSele
 
         for (id in  listOf(
             R.id.placeholder_1,
-            R.id.placeholder_2,
+            R.id.vendor_cheers,
             R.id.placeholder_3,
             R.id.placeholder_4,
             R.id.placeholder_5,

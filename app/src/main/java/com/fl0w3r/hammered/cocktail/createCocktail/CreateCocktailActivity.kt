@@ -5,7 +5,6 @@ import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.graphics.drawable.Drawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
@@ -28,7 +27,6 @@ import com.fl0w3r.hammered.utils.UiUtils
 import com.fl0w3r.hammered.utils.UiUtils.animateError
 import com.fl0w3r.hammered.utils.UiUtils.hideKeyboard
 import com.fl0w3r.hammered.wrappers.StepsWrapper
-import timber.log.Timber
 
 class CreateCocktailActivity : AppCompatActivity() {
 
@@ -364,7 +362,7 @@ class CreateCocktailActivity : AppCompatActivity() {
     private fun setPlaceholderImage(layoutId: Int){
         val drawable = when(layoutId){
             R.id.placeholder_1 -> R.drawable.placeholder_1
-            R.id.placeholder_2 -> R.drawable.placeholder_2
+            R.id.vendor_cheers -> R.drawable.placeholder_2
             R.id.placeholder_3 -> R.drawable.placeholder_3
             R.id.placeholder_4 -> R.drawable.placeholder_4
             R.id.placeholder_5 -> R.drawable.placeholder_5

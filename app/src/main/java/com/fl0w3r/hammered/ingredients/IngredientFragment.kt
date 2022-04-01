@@ -22,7 +22,7 @@ class IngredientFragment : Fragment() {
     private lateinit var binding: IngredientFragmentBinding
 
     private val viewModel by lazy {
-        ViewModelProvider(this).get(IngredientViewModel::class.java)
+        ViewModelProvider(this)[IngredientViewModel::class.java]
     }
 
     private var chipSelection = Constants.NORMAL_ITEM

@@ -15,7 +15,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.fl0w3r.hammered.Constants
 import com.fl0w3r.hammered.R
 import com.fl0w3r.hammered.databinding.ActivityCreateIngredientBinding
 import com.fl0w3r.hammered.dialog.CancelAlertDialog
@@ -24,7 +23,6 @@ import com.fl0w3r.hammered.dialog.PlaceholderDialog
 import com.fl0w3r.hammered.dialog.WarningDialog
 import com.fl0w3r.hammered.entities.Ingredient
 import  com.fl0w3r.hammered.utils.UiUtils
-import timber.log.Timber
 
 
 class CreateIngredientActivity : AppCompatActivity() {
@@ -161,7 +159,7 @@ class CreateIngredientActivity : AppCompatActivity() {
     private fun setPlaceholderImage(layoutId: Int){
         val drawable = when(layoutId){
             R.id.placeholder_1 -> R.drawable.black_bottle
-            R.id.placeholder_2 -> R.drawable.pink_bottle
+            R.id.vendor_cheers -> R.drawable.pink_bottle
             R.id.placeholder_3 -> R.drawable.vodka_bottle
             R.id.placeholder_4 -> R.drawable.whiskey_bottle
             R.id.placeholder_5 -> R.drawable.fruit_1

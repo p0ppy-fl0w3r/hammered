@@ -24,7 +24,7 @@
         style="@style/PlaceholderStyle"
         android:padding="4dp"
         app:layout_constraintBottom_toBottomOf="@+id/placeholder_1"
-        app:layout_constraintEnd_toStartOf="@+id/placeholder_2"
+        app:layout_constraintEnd_toStartOf="@+id/vendor_cheers"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/placeholder_1"
         app:layout_constraintTop_toTopOf="@+id/placeholder_1"
@@ -51,7 +51,7 @@
         tools:ignore="SpeakableTextPresentCheck" />
 
     <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/placeholder_2"
+        android:id="@+id/vendor_cheers"
         style="@style/PlaceholderStyle"
         android:padding="4dp"
         app:layout_constraintBottom_toBottomOf="@+id/placeholder_1"

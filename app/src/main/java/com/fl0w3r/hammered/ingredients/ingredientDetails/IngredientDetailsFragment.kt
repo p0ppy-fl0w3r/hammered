@@ -1,10 +1,13 @@
 package com.fl0w3r.hammered.ingredients.ingredientDetails
 
 import android.content.Intent
+import android.graphics.Color
+import android.net.Uri
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -13,10 +16,12 @@ import com.bumptech.glide.request.RequestOptions
 import com.fl0w3r.hammered.R
 import com.fl0w3r.hammered.databinding.FragmentIngredientDetailsBinding
 import com.fl0w3r.hammered.dialog.CancelAlertDialog
-import com.fl0w3r.hammered.entities.Ingredient
+import com.fl0w3r.hammered.dialog.VendorDialogs
 import com.fl0w3r.hammered.ingredients.IngredientData
 import com.fl0w3r.hammered.ingredients.createIngredient.CreateIngredientActivity
 import com.fl0w3r.hammered.utils.UiUtils
+import com.google.android.material.snackbar.Snackbar
+import timber.log.Timber
 
 class IngredientDetailsFragment : Fragment() {
     private lateinit var viewModel: IngredientDetailsViewModel
@@ -62,6 +67,26 @@ class IngredientDetailsFragment : Fragment() {
                     .apply(RequestOptions().error(R.drawable.no_drinks))
                     .into(binding.ingredientDetailImage)
                 viewModel.getFromIngredient(selectedIngredient.ingredient_id)
+
+                if (it.inCart) {
+                    Snackbar.make(
+                        requireContext(),
+                        binding.root,
+                        "This item is on your shopping list.",
+                        Snackbar.LENGTH_SHORT
+                    )
+                        .setBackgroundTint(
+                            ContextCompat.getColor(
+                                requireContext(),
+                                R.color.secondaryLightColor
+                            )
+                        )
+                        .setAction("Search online.") {
+                            showOnlineVendors()
+                        }
+                        .setTextColor(Color.BLACK)
+                        .show()
+                }
             }
         }
 
@@ -90,12 +115,28 @@ class IngredientDetailsFragment : Fragment() {
     }
 
 
+    private fun showOnlineVendors() {
+        VendorDialogs() {
+            openVendorSite(it, selectedIngredient.ingredient_name)
+        }.show(parentFragmentManager, "Vendor Dialog")
+    }
+
+    private fun openVendorSite(vendor: Int, ingredientName: String){
+        val uri = when(vendor){
+            R.id.vendor_amazon -> Uri.parse( "https://www.amazon.com/s?k=${ingredientName}")
+            R.id.vendor_daraz -> Uri.parse( "https://www.daraz.com.np/catalog/?q=${ingredientName}")
+            else -> Uri.parse("https://cheers.com.np/search/?q=${ingredientName}")
+        }
+
+        startActivity(Intent(Intent.ACTION_VIEW, uri))
+    }
+
     private fun onClickCartIcon() {
         binding.detailIngredientCart.setOnClickListener {
             viewModel.changeInCart()
             val msg = when (viewModel.currentIngredient.value!!.inCart) {
-                false -> "${viewModel.currentIngredient.value!!.ingredient_name} removed from cart!"
-                else -> "${viewModel.currentIngredient.value!!.ingredient_name} added to cart!"
+                false -> "${viewModel.currentIngredient.value!!.ingredient_name} removed from shopping list!"
+                else -> "${viewModel.currentIngredient.value!!.ingredient_name} added to shopping list!"
             }
             Toast.makeText(
                 context,
@@ -149,6 +190,8 @@ class IngredientDetailsFragment : Fragment() {
                 requireActivity().supportFragmentManager,
                 "CancelAlertDialog"
             )
+
+            R.id.search_online -> showOnlineVendors()
         }
 
         return super.onOptionsItemSelected(item)

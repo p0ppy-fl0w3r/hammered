@@ -28,6 +28,7 @@
         android:layout_margin="@dimen/my_item_margin"
         android:clickable="true"
         android:elevation="4dp"
+        app:cardElevation="8dp"
         android:onClick="@{() -> clickListener.onClick(ingredientWithCocktail)}"
         app:cardCornerRadius="8dp"
         app:rippleColor="@color/secondaryLightColor">
@@ -50,7 +51,7 @@
                 app:shapeAppearanceOverlay="@style/roundedImage"
                 app:strokeColor="@color/secondaryDarkColor"
                 app:strokeWidth="2dp"
-                tools:srcCompat="@drawable/summer_food" />
+                tools:srcCompat="@drawable/whiskey_bottle" />
 
             <LinearLayout
                 android:layout_width="0dp"
