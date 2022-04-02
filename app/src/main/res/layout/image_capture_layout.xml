@@ -5,38 +5,51 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <Button
-        android:id="@+id/cameraButton"
-        android:layout_width="wrap_content"
+
+    <TextView
+        android:id="@+id/textView"
+        style="@style/DialogHeadingStyle"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/camera"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/fileButton"
-        app:layout_constraintHorizontal_bias="0.5"
+        android:background="@drawable/detail_text_back"
+        android:text="@string/select_an_option"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
+        android:id="@+id/cameraButton"
+        style="@style/ImageSelectBtnStyle"
+        android:drawableLeft="@android:drawable/ic_menu_camera"
+        android:text="@string/camera"
+        app:layout_constraintBottom_toBottomOf="@+id/fileButton"
+        app:layout_constraintEnd_toStartOf="@+id/fileButton"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/fileButton" />
+
+    <Button
         android:id="@+id/fileButton"
-        android:layout_width="wrap_content"
+        style="@style/ImageSelectBtnStyle"
+        android:drawableLeft="@drawable/ic_file"
+        android:text="@string/file"
         android:layout_marginTop="32dp"
         android:layout_marginBottom="32dp"
-        android:layout_height="wrap_content"
-        android:text="@string/file"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/tempButton"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/cameraButton"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/textView"
+        app:layout_constraintVertical_bias="1.0" />
 
     <Button
         android:id="@+id/tempButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/ImageSelectBtnStyle"
+        android:drawableLeft="@drawable/ic_img"
         android:text="@string/temp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/fileButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/fileButton"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/fileButton" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -9,6 +9,8 @@ import androidx.fragment.app.DialogFragment
 import com.fl0w3r.hammered.R
 import java.lang.IllegalStateException
 
+// TODO add navigation animations.
+
 class ImageCaptureDialog(val cameraButton: () -> Unit, val fileButton: () -> Unit, val placeholderButton: () -> Unit) :
     DialogFragment() {
     @SuppressLint("InflateParams")
@@ -31,7 +33,7 @@ class ImageCaptureDialog(val cameraButton: () -> Unit, val fileButton: () -> Uni
         }
 
         return activity?.let {
-            val builder = AlertDialog.Builder(it)
+            val builder = AlertDialog.Builder(it, R.style.DarkButtonDialog)
                 .setNegativeButton("Cancel") { dialog, _ ->
                     dialog.cancel()
                 }

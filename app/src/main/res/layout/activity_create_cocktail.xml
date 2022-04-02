@@ -129,6 +129,7 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+
                         android:hint="@string/add_a_new_step"
                         android:importantForAutofill="no"
                         android:inputType="text" />
@@ -137,7 +138,10 @@
                         android:id="@+id/addStep"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:textColor="@color/secondaryDarkColor"
                         android:text="@string/add_step"
+                        android:background="@drawable/rounded_rect"
+                        android:drawableLeft="@drawable/ic_add"
                         android:textAllCaps="false" />
 
                 </LinearLayout>
@@ -148,6 +152,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical"
+                    android:layout_marginTop="10dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -226,13 +231,17 @@
                             app:layout_constraintStart_toEndOf="@+id/isOptional"
                             app:layout_constraintTop_toBottomOf="@+id/newQuantity" />
 
-                        <Button
+                        <androidx.appcompat.widget.AppCompatButton
                             android:id="@+id/addIngredientButton"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_margin="8dp"
+                            android:background="@drawable/rounder_rect_dark"
+                            android:drawableLeft="@drawable/ic_add"
+                            android:padding="10dp"
                             android:text="@string/add"
                             android:textAllCaps="false"
+                            android:textColor="@color/secondaryDarkColor"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
@@ -244,7 +253,13 @@
                         android:id="@+id/saveCocktail"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:text="@string/save" />
+                        android:textAllCaps="false"
+                        android:background="@drawable/rounder_rect_dark"
+                        android:textStyle="bold"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="8dp"
+                        android:textColor="@color/secondaryDarkColor"
+                        android:text="@string/save_cocktail" />
                 </LinearLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>

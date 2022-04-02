@@ -121,4 +121,12 @@
         <item name="android:clipToPadding">false</item>
     </style>
 
+    <style name="ImageSelectBtnStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textColor">@color/secondaryDarkColor</item>
+        <item name="android:background">@drawable/rounded_rect</item>
+    </style>
+
 </resources>

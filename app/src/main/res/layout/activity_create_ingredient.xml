@@ -106,13 +106,18 @@
 
             <Button
                 android:id="@+id/createSave"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/save"
                 android:textAllCaps="false"
+                android:background="@drawable/rounder_rect_dark"
+                android:textStyle="bold"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:textColor="@color/secondaryDarkColor"
+                android:text="@string/save_ingredient"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/createInStock" />
+                app:layout_constraintTop_toBottomOf="@+id/createInStock"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>

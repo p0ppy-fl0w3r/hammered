@@ -40,7 +40,7 @@
     <string name="optional">Optional</string>
     <string name="garnish">Garnish</string>
     <string name="remove">Remove</string>
-    <string name="add_step">Add step.</string>
+    <string name="add_step">Add step</string>
     <string name="add_ingredient">Add ingredient</string>
     <string name="add_step_hint">Add step…</string>
     <string name="remove_step_desc">Remove the current step.</string>
@@ -116,4 +116,7 @@
     <string name="enable_voice">Enable voice command on slides.</string>
     <string name="search_online">Search Online</string>
     <string name="select_a_vendor">Select a vendor</string>
+    <string name="select_an_option">Select an option</string>
+    <string name="save_cocktail">Save Cocktail</string>
+    <string name="save_ingredient">Save Ingredient</string>
 </resources>
