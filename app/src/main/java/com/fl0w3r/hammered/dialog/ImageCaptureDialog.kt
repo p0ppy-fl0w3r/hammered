@@ -9,8 +9,6 @@ import androidx.fragment.app.DialogFragment
 import com.fl0w3r.hammered.R
 import java.lang.IllegalStateException
 
-// TODO add navigation animations.
-
 class ImageCaptureDialog(val cameraButton: () -> Unit, val fileButton: () -> Unit, val placeholderButton: () -> Unit) :
     DialogFragment() {
     @SuppressLint("InflateParams")

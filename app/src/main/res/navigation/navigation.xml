@@ -11,7 +11,9 @@
         tools:layout="@layout/ingredient_fragment">
         <action
             android:id="@+id/from_ingredient_to_ingredient_details"
-            app:destination="@id/ingredientDetailsFragment" />
+            app:destination="@id/ingredientDetailsFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right" />
     </fragment>
     <fragment
         android:id="@+id/cocktailFragment"
@@ -20,7 +22,9 @@
         tools:layout="@layout/cocktail_fragment">
         <action
             android:id="@+id/action_cocktailFragment_to_cocktailDetailFragment"
-            app:destination="@id/cocktailDetailFragment" />
+            app:destination="@id/cocktailDetailFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right" />
     </fragment>
     <fragment
         android:id="@+id/settingsFragment"
@@ -33,6 +37,8 @@
         <action
             android:id="@+id/hammerToCocktail"
             app:destination="@id/cocktailDetailFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
             app:popUpTo="@id/hammerMeFragment"
             app:popUpToInclusive="true" />
     </fragment>
@@ -46,10 +52,14 @@
             app:argType="com.fl0w3r.hammered.cocktail.CocktailData" />
         <action
             android:id="@+id/cocktail_detail_to_ingredient_detail"
-            app:destination="@id/ingredientDetailsFragment" />
+            app:destination="@id/ingredientDetailsFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right" />
         <action
             android:id="@+id/detailsToCocktail"
             app:destination="@id/cocktailFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
             app:popUpTo="@id/navigation"
             app:popUpToInclusive="true" />
     </fragment>
@@ -63,10 +73,14 @@
             app:argType="com.fl0w3r.hammered.ingredients.IngredientData" />
         <action
             android:id="@+id/ingredient_details_to_cocktail_details"
-            app:destination="@id/cocktailDetailFragment" />
+            app:destination="@id/cocktailDetailFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right" />
         <action
             android:id="@+id/detailsToIngredient"
             app:destination="@id/ingredientFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
             app:popUpTo="@id/navigation"
             app:popUpToInclusive="true" />
     </fragment>
@@ -76,7 +90,9 @@
         tools:layout="@layout/fragment_about" >
         <action
             android:id="@+id/aboutToAttr"
-            app:destination="@id/attributeFragment" />
+            app:destination="@id/attributeFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right" />
     </fragment>
     <fragment
         android:id="@+id/mixerFragment"
