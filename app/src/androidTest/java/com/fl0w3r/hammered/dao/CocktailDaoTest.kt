@@ -15,6 +15,7 @@ import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import timber.log.Timber
 
 @RunWith(AndroidJUnit4::class)
 @SmallTest
@@ -129,6 +130,154 @@ class CocktailDaoTest {
 
         val selectedIngredient = dao.getIngredient(1)
         assertThat(selectedIngredient?.ingredient_name).isEqualTo("Apple")
+    }
+
+    @Test
+    fun updateCocktail() = runBlocking {
+        dao.insertCocktail(mCocktail)
+
+        val updateCocktail = mCocktail.copy(cocktail_name = "Big vodka")
+        dao.updateCocktail(updateCocktail)
+
+        val selectedCocktail = dao.getCocktail(mCocktail.cocktail_id)
+        assertThat(selectedCocktail?.cocktail_name).isEqualTo(updateCocktail.cocktail_name)
+    }
+
+    @Test
+    fun deleteCocktail() = runBlocking {
+        dao.insertCocktail(mCocktail)
+        dao.deleteAllCocktail()
+
+        val selectedCocktail = dao.getAllCocktail()
+        assertThat(selectedCocktail).isEmpty()
+    }
+
+    @Test
+    fun deleteIngredient() = runBlocking {
+        dao.insertIngredient(mIngredient)
+        dao.deleteAllIngredient()
+
+        val selectedIngredient = dao.getAllIngredient()
+        assertThat(selectedIngredient).isEmpty()
+    }
+
+    @Test
+    fun deleteRef() = runBlocking {
+        dao.insertIngredientCocktailRef(mCocktailRef)
+        dao.deleteAllRef()
+
+        val selectedRef = dao.getAllIngredientCocktailRef()
+        assertThat(selectedRef).isEmpty()
+    }
+
+    @Test
+    fun getRefFromIngredient() = runBlocking {
+        dao.insertIngredientCocktailRef(mCocktailRef)
+
+        val selectedRef = dao.getRefFromIngredient(mCocktailRef.ingredient_name)
+
+        assertThat(selectedRef).contains(mCocktailRef)
+    }
+
+    @Test
+    fun getIngredientFromCocktail() = runBlocking {
+        dao.insertIngredientCocktailRef(mCocktailRef)
+        dao.insertIngredient(mIngredient)
+        dao.insertCocktail(mCocktail)
+
+        val selectedCocktail = dao.getIngredientFromCocktail(mCocktailRef.cocktail_id)
+
+        assertThat(selectedCocktail.ingredients).contains(mIngredient)
+    }
+
+    @Test
+    fun getLastIngredientId() = runBlocking {
+        dao.insertIngredient(mIngredient)
+        dao.insertIngredient(mIngredient.copy(ingredient_id = 2))
+
+        val selectedIngredient = dao.getLastIngredientId()
+
+        assertThat(selectedIngredient).isEqualTo(2)
+    }
+
+    @Test
+    fun getLastCocktailId() = runBlocking {
+        dao.insertCocktail(mCocktail)
+        dao.insertCocktail(mCocktail.copy(cocktail_id = 2))
+
+        val selectedCocktail = dao.getLastCocktailId()
+
+        assertThat(selectedCocktail).isEqualTo(2)
+    }
+
+    @Test
+    fun getInStockIngredients() = runBlocking {
+        dao.insertIngredientCocktailRef(mCocktailRef)
+        val inStockIng = mIngredient.copy(inStock = true)
+        dao.insertIngredient(inStockIng)
+        dao.insertCocktail(mCocktail)
+
+        val selectedIngredient = dao.getInStockCocktailsFromIngredient()
+
+        assertThat(selectedIngredient[0].ingredient.inStock).isTrue()
+    }
+
+    @Test
+    fun getInCartIngredient() = runBlocking {
+        dao.insertIngredientCocktailRef(mCocktailRef)
+        val inStockIng = mIngredient.copy(inCart = true)
+        dao.insertIngredient(inStockIng)
+        dao.insertCocktail(mCocktail)
+
+        val selectedIngredient = dao.getInStockCocktailsFromIngredient()
+
+        assertThat(selectedIngredient[0].ingredient.inCart).isTrue()
+    }
+
+    @Test
+    fun hasIngredient() = runBlocking {
+        dao.insertIngredientCocktailRef(mCocktailRef)
+        dao.insertIngredient(mIngredient)
+        dao.insertCocktail(mCocktail)
+
+        val selectedIngredientId = dao.hasIngredient(mCocktailRef.cocktail_id)
+        Timber.e("$selectedIngredientId")
+        assertThat(selectedIngredientId[0]).isEqualTo(mCocktailRef.ingredient_id)
+    }
+
+    @Test
+    fun getRandom() = runBlocking {
+        dao.insertCocktail(mCocktail)
+        val newCocktail = mCocktail.copy(cocktail_id = 2)
+        dao.insertCocktail(mCocktail)
+
+        val randomCocktail = dao.getRandomCocktail()
+
+        assertThat(randomCocktail.cocktail.cocktail_id).isAnyOf(
+            mCocktail.cocktail_id,
+            newCocktail.cocktail_id
+        )
+    }
+
+    @Test
+    fun getSampleCocktail() = runBlocking {
+        dao.insertCocktail(mCocktail)
+        val newCocktail = mCocktail.copy(cocktail_id = 2)
+        dao.insertCocktail(mCocktail)
+
+        val selectedCocktail = dao.getSampleCocktail(listOf(newCocktail.cocktail_id))
+
+        assertThat(selectedCocktail).doesNotContain(newCocktail)
+    }
+
+    @Test
+    fun updateCocktailScore() = runBlocking {
+        dao.insertCocktail(mCocktail)
+        dao.updateCocktailScore(mCocktail.cocktail_id)
+
+        val selectedCocktail = dao.getCocktail(mCocktail.cocktail_id)
+
+        assertThat(selectedCocktail?.makeCount).isGreaterThan(mCocktail.makeCount)
     }
 
 }
