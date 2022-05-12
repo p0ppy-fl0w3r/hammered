@@ -35,7 +35,7 @@ import com.fl0w3r.hammered.search.SearchItemClickListener
 import com.fl0w3r.hammered.search.SearchViewModel
 import timber.log.Timber
 
-
+// FIXME the cocktail navigation does not work.
 class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener,
     View.OnFocusChangeListener {
 
@@ -43,7 +43,7 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener,
     private lateinit var navController: NavController
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var appBarConfiguration: AppBarConfiguration
-    private lateinit var searchAdapter: SearchAdapter
+     private lateinit var searchAdapter: SearchAdapter
     private lateinit var searchView: SearchView
 
     private var hasStarted = false
@@ -110,7 +110,6 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener,
                 }
 
             }
-
         }
 
         setSupportActionBar(toolbar)
