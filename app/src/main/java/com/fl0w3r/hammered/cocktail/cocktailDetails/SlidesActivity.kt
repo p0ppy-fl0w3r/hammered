@@ -170,6 +170,9 @@ class SlidesActivity : AppCompatActivity(), RecognitionListener {
         } else if (hypothesis?.contains("previous") == true) {
             previousSlide()
         }
+        else if(hypothesis?.contains("close") == true){
+            finish()
+        }
         Timber.e("On Result: $hypothesis")
     }
 

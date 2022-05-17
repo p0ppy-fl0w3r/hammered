@@ -64,7 +64,7 @@ class SlidesAdapter(private val closeButtonClicked: CloseClickListener) :
                     closeClicked.closeButtonClicked()
                 }
             } else {
-                binding.closeButton.visibility = View.GONE
+                binding.closeButton.visibility = View.INVISIBLE
             }
 
             binding.serialNumber.text = index

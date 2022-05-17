@@ -37,50 +37,55 @@
             android:background="@drawable/serial_num_back"
             android:fontFamily="@font/poppins_semibold"
             android:textSize="16sp"
+            app:layout_constraintBottom_toBottomOf="@+id/closeButton"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/closeButton"
             tools:text="1" />
 
         <LinearLayout
+            android:id="@+id/recyclerContainer"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginTop="164dp"
             android:orientation="vertical"
-            android:id="@+id/recyclerContainer"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/slideStepText">
 
             <TextView
-                android:layout_margin="4dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_margin="4dp"
                 android:fontFamily="@font/roboto_medium"
                 android:text="@string/slide_desc"
                 android:textSize="15sp" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/slideRecycler"
-                android:layout_margin="2dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="2dp"
+                android:layout_marginTop="4dp"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                tools:listitem="@layout/slide_item"
-                android:layout_marginTop="4dp" />
+                tools:listitem="@layout/slide_item" />
 
         </LinearLayout>
 
-        <Button
+        <ImageButton
             android:id="@+id/closeButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/close"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:background="@android:color/transparent"
+            android:contentDescription="@string/close_slide"
+            android:minWidth="48dp"
+            android:minHeight="48dp"
+            android:src="@drawable/cross"
             android:textAllCaps="false"
-            app:layout_constraintBottom_toTopOf="@+id/recyclerContainer"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/slideStepText" />
+            app:layout_constraintTop_toTopOf="parent" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

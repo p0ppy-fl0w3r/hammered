@@ -17,7 +17,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="2dp"
-        android:backgroundTint="#A0FFFFB0"
         android:elevation="15dp"
         app:cardCornerRadius="8dp"
         >
@@ -25,7 +24,8 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="4dp"
+            android:padding="4dp"
+            android:background="#A0FFFFB0"
             android:orientation="horizontal">
 
             <com.google.android.material.imageview.ShapeableImageView
@@ -40,7 +40,7 @@
                 app:shapeAppearanceOverlay="@style/roundedImage"
                 app:strokeColor="@color/secondaryDarkColor"
                 app:strokeWidth="2dp"
-                tools:srcCompat="@drawable/summer_food" />
+                tools:srcCompat="@drawable/placeholder_1" />
 
             <LinearLayout
                 android:id="@+id/detailsContainer"

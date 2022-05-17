@@ -119,4 +119,5 @@
     <string name="select_an_option">Select an option</string>
     <string name="save_cocktail">Save Cocktail</string>
     <string name="save_ingredient">Save Ingredient</string>
+    <string name="close_slide">Close Slide</string>
 </resources>
