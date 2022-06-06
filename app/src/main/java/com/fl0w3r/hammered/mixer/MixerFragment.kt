@@ -5,8 +5,11 @@ import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.fl0w3r.hammered.R
 import com.fl0w3r.hammered.databinding.FragmentMixerBinding
+import com.fl0w3r.hammered.dialog.IngredientInfoDialog
+import com.fl0w3r.hammered.dialog.WarningDialog
 
 
 class MixerFragment : Fragment() {
@@ -23,14 +26,18 @@ class MixerFragment : Fragment() {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_mixer, container, false)
 
         val ingredientAdapter = MixerIngredientAdapter(
-            MixerIngredientClickListener {
+            MixerIngredientClickListener(clickListener = {
                 viewModel.setIngredientState(it)
-            }
+            },
+                longClickListener = {
+                    IngredientInfoDialog(it)
+                        .show(parentFragmentManager, "ingredient_info_dialog")
+                })
         )
 
         val cocktailAdapter = MixerCocktailAdapter(
             MixerCocktailClickListener {
-
+                findNavController().navigate(MixerFragmentDirections.mixerToCocktail(it))
             }
         )
 

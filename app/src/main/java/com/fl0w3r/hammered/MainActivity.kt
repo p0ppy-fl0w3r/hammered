@@ -148,7 +148,6 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener,
 
         if (savedInstanceState != null) {
             hasStarted = savedInstanceState.getBoolean("hasStarted", false)
-            Timber.e("Has Started: ${savedInstanceState.getBoolean("hasStarted")}")
         }
 
         binding.searchRecycler.adapter = searchAdapter

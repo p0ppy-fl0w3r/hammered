@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:color="@color/secondaryLightColor" android:state_checked="true"/>
-    <item android:color="@color/primaryTextColor"/>
+    <!--    Changes the text color for selected item in navigation drawer-->
+    <item android:color="@color/secondaryDarkColor" android:state_checked="true" />
+    <item android:color="@color/primaryTextColor" />
 </selector>

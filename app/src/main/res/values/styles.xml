@@ -10,7 +10,7 @@
         <item name="colorSecondaryVariant">@color/secondaryDarkColor</item>
         <item name="colorOnSecondary">@color/secondaryTextColor</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <item name="android:statusBarColor" >?attr/colorPrimaryVariant</item>
         <!-- Alert dialog theme -->
         <item name="alertDialogTheme">@style/cancelAlertDialogStyle</item>
     </style>
@@ -21,7 +21,7 @@
     </style>
 
     <style name="DrawerTheme" parent="ThemeOverlay.AppCompat.Light">
-        <item name="colorControlHighlight">@color/secondaryLightColor</item>
+        <item name="colorControlHighlight">@color/secondaryDarkColor</item>
     </style>
 
     <style name="ToolbarTheme" parent="ThemeOverlay.MaterialComponents.ActionBar">

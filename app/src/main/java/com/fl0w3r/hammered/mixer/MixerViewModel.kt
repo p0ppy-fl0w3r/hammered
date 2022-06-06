@@ -44,7 +44,8 @@ class MixerViewModel(application: Application) : AndroidViewModel(application) {
                 IngredientMixerItem(
                     ingredientName = it.ingredient_name,
                     ingredientImage = it.ingredient_image,
-                    id = it.ingredient_id
+                    id = it.ingredient_id,
+                    ingredientDescription = it.ingredient_description
                 )
             }
         }
@@ -87,7 +88,8 @@ class MixerViewModel(application: Application) : AndroidViewModel(application) {
                     ingredientName = it.ingredientName,
                     ingredientImage = it.ingredientImage,
                     id = it.id,
-                    isSelected = if (ingredient.id == it.id) !ingredient.isSelected else it.isSelected
+                    isSelected = if (ingredient.id == it.id) !ingredient.isSelected else it.isSelected,
+                    ingredientDescription = it.ingredientDescription
                 )
             }
 

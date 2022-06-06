@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <group android:id="@+id/main_group">
+    <group android:id="@+id/main_group" android:checkableBehavior="single">
         <item
             android:id="@+id/cocktailFragment"
             android:icon="@drawable/round_cocktail_icon"
@@ -17,19 +17,19 @@
             android:title="@string/mixer" />
 
         <item
-            android:icon="@drawable/round_liquor_24"
             android:id="@+id/hammerMeFragment"
+            android:icon="@drawable/round_liquor_24"
             android:title="@string/hammer_me" />
     </group>
 
     <group android:id="@+id/settings_group">
         <item
-            android:icon="@drawable/settings_icon"
             android:id="@+id/settingsFragment"
+            android:icon="@drawable/settings_icon"
             android:title="@string/settings" />
         <item
-            android:icon="@drawable/ic_baseline_info_24"
             android:id="@+id/aboutFragment"
+            android:icon="@drawable/ic_baseline_info_24"
             android:title="@string/about" />
     </group>
 </menu>

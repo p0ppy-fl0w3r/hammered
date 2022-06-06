@@ -10,6 +10,8 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.fl0w3r.hammered.R
 import com.fl0w3r.hammered.databinding.MixerIngredientItemBinding
+import com.fl0w3r.hammered.dialog.WarningDialog
+import timber.log.Timber
 
 
 class MixerIngredientAdapter(private val clickListener: MixerIngredientClickListener) :
@@ -18,11 +20,17 @@ class MixerIngredientAdapter(private val clickListener: MixerIngredientClickList
     ) {
 
     class MixerIngredientDiffUtils : DiffUtil.ItemCallback<IngredientMixerItem>() {
-        override fun areItemsTheSame(oldItem: IngredientMixerItem, newItem: IngredientMixerItem): Boolean {
+        override fun areItemsTheSame(
+            oldItem: IngredientMixerItem,
+            newItem: IngredientMixerItem
+        ): Boolean {
             return newItem.id == oldItem.id
         }
 
-        override fun areContentsTheSame(oldItem: IngredientMixerItem, newItem: IngredientMixerItem): Boolean {
+        override fun areContentsTheSame(
+            oldItem: IngredientMixerItem,
+            newItem: IngredientMixerItem
+        ): Boolean {
             return oldItem == newItem
         }
     }
@@ -43,9 +51,14 @@ class MixerIngredientAdapter(private val clickListener: MixerIngredientClickList
         ) {
             binding.root.setOnClickListener { clickListener.onClick(ingredient = ingredient) }
 
+            binding.root.setOnLongClickListener {
+                clickListener.longClickListener(ingredient)
+                true
+            }
+
             binding.ingredientName.text = ingredient.ingredientName
             binding.checkedImage.visibility =
-                if(ingredient.isSelected) View.VISIBLE else View.INVISIBLE
+                if (ingredient.isSelected) View.VISIBLE else View.INVISIBLE
 
             Glide.with(binding.ingredientImage).load(ingredient.ingredientImage).apply(
                 RequestOptions().error(R.drawable.no_drinks)
@@ -66,8 +79,15 @@ class MixerIngredientAdapter(private val clickListener: MixerIngredientClickList
 
 }
 
-class MixerIngredientClickListener(val clickListener: (IngredientMixerItem) -> Unit) {
+class MixerIngredientClickListener(
+    val clickListener: (IngredientMixerItem) -> Unit,
+    val longClickListener: (IngredientMixerItem) -> Unit
+) {
     fun onClick(ingredient: IngredientMixerItem) {
         clickListener(ingredient)
+    }
+
+    fun onLongClick(ingredient: IngredientMixerItem) {
+        longClickListener(ingredient)
     }
 }

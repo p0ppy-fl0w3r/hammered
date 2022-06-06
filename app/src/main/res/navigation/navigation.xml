@@ -97,7 +97,14 @@
     <fragment
         android:id="@+id/mixerFragment"
         android:name="com.fl0w3r.hammered.mixer.MixerFragment"
-        tools:layout="@layout/fragment_mixer" />
+        tools:layout="@layout/fragment_mixer" >
+        <action
+            android:id="@+id/mixerToCocktail"
+            app:destination="@id/cocktailDetailFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popUpToInclusive="false" />
+    </fragment>
     <fragment
         android:id="@+id/attributeFragment"
         android:name="com.fl0w3r.hammered.about.AttributeFragment"
