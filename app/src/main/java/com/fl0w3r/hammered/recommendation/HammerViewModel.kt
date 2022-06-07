@@ -32,7 +32,7 @@ class HammerViewModel(application: Application) : AndroidViewModel(application) 
     fun getRecommendation() {
         viewModelScope.launch {
             val cocktailList = repository.getCocktailByCount()
-            if (!cocktailList.isNullOrEmpty()) {
+            if (cocktailList.isNotEmpty()) {
                 val ingredientIdList =
                     repository.getDistinctIngredient(cocktailList.map { it.cocktail_id })
 
@@ -70,7 +70,7 @@ class HammerViewModel(application: Application) : AndroidViewModel(application) 
         }
     }
 
-    fun showRecommendation(cocktailId: MutableSet<Int>) {
+    fun showRecommendation(cocktailId: Collection<Int>) {
         viewModelScope.launch {
             _cocktailList.value = repository.getCocktailWithIngredient(cocktailId.toList())
         }

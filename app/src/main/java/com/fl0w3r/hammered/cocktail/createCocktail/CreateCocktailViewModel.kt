@@ -110,8 +110,8 @@ class CreateCocktailViewModel(application: Application) : AndroidViewModel(appli
 
     fun updateIngredient(position: Int, ingredientRef: IngredientCocktailRef) {
         _ingredientList.value?.let {
-            it.removeAt(position)
-            it.set(position, ingredientRef)
+
+            it[position] = ingredientRef
             _ingredientList.value = it
         }
     }

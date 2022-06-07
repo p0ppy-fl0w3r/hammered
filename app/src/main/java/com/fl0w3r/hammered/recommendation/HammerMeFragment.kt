@@ -53,7 +53,7 @@ class HammerMeFragment : Fragment() {
                 }
 
                 showTitleMessage(R.string.rec_msg)
-                viewModel.showRecommendation(it.keys)
+                viewModel.showRecommendation(if(it.keys.size < 4) it.keys else it.keys.toList().subList(0,4))
 
             }
         }
