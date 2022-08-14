@@ -11,19 +11,33 @@ import timber.log.Timber
 
 class CocktailRepository(private val database: CocktailDatabase) {
 
-    suspend fun insertInitialValues(ingredients: List<Ingredient>,cocktails: List<Cocktail>, references: List<IngredientCocktailRef>){
-        if (database.cocktailDao.getIngredientCocktailRefCount() < 1){
-            ingredients.map {
-                database.cocktailDao.insertIngredient(it)
-            }
+    suspend fun insertInitialValues(
+        ingredients: List<Ingredient>,
+        cocktails: List<Cocktail>,
+        references: List<IngredientCocktailRef>
+    ) {
+        insertAll(
+            ingredients,
+            cocktails,
+            references
+        )
+    }
 
-            cocktails.map {
-                database.cocktailDao.insertCocktail(it)
-            }
+    suspend fun insertAll(
+        ingredients: List<Ingredient>,
+        cocktails: List<Cocktail>,
+        references: List<IngredientCocktailRef>
+    ) {
+        ingredients.map {
+            database.cocktailDao.insertIngredient(it)
+        }
 
-            references.map {
-                database.cocktailDao.insertIngredientCocktailRef(it)
-            }
+        cocktails.map {
+            database.cocktailDao.insertCocktail(it)
+        }
+
+        references.map {
+            database.cocktailDao.insertIngredientCocktailRef(it)
         }
     }
 
@@ -32,7 +46,7 @@ class CocktailRepository(private val database: CocktailDatabase) {
         database.cocktailDao.insertIngredient(ingredient)
     }
 
-    suspend fun insertCocktail(cocktail: Cocktail):Long {
+    suspend fun insertCocktail(cocktail: Cocktail): Long {
         return database.cocktailDao.insertCocktail(cocktail)
     }
 
@@ -84,7 +98,7 @@ class CocktailRepository(private val database: CocktailDatabase) {
         return database.cocktailDao.getIngredientFromCocktail(id)
     }
 
-    suspend fun getAllCocktailWithIngredient():List<CocktailWithIngredient> {
+    suspend fun getAllCocktailWithIngredient(): List<CocktailWithIngredient> {
         return database.cocktailDao.getIngredientFromCocktail()
     }
 
@@ -164,7 +178,7 @@ class CocktailRepository(private val database: CocktailDatabase) {
         database.cocktailDao.deleteAllRef()
     }
 
-    suspend fun updateCocktailScore(cocktailId: Long){
+    suspend fun updateCocktailScore(cocktailId: Long) {
         database.cocktailDao.updateCocktailScore(cocktailId)
     }
 
@@ -172,23 +186,23 @@ class CocktailRepository(private val database: CocktailDatabase) {
         return database.cocktailDao.getCocktailByCount()
     }
 
-    suspend fun getDistinctIngredient(cocktailId: List<Long>):List<Int>{
+    suspend fun getDistinctIngredient(cocktailId: List<Long>): List<Int> {
         return database.cocktailDao.getDistinctIngredients(cocktailId)
     }
 
-    suspend fun hasIngredient(cocktailId: Long, ingredientId: Int):Boolean{
+    suspend fun hasIngredient(cocktailId: Long, ingredientId: Int): Boolean {
         return database.cocktailDao.hasIngredient(cocktailId).contains(ingredientId)
     }
 
-    suspend fun getSampleCocktail(cocktail_Ids:List<Long>):List<Cocktail>{
+    suspend fun getSampleCocktail(cocktail_Ids: List<Long>): List<Cocktail> {
         return database.cocktailDao.getSampleCocktail(cocktail_Ids)
     }
 
-    suspend fun getRandomCocktail():CocktailWithIngredient{
+    suspend fun getRandomCocktail(): CocktailWithIngredient {
         return database.cocktailDao.getRandomCocktail()
     }
 
-    suspend fun getCocktailWithIngredient(cocktailId: List<Int>):List<CocktailWithIngredient>{
+    suspend fun getCocktailWithIngredient(cocktailId: List<Int>): List<CocktailWithIngredient> {
         return database.cocktailDao.getCocktailWithIngredient(cocktailId)
     }
 }

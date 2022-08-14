@@ -7,10 +7,16 @@
         <intent>
             <action android:name="android.intent.action.OPEN_DOCUMENT_TREE" />
         </intent>
+        <intent>
+            <action android:name="android.media.action.IMAGE_CAPTURE" />
+        </intent>
     </queries>
 
+    <uses-feature android:name="android.hardware.camera"
+        android:required="true" />
+
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission
         android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         tools:ignore="ScopedStorage" />
@@ -27,8 +33,8 @@
         tools:ignore="AllowBackup">
         <activity
             android:name=".cocktail.cocktailDetails.SlidesActivity"
-            android:theme="@style/SlidesTheme"
-            android:exported="false"/>
+            android:exported="false"
+            android:theme="@style/SlidesTheme" />
 
         <activity android:name=".ingredients.createIngredient.CreateIngredientActivity" />
         <activity android:name=".cocktail.createCocktail.CreateCocktailActivity" />

@@ -327,7 +327,7 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
         viewModelScope.launch {
             deleteEverything()
 
-            repository.insertInitialValues(ingredients, cocktails, references)
+            repository.insertAll(ingredients, cocktails, references)
         }
     }
 }

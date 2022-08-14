@@ -12,7 +12,7 @@ data class Cocktail(
     var steps: String,
     var isFavorite: Boolean,
     var makeCount: Int = 0,
-    var cocktail_image: String
+    var cocktail_image: String = ""
 ) {
     fun asData(): CocktailData {
         return CocktailData(
@@ -21,6 +21,8 @@ data class Cocktail(
             cocktail_description,
             steps,
             isFavorite,
+            makeCount,
+            cocktail_image
         )
     }
 }

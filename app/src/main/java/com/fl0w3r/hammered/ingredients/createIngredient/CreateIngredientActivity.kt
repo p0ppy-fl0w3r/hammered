@@ -1,9 +1,12 @@
 package com.fl0w3r.hammered.ingredients.createIngredient
 
 import android.app.Activity
+import android.content.ContentValues
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.net.Uri
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
@@ -15,6 +18,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.fl0w3r.hammered.Constants
 import com.fl0w3r.hammered.R
 import com.fl0w3r.hammered.databinding.ActivityCreateIngredientBinding
 import com.fl0w3r.hammered.dialog.CancelAlertDialog
@@ -22,9 +26,11 @@ import com.fl0w3r.hammered.dialog.ImageCaptureDialog
 import com.fl0w3r.hammered.dialog.PlaceholderDialog
 import com.fl0w3r.hammered.dialog.WarningDialog
 import com.fl0w3r.hammered.entities.Ingredient
+import com.fl0w3r.hammered.utils.IOUtils
 import  com.fl0w3r.hammered.utils.UiUtils
+import java.io.File
 
-
+// TRIAL temporary patch for image bug.
 class CreateIngredientActivity : AppCompatActivity() {
 
     private var imageUrl = ""
@@ -34,16 +40,40 @@ class CreateIngredientActivity : AppCompatActivity() {
 
     private lateinit var currentIngredient: Ingredient
 
-    private val cameraResultLauncher =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            if (it.resultCode == Activity.RESULT_OK) {
+    // Placeholder Uri
+    var capturedImageUri: Uri? = null
 
-                val imageData = it.data?.extras?.get("data")
-                imageEncoded = UiUtils.encodeToBase64(imageData as Bitmap)
+    // ActivityResultContract for capturing an image
+    val takePicture =
+        registerForActivityResult(
+            ActivityResultContracts.TakePicture()
+        ) { imageCaptured ->
 
-                Glide.with(this).load(imageData)
-                    .apply(RequestOptions().error(R.drawable.no_drinks))
-                    .into(binding.addIngredientImage)
+            if (imageCaptured) {
+
+                val cocktailImageDir = File(filesDir.path + "/${Constants.INGREDIENT_DIR}")
+
+                if (!cocktailImageDir.exists()) {
+                    cocktailImageDir.mkdir()
+                }
+
+                capturedImageUri?.let {
+
+                    val outputFile =
+                        File(cocktailImageDir, "cocktail_${System.currentTimeMillis()}")
+                    imageUrl = outputFile.absolutePath
+                    imageEncoded = imageUrl
+
+
+                    IOUtils.writeToFilesDir(
+                        uri = it,
+                        outputFile = outputFile,
+                        contentResolver = contentResolver
+                    )
+                    // Display the selected image in the add image button
+                    Glide.with(this).load(imageUrl).into(binding.addIngredientImage)
+                }
+
             }
         }
 
@@ -52,19 +82,28 @@ class CreateIngredientActivity : AppCompatActivity() {
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
             if (it.resultCode == Activity.RESULT_OK) {
 
-                imageUrl = it.data?.data.toString()
+                val cocktailImageDir = File(filesDir.path + "/${Constants.INGREDIENT_DIR}")
 
-                val inputStream = contentResolver.openInputStream(it.data?.data!!)
+                if (!cocktailImageDir.exists()) {
+                    cocktailImageDir.mkdir()
+                }
 
-                imageEncoded =
-                    UiUtils.encodeToBase64(BitmapFactory.decodeStream(inputStream))
+                val outputFile = File(cocktailImageDir, "cocktail_${System.currentTimeMillis()}")
+                imageUrl = outputFile.absolutePath
+                imageEncoded = imageUrl
 
-                val newCocktailImage = binding.addIngredientImage
-                // Display the selected image in the add image button
-                Glide.with(this).load(imageUrl)
-                    .apply(RequestOptions().error(R.drawable.no_drinks))
-                    .into(newCocktailImage)
+                it.data?.let { imageIntent ->
+                    imageIntent.data?.let { imageUri ->
+                        IOUtils.writeToFilesDir(
+                            uri = imageUri,
+                            outputFile = outputFile,
+                            contentResolver = contentResolver
+                        )
 
+                        // Display the selected image in the add image button
+                        Glide.with(this).load(imageUrl).into(binding.addIngredientImage)
+                    }
+                }
             }
 
         }
@@ -141,23 +180,25 @@ class CreateIngredientActivity : AppCompatActivity() {
     }
 
     private fun getPlaceHolderImage() {
-        PlaceholderDialog(imageList = listOf(
-            R.drawable.black_bottle,
-            R.drawable.pink_bottle,
-            R.drawable.vodka_bottle,
-            R.drawable.whiskey_bottle,
-            R.drawable.fruit_1,
-            R.drawable.fruit_2,
-            R.drawable.fruit_3,
-            R.drawable.fruit_4,
-            R.drawable.spices
-        )){
+        PlaceholderDialog(
+            imageList = listOf(
+                R.drawable.black_bottle,
+                R.drawable.pink_bottle,
+                R.drawable.vodka_bottle,
+                R.drawable.whiskey_bottle,
+                R.drawable.fruit_1,
+                R.drawable.fruit_2,
+                R.drawable.fruit_3,
+                R.drawable.fruit_4,
+                R.drawable.spices
+            )
+        ) {
             setPlaceholderImage(it)
         }.show(supportFragmentManager, "PlaceholderDialog")
     }
 
-    private fun setPlaceholderImage(layoutId: Int){
-        val drawable = when(layoutId){
+    private fun setPlaceholderImage(layoutId: Int) {
+        val drawable = when (layoutId) {
             R.id.placeholder_1 -> R.drawable.black_bottle
             R.id.vendor_cheers -> R.drawable.pink_bottle
             R.id.placeholder_3 -> R.drawable.vodka_bottle
@@ -169,7 +210,8 @@ class CreateIngredientActivity : AppCompatActivity() {
             else -> R.drawable.spices
         }
 
-        imageEncoded = UiUtils.encodeToBase64(ContextCompat.getDrawable(this,drawable)!!.toBitmap())
+        imageEncoded =
+            UiUtils.encodeToBase64(ContextCompat.getDrawable(this, drawable)!!.toBitmap())
 
         Glide.with(this).load(drawable)
             .apply(RequestOptions().error(R.drawable.no_drinks))
@@ -177,9 +219,29 @@ class CreateIngredientActivity : AppCompatActivity() {
     }
 
     private fun getCapturedImage() {
-        val captureResult = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        // Get the correct media Uri for specific Android build version
+        val imageUri =
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                MediaStore.Images.Media.getContentUri(
+                    MediaStore.VOLUME_EXTERNAL_PRIMARY
+                )
+            } else {
+                MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
+            }
 
-        cameraResultLauncher.launch(captureResult)
+        // Temporary name for the file.
+        val imageDetails = ContentValues().apply {
+            put(MediaStore.Audio.Media.DISPLAY_NAME, "")
+        }
+
+
+        contentResolver.insert(imageUri, imageDetails).let {
+            // Save the generated Uri using our placeholder
+            capturedImageUri = it
+
+            // Capture your image
+            takePicture.launch(capturedImageUri)
+        }
     }
 
     private fun getImageFile() {

@@ -2,9 +2,10 @@ package com.fl0w3r.hammered.cocktail.createCocktail
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.ContentValues
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
+import android.net.Uri
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
@@ -23,11 +24,18 @@ import com.fl0w3r.hammered.databinding.ActivityCreateCocktailBinding
 import com.fl0w3r.hammered.dialog.*
 import com.fl0w3r.hammered.entities.Cocktail
 import com.fl0w3r.hammered.entities.relations.IngredientCocktailRef
+import com.fl0w3r.hammered.utils.IOUtils
 import com.fl0w3r.hammered.utils.UiUtils
 import com.fl0w3r.hammered.utils.UiUtils.animateError
 import com.fl0w3r.hammered.utils.UiUtils.hideKeyboard
 import com.fl0w3r.hammered.wrappers.StepsWrapper
+import timber.log.Timber
+import java.io.File
 
+// FIXME Image bug
+// TODO save image on folder only when save is clicked.
+// TODO see create ingredients
+// TRIAL temporary patch for image bug.
 class CreateCocktailActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityCreateCocktailBinding
@@ -35,34 +43,78 @@ class CreateCocktailActivity : AppCompatActivity() {
     private lateinit var autoFillAdapter: ArrayAdapter<String>
     private lateinit var unitsAdapter: ArrayAdapter<CharSequence>
 
+    // TODO remove image encoded
     private var imageUrl = ""
     private var imageEncoded = ""
+
 
     private var isEdit = false
 
     private val fileResultLauncher =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+
             if (it.resultCode == Activity.RESULT_OK) {
-                imageUrl = it.data?.data.toString()
 
-                val inputStream = contentResolver.openInputStream(it.data?.data!!)
+                val cocktailImageDir = File(filesDir.path + "/${Constants.COCKTAIL_DIR}")
 
-                imageEncoded = UiUtils.encodeToBase64(BitmapFactory.decodeStream(inputStream))
+                if (!cocktailImageDir.exists()) {
+                    cocktailImageDir.mkdir()
+                }
 
-                // Display the selected image in the add image button
-                Glide.with(this).load(imageUrl).into(binding.addCocktailImage)
+                val outputFile = File(cocktailImageDir, "cocktail_${System.currentTimeMillis()}")
+                imageUrl = outputFile.absolutePath
+                imageEncoded = imageUrl
+
+                it.data?.let { imageIntent ->
+                    imageIntent.data?.let { imageUri ->
+                        IOUtils.writeToFilesDir(
+                            uri = imageUri,
+                            outputFile = outputFile,
+                            contentResolver = contentResolver
+                        )
+
+                        // Display the selected image in the add image button
+                        Glide.with(this).load(imageUrl).into(binding.addCocktailImage)
+                    }
+
+                }
             }
         }
 
-    private val cameraResultLauncher =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
-            if (it.resultCode == Activity.RESULT_OK) {
-                val imageData = it.data?.extras?.get("data")
-                imageEncoded = UiUtils.encodeToBase64(imageData as Bitmap)
+    // Placeholder Uri
+    var capturedImageUri: Uri? = null
 
-                Glide.with(this).load(imageData)
-                    .apply(RequestOptions().error(R.drawable.no_drinks))
-                    .into(binding.addCocktailImage)
+    // ActivityResultContract for capturing an image
+    val takePicture =
+        registerForActivityResult(
+            ActivityResultContracts.TakePicture()
+        ) { imageCaptured ->
+
+            if (imageCaptured) {
+
+                val cocktailImageDir = File(filesDir.path + "/${Constants.COCKTAIL_DIR}")
+
+                if (!cocktailImageDir.exists()) {
+                    cocktailImageDir.mkdir()
+                }
+
+                capturedImageUri?.let {
+
+                    val outputFile =
+                        File(cocktailImageDir, "cocktail_${System.currentTimeMillis()}")
+                    imageUrl = outputFile.absolutePath
+                    imageEncoded = imageUrl
+
+
+                    IOUtils.writeToFilesDir(
+                        uri = it,
+                        outputFile = outputFile,
+                        contentResolver = contentResolver
+                    )
+                    // Display the selected image in the add image button
+                    Glide.with(this).load(imageUrl).into(binding.addCocktailImage)
+                }
+
             }
         }
 
@@ -155,7 +207,7 @@ class CreateCocktailActivity : AppCompatActivity() {
     }
 
     private fun showIngredientEdit(itemNumber: Int, ingredient: IngredientCocktailRef) {
-        EditIngredientDialog(autoFillAdapter,unitsAdapter, ingredient){
+        EditIngredientDialog(autoFillAdapter, unitsAdapter, ingredient) {
             updateIngredient(itemNumber, it)
         }.show(
             supportFragmentManager,
@@ -336,7 +388,10 @@ class CreateCocktailActivity : AppCompatActivity() {
 
 
     private fun openImageDialog() {
-        ImageCaptureDialog({ getCapturedImage() }, { getImageFile() }, {getPlaceHolderImage()}).show(
+        ImageCaptureDialog(
+            { getCapturedImage() },
+            { getImageFile() },
+            { getPlaceHolderImage() }).show(
             supportFragmentManager,
             "CocktailImageCaptureDialog"
         )
@@ -344,23 +399,25 @@ class CreateCocktailActivity : AppCompatActivity() {
     }
 
     private fun getPlaceHolderImage() {
-        PlaceholderDialog(imageList = listOf(
-            R.drawable.placeholder_1,
-            R.drawable.placeholder_2,
-            R.drawable.placeholder_3,
-            R.drawable.placeholder_4,
-            R.drawable.placeholder_5,
-            R.drawable.placeholder_6,
-            R.drawable.placeholder_7,
-            R.drawable.placeholder_8,
-            R.drawable.placeholder_9
-        )){
+        PlaceholderDialog(
+            imageList = listOf(
+                R.drawable.placeholder_1,
+                R.drawable.placeholder_2,
+                R.drawable.placeholder_3,
+                R.drawable.placeholder_4,
+                R.drawable.placeholder_5,
+                R.drawable.placeholder_6,
+                R.drawable.placeholder_7,
+                R.drawable.placeholder_8,
+                R.drawable.placeholder_9
+            )
+        ) {
             setPlaceholderImage(it)
         }.show(supportFragmentManager, "PlaceholderDialog")
     }
 
-    private fun setPlaceholderImage(layoutId: Int){
-        val drawable = when(layoutId){
+    private fun setPlaceholderImage(layoutId: Int) {
+        val drawable = when (layoutId) {
             R.id.placeholder_1 -> R.drawable.placeholder_1
             R.id.vendor_cheers -> R.drawable.placeholder_2
             R.id.placeholder_3 -> R.drawable.placeholder_3
@@ -372,7 +429,8 @@ class CreateCocktailActivity : AppCompatActivity() {
             else -> R.drawable.placeholder_9
         }
 
-        imageEncoded = UiUtils.encodeToBase64(ContextCompat.getDrawable(this,drawable)!!.toBitmap())
+        imageEncoded =
+            UiUtils.encodeToBase64(ContextCompat.getDrawable(this, drawable)!!.toBitmap())
 
         Glide.with(this).load(drawable)
             .apply(RequestOptions().error(R.drawable.no_drinks))
@@ -380,9 +438,30 @@ class CreateCocktailActivity : AppCompatActivity() {
     }
 
     private fun getCapturedImage() {
-        val captureResult = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
 
-        cameraResultLauncher.launch(captureResult)
+        // Get the correct media Uri for specific Android build version
+        val imageUri =
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                MediaStore.Images.Media.getContentUri(
+                    MediaStore.VOLUME_EXTERNAL_PRIMARY
+                )
+            } else {
+                MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
+            }
+
+        // Temporary name for the file.
+        val imageDetails = ContentValues().apply {
+            put(MediaStore.Audio.Media.DISPLAY_NAME, "")
+        }
+
+
+        contentResolver.insert(imageUri, imageDetails).let {
+            // Save the generated Uri using our placeholder
+            capturedImageUri = it
+
+            // Capture your image
+            takePicture.launch(capturedImageUri)
+        }
     }
 
     private fun getImageFile() {
@@ -443,11 +522,10 @@ class CreateCocktailActivity : AppCompatActivity() {
                     return@setOnClickListener
                 }
                 else -> {
-                    if(binding.newQuantity.text.toString().toFloatOrNull() == null){
+                    if (binding.newQuantity.text.toString().toFloatOrNull() == null) {
                         animateError(binding.newQuantity)
                         return@setOnClickListener
-                    }
-                    else{
+                    } else {
                         binding.newQuantity.text.toString().toFloat()
                     }
                 }
@@ -466,7 +544,7 @@ class CreateCocktailActivity : AppCompatActivity() {
         }
     }
 
-    private fun updateIngredient(position: Int,ingredientRef: IngredientCocktailRef){
+    private fun updateIngredient(position: Int, ingredientRef: IngredientCocktailRef) {
         if (ingredientRef.ingredient_name !in ingredientNameList) {
             if (ingredientRef.ingredient_name.isBlank()) {
                 Toast.makeText(
@@ -483,15 +561,14 @@ class CreateCocktailActivity : AppCompatActivity() {
             }
             return
         }
-        if (ingredientRef.quantity == null){
+        if (ingredientRef.quantity == null) {
             Toast.makeText(
                 this,
                 "Quantity not valid!",
                 Toast.LENGTH_SHORT
             ).show()
             return
-        }
-        else if (ingredientRef.quantity!! <= 0){
+        } else if (ingredientRef.quantity!! <= 0) {
             Toast.makeText(
                 this,
                 "Quantity can not be 0 or less!",

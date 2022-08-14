@@ -62,6 +62,10 @@ object Constants {
     const val COCKTAIL_JSON_FILE = "cocktail.json"
     const val BRIDGING_JSON_FILE = "ref.json"
 
+    // Directory names
+    const val COCKTAIL_DIR = "cocktailImages"
+    const val INGREDIENT_DIR = "ingredientImages"
+
     // Import from json status code
     const val FOLDER_INVALID = 13
     const val IMPORT_FAILED = 14
