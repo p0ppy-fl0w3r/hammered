@@ -6,12 +6,16 @@ import androidx.lifecycle.*
 import com.fl0w3r.hammered.cocktail.CocktailData
 import com.fl0w3r.hammered.database.CocktailDatabase
 import com.fl0w3r.hammered.datastore.SettingsPreferences
+import com.fl0w3r.hammered.entities.Cocktail
 import com.fl0w3r.hammered.entities.Ingredient
 import com.fl0w3r.hammered.entities.relations.IngredientCocktailRef
 import com.fl0w3r.hammered.repository.CocktailRepository
 import com.fl0w3r.hammered.wrappers.RefItemWrapper
 import com.fl0w3r.hammered.wrappers.SlideWrapper
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import org.vosk.android.StorageService
 import timber.log.Timber
 import org.vosk.Model
@@ -33,7 +37,7 @@ class SlidesViewModel(application: Application) : AndroidViewModel(application) 
     val asrStatus = preferences.asrStatus.asLiveData()
 
 
-    fun getIngredients(cocktailData: CocktailData) {
+    fun getIngredients(cocktailData: Cocktail) {
         viewModelScope.launch {
             val mCocktailRef: List<IngredientCocktailRef> =
                 repository.getRefFromCocktail(cocktailData.cocktail_id)
@@ -83,7 +87,12 @@ class SlidesViewModel(application: Application) : AndroidViewModel(application) 
         }
 
         return mIngredientList
+    }
 
+    fun getCocktailData(cocktailId: Long): Cocktail {
+        return runBlocking {
+            repository.getCocktailWithIngredient(cocktailId).cocktail
+        }
     }
 
     fun setModel(context: Context) {

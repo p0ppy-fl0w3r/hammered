@@ -4,7 +4,6 @@ import android.Manifest
 import android.content.pm.PackageManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.Display
 import android.view.View
 import android.widget.Toast
 import androidx.core.content.ContextCompat
@@ -15,12 +14,12 @@ import com.fl0w3r.hammered.Constants
 import com.fl0w3r.hammered.R
 import com.fl0w3r.hammered.cocktail.CocktailData
 import com.fl0w3r.hammered.databinding.ActivitySlidesBinding
+import com.fl0w3r.hammered.entities.Cocktail
 
 import org.vosk.Model
 import org.vosk.Recognizer
 import org.vosk.android.RecognitionListener
 import org.vosk.android.SpeechService
-import org.vosk.android.StorageService
 import timber.log.Timber
 import java.io.IOException
 import java.lang.Exception
@@ -31,7 +30,7 @@ class SlidesActivity : AppCompatActivity(), RecognitionListener {
 
     private lateinit var viewPager: ViewPager2
 
-    private lateinit var cocktailData: CocktailData
+    private lateinit var cocktailData: Cocktail
 
     private val viewModel by lazy {
         ViewModelProvider(this)[SlidesViewModel::class.java]
@@ -43,7 +42,8 @@ class SlidesActivity : AppCompatActivity(), RecognitionListener {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_slides)
 
-        cocktailData = intent.getParcelableExtra(Constants.COCKTAIL_DATA)!!
+        val cocktailId = intent.getLongExtra(Constants.COCKTAIL_ID_EXTRA, -1)
+        cocktailData = viewModel.getCocktailData(cocktailId)
 
         val adapter = SlidesAdapter(SlidesAdapter.CloseClickListener {
             viewModel.updateScore(cocktailData.cocktail_id)
@@ -169,8 +169,7 @@ class SlidesActivity : AppCompatActivity(), RecognitionListener {
             nextSlide()
         } else if (hypothesis?.contains("previous") == true) {
             previousSlide()
-        }
-        else if(hypothesis?.contains("over") == true){
+        } else if (hypothesis?.contains("over") == true) {
             finish()
         }
         Timber.e("On Result: $hypothesis")

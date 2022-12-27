@@ -19,6 +19,8 @@ import com.fl0w3r.hammered.repository.CocktailRepository
 import com.fl0w3r.hammered.utils.JsonUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import org.apache.commons.io.FileUtils
+import org.apache.commons.io.FileUtils.*
 import org.apache.commons.io.IOUtils
 import timber.log.Timber
 import java.io.File
@@ -37,7 +39,7 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
 
     val currentMixerOption = preferences.currentMixerOptionSelection.asLiveData()
 
-    val astStatus  = preferences.asrStatus.asLiveData()
+    val astStatus = preferences.asrStatus.asLiveData()
 
     private val _startJsonSave = MutableLiveData<Boolean?>()
     val startJsonSave: LiveData<Boolean?>
@@ -68,12 +70,13 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
         }
     }
 
-    fun changeAsrStatus(status: Boolean){
+    fun changeAsrStatus(status: Boolean) {
         viewModelScope.launch {
             preferences.asrStatus(status)
         }
     }
 
+    // TRIAL Temporary import/export fix.
     @SuppressWarnings("deprecation")
     fun saveToJson() {
 
@@ -178,6 +181,18 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
                     )
                 }
 
+                val cocktailImagesValue = ContentValues().apply {
+
+                    put(
+                        MediaStore.Images.Media.RELATIVE_PATH, Path(
+                            Environment.DIRECTORY_DOWNLOADS,
+                            directoryName, Constants.COCKTAIL_DIR
+                        ).toString()
+                    )
+
+                    put(MediaStore.Images.Media.IS_PENDING, true)
+                }
+
                 val ingredientUri =
                     resolver.insert(MediaStore.Files.getContentUri("external"), ingredientValues)
                 val cocktailUri =
@@ -186,7 +201,11 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
                     resolver.insert(MediaStore.Files.getContentUri("external"), refValue)
 
 
-                if (ingredientUri == null || cocktailUri == null || refUri == null) {
+                val cocktailImageUri =
+                    resolver.insert(MediaStore.Downloads.EXTERNAL_CONTENT_URI, cocktailImagesValue)
+
+
+                if (ingredientUri == null || cocktailUri == null || refUri == null || cocktailImageUri == null) {
                     _jsonSaveStatus.postValue(Constants.FILE_CREATION_FAILED)
                     return@launch
                 }
@@ -205,6 +224,37 @@ class SettingsViewModel(application: Application) : AndroidViewModel(application
                     it?.write(refJson.encodeToByteArray())
                     it?.close()
                 }
+
+                Timber.e("We are here boys!!")
+
+                val cocktailImagesPath = mApplication.filesDir.path + "/${Constants.COCKTAIL_DIR}"
+                val cocktailImageDir = File(cocktailImagesPath)
+                if (cocktailImageDir.exists()) {
+
+                    val outputDest = File(
+                        mApplication.getExternalFilesDir
+                            (
+                            Environment.DIRECTORY_DOWNLOADS
+                        )?.absolutePath + "/$directoryName"
+                    )
+
+                    if (!outputDest.exists()) {
+                        outputDest.mkdir()
+                    }
+
+                    val imageFiles = cocktailImageDir.listFiles()
+
+
+                    imageFiles?.forEach { iFile ->
+                        Timber.e("Copying file ${iFile.absoluteFile.name}")
+                        copyFileToDirectory(iFile.absoluteFile, outputDest)
+                    }
+
+
+
+                    Timber.e("$imageFiles")
+                }
+
 
                 _jsonSaveStatus.postValue(Constants.DATA_SAVE_SUCCESS)
 

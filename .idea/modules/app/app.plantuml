@@ -1,0 +1,381 @@
+@startuml
+
+title __HAMMERED.APP's Class Diagram__\n
+
+  namespace androidx.databinding {
+    class androidx.databinding.DataBinderMapperImpl {
+    }
+  }
+  
+
+  namespace androidx.databinding {
+    interface androidx.databinding.DataBindingComponent {
+    }
+  }
+  
+
+  namespace androidx.databinding {
+    namespace library.baseAdapters {
+      class androidx.databinding.library.baseAdapters.BR {
+      }
+    }
+  }
+  
+
+  namespace com.fl0w3r.hammered {
+    class com.fl0w3r.hammered.BR {
+    }
+  }
+  
+
+  namespace com.fl0w3r.hammered {
+    class com.fl0w3r.hammered.BuildConfig {
+    }
+  }
+  
+
+  namespace com.fl0w3r.hammered {
+    class com.fl0w3r.hammered.DataBinderMapperImpl {
+    }
+  }
+  
+
+  namespace com.fl0w3r.hammered {
+    namespace dao {
+      class com.fl0w3r.hammered.dao.CocktailDao_Impl {
+      }
+    }
+  }
+  
+
+  namespace com.fl0w3r.hammered {
+    namespace database {
+      class com.fl0w3r.hammered.database.CocktailDatabase_Impl {
+      }
+    }
+  }
+  
+
+  namespace com.fl0w3r.hammered {
+    namespace databinding {
+      class com.fl0w3r.hammered.databinding.ActivityCreateCocktailBindingImpl {
+      }
+    }
+  }
+  
+
+  namespace com.fl0w3r.hammered {
+    namespace databinding {
+      class com.fl0w3r.hammered.databinding.ActivityCreateIngredientBindingImpl {
+      }
+    }
+  }
+  
+
+  namespace com.fl0w3r.hammered {
+    namespace databinding {
+      class com.fl0w3r.hammered.databinding.ActivityMainBindingImpl {
+      }
+    }
+  }
+  
+
+  namespace com.fl0w3r.hammered {
+    namespace databinding {
+      class com.fl0w3r.hammered.databinding.ActivitySlidesBindingImpl {
+      }
+    }
+  }
+  
+
+  namespace com.fl0w3r.hammered {
+    namespace databinding {
+      class com.fl0w3r.hammered.databinding.ActivitySplashBindingImpl {
+      }
+    }
+  }
+  
+
+  namespace com.fl0w3r.hammered {
+    namespace databinding {
+      class com.fl0w3r.hammered.databinding.AllCocktailItemBindingImpl {
+      }
+    }
+  }
+  
+
+  namespace com.fl0w3r.hammered {
+    namespace databinding {
+      class com.fl0w3r.hammered.databinding.AllIngredientItemBindingImpl {
+      }
+    }
+  }
+  
+
+  namespace com.fl0w3r.hammered {
+    namespace databinding {
+      class com.fl0w3r.hammered.databinding.AvailableCocktailItemBindingImpl {
+      }
+    }
+  }
+  
+
+  namespace com.fl0w3r.hammered {
+    namespace databinding {
+      class com.fl0w3r.hammered.databinding.CartIngredientItemBindingImpl {
+      }
+    }
+  }
+  
+
+  namespace com.fl0w3r.hammered {
+    namespace databinding {
+      class com.fl0w3r.hammered.databinding.CocktailFragmentBindingImpl {
+      }
+    }
+  }
+  
+
+  namespace com.fl0w3r.hammered {
+    namespace databinding {
+      class com.fl0w3r.hammered.databinding.CocktailStepsItemBindingImpl {
+      }
+    }
+  }
+  
+
+  namespace com.fl0w3r.hammered {
+    namespace databinding {
+      class com.fl0w3r.hammered.databinding.CreateCocktailIngredientItemBindingImpl {
+      }
+    }
+  }
+  
+
+  namespace com.fl0w3r.hammered {
+    namespace databinding {
+      class com.fl0w3r.hammered.databinding.DetailsCocktailItemBindingImpl {
+      }
+    }
+  }
+  
+
+  namespace com.fl0w3r.hammered {
+    namespace databinding {
+      class com.fl0w3r.hammered.databinding.DetailsIngredientItemBindingImpl {
+      }
+    }
+  }
+  
+
+  namespace com.fl0w3r.hammered {
+    namespace databinding {
+      class com.fl0w3r.hammered.databinding.EmptyItemBindingImpl {
+      }
+    }
+  }
+  
+
+  namespace com.fl0w3r.hammered {
+    namespace databinding {
+      class com.fl0w3r.hammered.databinding.FavoriteCocktailItemBindingImpl {
+      }
+    }
+  }
+  
+
+  namespace com.fl0w3r.hammered {
+    namespace databinding {
+      class com.fl0w3r.hammered.databinding.FragmentAboutBindingImpl {
+      }
+    }
+  }
+  
+
+  namespace com.fl0w3r.hammered {
+    namespace databinding {
+      class com.fl0w3r.hammered.databinding.FragmentAboutBindingLandImpl {
+      }
+    }
+  }
+  
+
+  namespace com.fl0w3r.hammered {
+    namespace databinding {
+      class com.fl0w3r.hammered.databinding.FragmentAttributeBindingImpl {
+      }
+    }
+  }
+  
+
+  namespace com.fl0w3r.hammered {
+    namespace databinding {
+      class com.fl0w3r.hammered.databinding.FragmentCocktailDetailBindingImpl {
+      }
+    }
+  }
+  
+
+  namespace com.fl0w3r.hammered {
+    namespace databinding {
+      class com.fl0w3r.hammered.databinding.FragmentHammerMeBindingImpl {
+      }
+    }
+  }
+  
+
+  namespace com.fl0w3r.hammered {
+    namespace databinding {
+      class com.fl0w3r.hammered.databinding.FragmentIngredientDetailsBindingImpl {
+      }
+    }
+  }
+  
+
+  namespace com.fl0w3r.hammered {
+    namespace databinding {
+      class com.fl0w3r.hammered.databinding.FragmentMixerBindingImpl {
+      }
+    }
+  }
+  
+
+  namespace com.fl0w3r.hammered {
+    namespace databinding {
+      class com.fl0w3r.hammered.databinding.IngredientFragmentBindingImpl {
+      }
+    }
+  }
+  
+
+  namespace com.fl0w3r.hammered {
+    namespace databinding {
+      class com.fl0w3r.hammered.databinding.MixerCocktailItemBindingImpl {
+      }
+    }
+  }
+  
+
+  namespace com.fl0w3r.hammered {
+    namespace databinding {
+      class com.fl0w3r.hammered.databinding.MixerIngredientItemBindingImpl {
+      }
+    }
+  }
+  
+
+  namespace com.fl0w3r.hammered {
+    namespace databinding {
+      class com.fl0w3r.hammered.databinding.SearchCocktailItemBindingImpl {
+      }
+    }
+  }
+  
+
+  namespace com.fl0w3r.hammered {
+    namespace databinding {
+      class com.fl0w3r.hammered.databinding.SearchIngredientItemBindingImpl {
+      }
+    }
+  }
+  
+
+  namespace com.fl0w3r.hammered {
+    namespace databinding {
+      class com.fl0w3r.hammered.databinding.SettingsFragmentBindingImpl {
+      }
+    }
+  }
+  
+
+  namespace com.fl0w3r.hammered {
+    namespace databinding {
+      class com.fl0w3r.hammered.databinding.SlideItemBindingImpl {
+      }
+    }
+  }
+  
+
+  namespace com.fl0w3r.hammered {
+    namespace databinding {
+      class com.fl0w3r.hammered.databinding.StepSlideLayoutBindingImpl {
+      }
+    }
+  }
+  
+
+  namespace com.fl0w3r.hammered {
+    namespace databinding {
+      class com.fl0w3r.hammered.databinding.StockIngredientItemBindingImpl {
+      }
+    }
+  }
+  
+
+  namespace com.fl0w3r.hammered {
+    namespace generated.callback {
+      class com.fl0w3r.hammered.generated.callback.OnClickListener {
+      }
+    }
+  }
+  
+
+  androidx.databinding.DataBinderMapperImpl -up-|> androidx.databinding.MergedDataBinderMapper
+  com.fl0w3r.hammered.DataBinderMapperImpl -up-|> androidx.databinding.DataBinderMapper
+  com.fl0w3r.hammered.dao.CocktailDao_Impl .up.|> com.fl0w3r.hammered.dao.CocktailDao
+  com.fl0w3r.hammered.database.CocktailDatabase_Impl -up-|> com.fl0w3r.hammered.database.CocktailDatabase
+  com.fl0w3r.hammered.database.CocktailDatabase_Impl o-- com.fl0w3r.hammered.dao.CocktailDao : _cocktailDao
+  com.fl0w3r.hammered.databinding.ActivityCreateCocktailBindingImpl -up-|> com.fl0w3r.hammered.databinding.ActivityCreateCocktailBinding
+  com.fl0w3r.hammered.databinding.ActivityCreateIngredientBindingImpl -up-|> com.fl0w3r.hammered.databinding.ActivityCreateIngredientBinding
+  com.fl0w3r.hammered.databinding.ActivityMainBindingImpl -up-|> com.fl0w3r.hammered.databinding.ActivityMainBinding
+  com.fl0w3r.hammered.databinding.ActivitySlidesBindingImpl -up-|> com.fl0w3r.hammered.databinding.ActivitySlidesBinding
+  com.fl0w3r.hammered.databinding.ActivitySplashBindingImpl -up-|> com.fl0w3r.hammered.databinding.ActivitySplashBinding
+  com.fl0w3r.hammered.databinding.AllCocktailItemBindingImpl .up.|> com.fl0w3r.hammered.generated.callback.OnClickListener.Listener
+  com.fl0w3r.hammered.databinding.AllCocktailItemBindingImpl -up-|> com.fl0w3r.hammered.databinding.AllCocktailItemBinding
+  com.fl0w3r.hammered.databinding.AllIngredientItemBindingImpl .up.|> com.fl0w3r.hammered.generated.callback.OnClickListener.Listener
+  com.fl0w3r.hammered.databinding.AllIngredientItemBindingImpl -up-|> com.fl0w3r.hammered.databinding.AllIngredientItemBinding
+  com.fl0w3r.hammered.databinding.AvailableCocktailItemBindingImpl .up.|> com.fl0w3r.hammered.generated.callback.OnClickListener.Listener
+  com.fl0w3r.hammered.databinding.AvailableCocktailItemBindingImpl -up-|> com.fl0w3r.hammered.databinding.AvailableCocktailItemBinding
+  com.fl0w3r.hammered.databinding.CartIngredientItemBindingImpl .up.|> com.fl0w3r.hammered.generated.callback.OnClickListener.Listener
+  com.fl0w3r.hammered.databinding.CartIngredientItemBindingImpl -up-|> com.fl0w3r.hammered.databinding.CartIngredientItemBinding
+  com.fl0w3r.hammered.databinding.CocktailFragmentBindingImpl -up-|> com.fl0w3r.hammered.databinding.CocktailFragmentBinding
+  com.fl0w3r.hammered.databinding.CocktailStepsItemBindingImpl -up-|> com.fl0w3r.hammered.databinding.CocktailStepsItemBinding
+  com.fl0w3r.hammered.databinding.CreateCocktailIngredientItemBindingImpl -up-|> com.fl0w3r.hammered.databinding.CreateCocktailIngredientItemBinding
+  com.fl0w3r.hammered.databinding.DetailsCocktailItemBindingImpl .up.|> com.fl0w3r.hammered.generated.callback.OnClickListener.Listener
+  com.fl0w3r.hammered.databinding.DetailsCocktailItemBindingImpl -up-|> com.fl0w3r.hammered.databinding.DetailsCocktailItemBinding
+  com.fl0w3r.hammered.databinding.DetailsIngredientItemBindingImpl .up.|> com.fl0w3r.hammered.generated.callback.OnClickListener.Listener
+  com.fl0w3r.hammered.databinding.DetailsIngredientItemBindingImpl -up-|> com.fl0w3r.hammered.databinding.DetailsIngredientItemBinding
+  com.fl0w3r.hammered.databinding.EmptyItemBindingImpl -up-|> com.fl0w3r.hammered.databinding.EmptyItemBinding
+  com.fl0w3r.hammered.databinding.FavoriteCocktailItemBindingImpl .up.|> com.fl0w3r.hammered.generated.callback.OnClickListener.Listener
+  com.fl0w3r.hammered.databinding.FavoriteCocktailItemBindingImpl -up-|> com.fl0w3r.hammered.databinding.FavoriteCocktailItemBinding
+  com.fl0w3r.hammered.databinding.FragmentAboutBindingImpl -up-|> com.fl0w3r.hammered.databinding.FragmentAboutBinding
+  com.fl0w3r.hammered.databinding.FragmentAboutBindingLandImpl -up-|> com.fl0w3r.hammered.databinding.FragmentAboutBinding
+  com.fl0w3r.hammered.databinding.FragmentAttributeBindingImpl -up-|> com.fl0w3r.hammered.databinding.FragmentAttributeBinding
+  com.fl0w3r.hammered.databinding.FragmentCocktailDetailBindingImpl -up-|> com.fl0w3r.hammered.databinding.FragmentCocktailDetailBinding
+  com.fl0w3r.hammered.databinding.FragmentHammerMeBindingImpl -up-|> com.fl0w3r.hammered.databinding.FragmentHammerMeBinding
+  com.fl0w3r.hammered.databinding.FragmentIngredientDetailsBindingImpl -up-|> com.fl0w3r.hammered.databinding.FragmentIngredientDetailsBinding
+  com.fl0w3r.hammered.databinding.FragmentMixerBindingImpl -up-|> com.fl0w3r.hammered.databinding.FragmentMixerBinding
+  com.fl0w3r.hammered.databinding.IngredientFragmentBindingImpl -up-|> com.fl0w3r.hammered.databinding.IngredientFragmentBinding
+  com.fl0w3r.hammered.databinding.MixerCocktailItemBindingImpl -up-|> com.fl0w3r.hammered.databinding.MixerCocktailItemBinding
+  com.fl0w3r.hammered.databinding.MixerIngredientItemBindingImpl -up-|> com.fl0w3r.hammered.databinding.MixerIngredientItemBinding
+  com.fl0w3r.hammered.databinding.SearchCocktailItemBindingImpl .up.|> com.fl0w3r.hammered.generated.callback.OnClickListener.Listener
+  com.fl0w3r.hammered.databinding.SearchCocktailItemBindingImpl -up-|> com.fl0w3r.hammered.databinding.SearchCocktailItemBinding
+  com.fl0w3r.hammered.databinding.SearchIngredientItemBindingImpl .up.|> com.fl0w3r.hammered.generated.callback.OnClickListener.Listener
+  com.fl0w3r.hammered.databinding.SearchIngredientItemBindingImpl -up-|> com.fl0w3r.hammered.databinding.SearchIngredientItemBinding
+  com.fl0w3r.hammered.databinding.SettingsFragmentBindingImpl -up-|> com.fl0w3r.hammered.databinding.SettingsFragmentBinding
+  com.fl0w3r.hammered.databinding.SlideItemBindingImpl -up-|> com.fl0w3r.hammered.databinding.SlideItemBinding
+  com.fl0w3r.hammered.databinding.StepSlideLayoutBindingImpl -up-|> com.fl0w3r.hammered.databinding.StepSlideLayoutBinding
+  com.fl0w3r.hammered.databinding.StockIngredientItemBindingImpl .up.|> com.fl0w3r.hammered.generated.callback.OnClickListener.Listener
+  com.fl0w3r.hammered.databinding.StockIngredientItemBindingImpl -up-|> com.fl0w3r.hammered.databinding.StockIngredientItemBinding
+  com.fl0w3r.hammered.generated.callback.OnClickListener .up.|> android.view.View.OnClickListener
+  com.fl0w3r.hammered.generated.callback.OnClickListener o-- com.fl0w3r.hammered.generated.callback.OnClickListener.Listener : mListener
+
+
+right footer
+
+
+PlantUML diagram generated by SketchIt! (https://bitbucket.org/pmesmeur/sketch.it)
+For more information about this tool, please contact philippe.mesmeur@gmail.com
+endfooter
+
+@enduml

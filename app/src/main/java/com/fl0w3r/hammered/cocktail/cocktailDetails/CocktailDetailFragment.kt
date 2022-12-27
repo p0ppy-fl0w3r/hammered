@@ -33,7 +33,8 @@ class CocktailDetailFragment : Fragment() {
         binding =
             DataBindingUtil.inflate(inflater, R.layout.fragment_cocktail_detail, container, false)
 
-        selectedCocktail = CocktailDetailFragmentArgs.fromBundle(requireArguments()).cocktail
+        val cocktailId = CocktailDetailFragmentArgs.fromBundle(requireArguments()).cocktailId
+        selectedCocktail = viewModel.getCocktail(cocktailId).asData()
 
         viewModel.setCocktail(selectedCocktail.asCocktail())
 
@@ -114,7 +115,7 @@ class CocktailDetailFragment : Fragment() {
 
     private fun showSlides(cocktailData: CocktailData){
         val intent = Intent(requireContext(), SlidesActivity::class.java)
-        intent.putExtra(Constants.COCKTAIL_DATA, cocktailData)
+        intent.putExtra(Constants.COCKTAIL_ID_EXTRA, cocktailData.cocktail_id)
         startActivity(intent)
     }
 
@@ -157,7 +158,5 @@ class CocktailDetailFragment : Fragment() {
         // Hides the keyboard in case the user navigated to this fragment using search.
         UiUtils.hideKeyboard(requireContext(), this.requireView())
 
-        val selectedCocktail = CocktailDetailFragmentArgs.fromBundle(requireArguments()).cocktail
-        viewModel.setCocktail(selectedCocktail.asCocktail())
     }
 }

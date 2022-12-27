@@ -36,7 +36,7 @@ class HammerMeFragment : Fragment() {
         viewModel.getRecommendation()
 
         val adapter = IngredientDetailsAdapter(IngredientDetailsClickListener {
-            findNavController().navigate(HammerMeFragmentDirections.hammerToCocktail(it.cocktail.asData()))
+            findNavController().navigate(HammerMeFragmentDirections.hammerToCocktail(it.cocktail.cocktail_id))
         })
 
         binding.recommenderRecycler.layoutManager = LinearLayoutManager(requireContext())

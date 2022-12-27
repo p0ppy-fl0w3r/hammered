@@ -12,6 +12,7 @@ import com.fl0w3r.hammered.ingredients.IngredientData
 import com.fl0w3r.hammered.repository.CocktailRepository
 import com.fl0w3r.hammered.wrappers.RefItemWrapper
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 class CocktailDetailsViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -47,8 +48,11 @@ class CocktailDetailsViewModel(application: Application) : AndroidViewModel(appl
 
         _currentCocktail.value = cocktail
 
-        viewModelScope.launch {
-            _currentCocktail.value = repository.getCocktail(cocktail.cocktail_id)
+    }
+
+    fun getCocktail(cocktailId: Long): Cocktail{
+        return runBlocking {
+            repository.getCocktail(cocktailId)!!
         }
     }
 

@@ -37,7 +37,7 @@ class MixerFragment : Fragment() {
 
         val cocktailAdapter = MixerCocktailAdapter(
             MixerCocktailClickListener {
-                findNavController().navigate(MixerFragmentDirections.mixerToCocktail(it))
+                findNavController().navigate(MixerFragmentDirections.mixerToCocktail(it.cocktail_id))
             }
         )
 

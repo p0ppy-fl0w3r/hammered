@@ -135,7 +135,7 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener,
                     navController.navigate(R.id.ingredientDetailsFragment, mBundle)
                 }
                 is CocktailWithIngredient -> {
-                    mBundle.putParcelable("cocktail", selectedItem.cocktail.asData())
+                    mBundle.putLong("cocktailId", selectedItem.cocktail.cocktail_id)
                     searchAdapter.submitList(null)
                     searchView.setQuery("", false)
                     navController.navigate(R.id.cocktailDetailFragment, mBundle)

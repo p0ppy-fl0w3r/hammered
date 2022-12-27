@@ -50,7 +50,7 @@ class CocktailFragment : Fragment() {
             val clickedData = it.cocktail.asData()
             findNavController().navigate(
                 CocktailFragmentDirections.actionCocktailFragmentToCocktailDetailFragment(
-                    clickedData
+                    clickedData.cocktail_id
                 )
             )
         })

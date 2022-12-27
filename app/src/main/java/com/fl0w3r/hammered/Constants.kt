@@ -76,7 +76,7 @@ object Constants {
     const val SELECT_COMBINATION = "select_combination"
 
     // Slides intent key
-    const val COCKTAIL_DATA = "cocktailData"
+    const val COCKTAIL_ID_EXTRA = "cocktail_data_id"
 
     // Permission request codes
     const val AUDIO_PERMISSION = 16
